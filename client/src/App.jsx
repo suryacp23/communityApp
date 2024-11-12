@@ -5,7 +5,7 @@ import Home from "./screen/Home";
 
 const App = () => {
   return (
-    <div className="bg-blue-600">
+    <div>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/signup" element={<Signup />} />
