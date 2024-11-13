@@ -15,7 +15,7 @@ const Home = () => {
     await logout();
   };
   return (
-    <div>
+    <div className="p-2">
       <nav className=" flex justify-end m-3 space-x-2 text-slate-100">
         {user ? (
           <MenuRoot>
@@ -23,7 +23,7 @@ const Home = () => {
               <Button
                 variant="outline"
                 size="sm"
-                className="bg-slate-400 text-white p-2"
+                className="bg-slate-400 text-black p-2 rounded-sm"
               >
                 {user.userName ?? "username"}
               </Button>

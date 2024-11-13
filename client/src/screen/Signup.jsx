@@ -14,8 +14,16 @@ const Signup = () => {
   return (
     <div>
       <form action="">
-        <input type="text" onChange={(e) => setUsername(e.target.value)} />
-        <input type="text" onChange={(e) => setEmail(e.target.value)} />
+        <input
+          type="text"
+          placeholder="username"
+          onChange={(e) => setUsername(e.target.value)}
+        />
+        <input
+          type="text"
+          placeholder="email"
+          onChange={(e) => setEmail(e.target.value)}
+        />
         <input type="password" onChange={(e) => setPassword(e.target.value)} />
         <button
           className=" bg-black p-1 w-32 h-8 rounded-md  text-white"
