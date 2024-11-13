@@ -59,10 +59,10 @@ export const AuthProvider = ({ children }) => {
       setLoading(true);
       await fetch(`/api/auth/logout`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
+        // headers: {
+        //   "Content-Type": "application/json",
+        //   Authorization: `Bearer ${localStorage.getItem("token")}`,
+        // },
       });
       setUser(null);
       localStorage.removeItem("token");
