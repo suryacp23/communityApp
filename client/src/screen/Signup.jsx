@@ -8,7 +8,7 @@ const Signup = () => {
   const [password, setPassword] = useState("");
   const handleSignup = (e) => {
     e.preventDefault();
-    console.log("checkedout");
+    console.log("console statement");
     signup(username, email, password);
   };
   return (
