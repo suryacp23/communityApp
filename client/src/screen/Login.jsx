@@ -8,6 +8,9 @@ const Login = () => {
   const handleLogin = (e) => {
     e.preventDefault();
     login(username, password);
+    setPassword("");
+    setUsername("");
+
   };
   return (
     <div className="flex h-[100vh] w-full  justify-center items-center">
