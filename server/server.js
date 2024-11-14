@@ -2,6 +2,7 @@ import express, { urlencoded } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import authRoutes from "./routes/authRoutes.js";
+import blogRoutes from "./routes/blogRoutes.js";
 import connectDB from "./utils/connectDB.js";
 const app = express();
 
@@ -14,6 +15,7 @@ app.use(urlencoded({ extended: true }));
 connectDB();
 
 app.use("/auth", authRoutes);
+app.use("/blog", blogRoutes);
 
 app.listen(process.env.PORT || 5000, () => {
   console.log("server running");
