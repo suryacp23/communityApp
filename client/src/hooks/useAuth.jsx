@@ -5,6 +5,7 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   const login = async (userName, password) => {
@@ -17,7 +18,7 @@ export const AuthProvider = ({ children }) => {
         },
         body: JSON.stringify({ userName, password }),
       });
-      if (!response.ok) throw new Error("Login failed");
+      if (!response.ok) setError("Login failed");
 
       const fetchedUser = await response.json();
       setUser(fetchedUser);
@@ -25,7 +26,7 @@ export const AuthProvider = ({ children }) => {
       localStorage.setItem("token", JSON.stringify(fetchedUser));
       navigate("/");
     } catch (error) {
-      console.error(error);
+      setError(error);
     } finally {
       setLoading(false);
     }
@@ -41,14 +42,14 @@ export const AuthProvider = ({ children }) => {
         },
         body: JSON.stringify({ userName, email, password }),
       });
-      if (!response.ok) throw new Error("Signup failed");
+      if (!response.ok) setError("Sign Up failed");
 
       const newUser = await response.json();
       setUser(newUser);
       localStorage.setItem("token", newUser.token);
       navigate("/");
     } catch (error) {
-      console.error("Error signing up:", error);
+      setError(error);
     } finally {
       setLoading(false);
     }
@@ -66,9 +67,9 @@ export const AuthProvider = ({ children }) => {
       });
       setUser(null);
       localStorage.removeItem("token");
-      navigate("/login");
+      navigate("/");
     } catch (error) {
-      console.error("Error logging out:", error);
+      setError(error);
     } finally {
       setLoading(false);
     }
@@ -99,7 +100,7 @@ export const AuthProvider = ({ children }) => {
   //   fetchUser();
   // }, []);
 
-  const value = { user, loading, login, logout, signup };
+  const value = { user, loading, error, login, logout, signup };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
