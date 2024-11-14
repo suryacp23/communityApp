@@ -24,7 +24,7 @@ export const AuthProvider = ({ children }) => {
       setUser(fetchedUser);
       console.log(fetchedUser);
       localStorage.setItem("token", JSON.stringify(fetchedUser));
-      navigate("/");
+      if (response.ok) navigate("/");
     } catch (error) {
       setError(error);
     } finally {
@@ -47,7 +47,7 @@ export const AuthProvider = ({ children }) => {
       const newUser = await response.json();
       setUser(newUser);
       localStorage.setItem("token", newUser.token);
-      navigate("/");
+      if (response.ok) navigate("/");
     } catch (error) {
       setError(error);
     } finally {
