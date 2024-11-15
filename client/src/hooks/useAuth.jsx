@@ -1,5 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
+import { GiToadTeeth } from "react-icons/gi";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
@@ -21,7 +23,7 @@ export const AuthProvider = ({ children }) => {
       if (!response.ok) {
         const errorData = await response.json();
         setStatus(errorData.error);
-        return;
+        toast(errorData.error);
       }
 
       const fetchedUser = await response.json();
@@ -52,7 +54,7 @@ export const AuthProvider = ({ children }) => {
       if (!response.ok) {
         const errorData = await response.json();
         setStatus(errorData.error);
-        return;
+        toast(errorData.error);
       }
 
       const newUser = await response.json();
@@ -114,6 +116,7 @@ export const AuthProvider = ({ children }) => {
   //   };
   //   fetchUser();
   // }, []);
+  console.log(status);
   const value = { user, loading, status, login, logout, signup };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
