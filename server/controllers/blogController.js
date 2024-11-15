@@ -47,3 +47,27 @@ export const deleteBlog = async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 };
+export const getblogs = async (req,res)=>{
+  try {
+    const blog = await Blog.find({}).populate("user",["-password"]);
+    if (blog == null) {
+      return res.status(200).json({ message: " No blog Found" });
+    }
+    res.json({blogs:blog}) 
+  } catch (error) {
+    console.log("getblogs  controller error" + error.message);
+    res.status(400).json({error :error.message})
+  }
+}
+export const getBlogById= async(req,res)=>{
+try {
+    const blog = await Blog.findById(req.params.blogid).populate("user",["-password"]);
+    if (blog == null) {
+      return res.status(200).json({ message: " blog Not Found" });
+    }
+    res.json({blog:blog})
+} catch (error) {
+    console.log("getblogById  controller error" + error.message);
+    res.status(400).json({error :error.message})
+}
+}
