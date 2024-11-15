@@ -25,6 +25,7 @@ const Login = () => {
             className=" pl-2 w-52 h-8 rounded-sm  bg-gray-600"
             type="text"
             placeholder="Username"
+            minLength={14}
             onChange={(e) => setUsername(e.target.value)}
             required
           />
@@ -38,7 +39,7 @@ const Login = () => {
           <button
             className="bg-blue-500 shadow-lg  hover:shadow-blue-500/40  w-52 h-8  flex justify-center rounded-sm"
             onClick={handleLogin}>
-            {loading ? "loading" : "log in"}
+            {loading ? "loading" : "Log in"}
           </button>
         </form>
         <div className="flex w-full items-center justify-center h-1/6 pt-5 ">

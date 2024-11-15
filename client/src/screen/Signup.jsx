@@ -19,18 +19,24 @@ const Signup = () => {
   };
 
   return (
-    <div className="flex bg items-center justify-center min-h-screen bg-black-50">
-      <div className="bg-black p-6 rounded-lg w-80 hover:shadow-gray-500 shadow-md">
-        <form onSubmit={handleSignup}>
-        <h4 className="m-4 text-center">Create An Account</h4>
+    <div className="flex h-[100vh] w-full  justify-center items-center">
+      <div className=" text-white flex flex-col h-96 w-72 bg-black rounded-md items-center ">
+        <div className=" h-1/6">
+          <h4 className="m-4">Create An Account</h4>
+        </div>
+
+        <form
+          className="flex flex-col w-full h-5/6 items-center justify-between "
+          onSubmit={handleSignup}>
           <input
             type="username"
             id="username"
             name="username"
             placeholder="username"
+            maxLength={12}
             value={username}
             onChange={(e) => setusername(e.target.value)}
-            className="w-full mb-4 p-2 border border-gray-300 rounded-md"
+            className=" pl-2 w-52 h-8 rounded-sm  bg-gray-600"
           />
           <input
             type="email"
@@ -39,7 +45,7 @@ const Signup = () => {
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full mb-4 p-2 border border-gray-300 rounded-md"
+            className=" pl-2 w-52 h-8 rounded-sm  bg-gray-600"
           />
           <input
             type="password"
@@ -48,20 +54,21 @@ const Signup = () => {
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full mb-4 p-2 border border-gray-300 rounded-md"
+            className=" pl-2 w-52 h-8 rounded-sm  bg-gray-600"
           />
           <button
             type="submit"
-            className="bg-blue-500 shadow-lg  hover:shadow-blue-500/40  shadow-[0_0_20px_10px_rgba(59,130,246,0.6),_0_0_30px_rgba(59,130,246,0.4) w-full h-15 mb-0 p-2  justify-center rounded-md"
-          disabled={loading}
-          >
+            className="bg-blue-500 shadow-lg  hover:shadow-blue-500/40  w-52 h-8  flex justify-center rounded-sm"
+            disabled={loading}>
             {loading ? "loading..." : "Sign Up"}
-            {loading && <Spinner size={'lg'} color={'white'}/>}
+            {loading && <Spinner size={"lg"} color={"white"} />}
           </button>
         </form>
-        <div className="text-center mt-4"> Already have an account? 
-          <Link to="/login" className="text-blue-500 hover:underline">
-          Log In
+        <div className="text-center h-2/5 pt-7">
+          {" "}
+          Already have an account?
+          <Link to="/login" className="text-blue-500 ">
+            Log In
           </Link>
         </div>
       </div>
