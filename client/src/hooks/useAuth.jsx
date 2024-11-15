@@ -5,7 +5,7 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [status, setStatus] = useState(null);
   const navigate = useNavigate();
 
   const login = async (userName, password) => {
@@ -18,15 +18,22 @@ export const AuthProvider = ({ children }) => {
         },
         body: JSON.stringify({ userName, password }),
       });
-      if (!response.ok) setError("Login failed");
+      if (!response.ok) {
+        const errorData = await response.json();
+        setStatus(errorData.error);
+        return;
+      }
 
       const fetchedUser = await response.json();
       setUser(fetchedUser);
-      console.log(fetchedUser);
       localStorage.setItem("token", JSON.stringify(fetchedUser));
-      if (response.ok) navigate("/");
+      if (response.ok) {
+        setStatus("login successfully");
+        navigate("/");
+      }
     } catch (error) {
-      setError(error);
+      console.log(error);
+      setStatus("login failed");
     } finally {
       setLoading(false);
     }
@@ -42,14 +49,21 @@ export const AuthProvider = ({ children }) => {
         },
         body: JSON.stringify({ userName, email, password }),
       });
-      if (!response.ok) setError("Sign Up failed");
+      if (!response.ok) {
+        const errorData = await response.json();
+        setStatus(errorData.error);
+        return;
+      }
 
       const newUser = await response.json();
       setUser(newUser);
       localStorage.setItem("token", newUser.token);
-      if (response.ok) navigate("/");
+      if (response.ok) {
+        setStatus("signed up successfully");
+        navigate("/");
+      }
     } catch (error) {
-      setError(error);
+      setStatus("signup failed");
     } finally {
       setLoading(false);
     }
@@ -67,9 +81,10 @@ export const AuthProvider = ({ children }) => {
       });
       setUser(null);
       localStorage.removeItem("token");
+      setStatus("Signed out successfully");
       navigate("/");
     } catch (error) {
-      setError(error);
+      setStatus(error);
     } finally {
       setLoading(false);
     }
@@ -99,8 +114,7 @@ export const AuthProvider = ({ children }) => {
   //   };
   //   fetchUser();
   // }, []);
-
-  const value = { user, loading, error, login, logout, signup };
+  const value = { user, loading, status, login, logout, signup };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
+
 const Login = () => {
-  const { user, login, logout, loading } = useAuth();
+  const { user, login, logout, loading, status } = useAuth();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const handleLogin = (e) => {
@@ -10,7 +11,6 @@ const Login = () => {
     login(username, password);
     setPassword("");
     setUsername("");
-
   };
   return (
     <div className="flex h-[100vh] w-full  justify-center items-center">
