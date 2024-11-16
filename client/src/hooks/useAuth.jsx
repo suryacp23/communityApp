@@ -1,5 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
+import { GiToadTeeth } from "react-icons/gi";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
@@ -18,16 +20,22 @@ export const AuthProvider = ({ children }) => {
         },
         body: JSON.stringify({ userName, password }),
       });
-      console.log(response)
-      if (!response.ok) setStatus(response.status);
+      if (!response.ok) {
+        const errorData = await response.json();
+        setStatus(errorData.error);
+        toast(errorData.error);
+      }
 
       const fetchedUser = await response.json();
       setUser(fetchedUser);
-      console.log(fetchedUser);
       localStorage.setItem("token", JSON.stringify(fetchedUser));
-      if (response.ok) navigate("/");
+      if (response.ok) {
+        setStatus("login successfully");
+        navigate("/");
+      }
     } catch (error) {
-      setStatus(error);
+      console.log(error);
+      setStatus("login failed");
     } finally {
       setLoading(false);
     }
@@ -43,14 +51,21 @@ export const AuthProvider = ({ children }) => {
         },
         body: JSON.stringify({ userName, email, password }),
       });
-      if (!response.ok) setStatus("Sign Up failed");
+      if (!response.ok) {
+        const errorData = await response.json();
+        setStatus(errorData.error);
+        toast(errorData.error);
+      }
 
       const newUser = await response.json();
       setUser(newUser);
       localStorage.setItem("token", newUser.token);
-      if (response.ok) navigate("/");
+      if (response.ok) {
+        setStatus("signed up successfully");
+        navigate("/");
+      }
     } catch (error) {
-      setStatus(error);
+      setStatus("signup failed");
     } finally {
       setLoading(false);
     }
@@ -68,6 +83,7 @@ export const AuthProvider = ({ children }) => {
       });
       setUser(null);
       localStorage.removeItem("token");
+      setStatus("Signed out successfully");
       navigate("/");
     } catch (error) {
       setStatus(error);
@@ -100,7 +116,7 @@ export const AuthProvider = ({ children }) => {
   //   };
   //   fetchUser();
   // }, []);
-
+  console.log(status);
   const value = { user, loading, status, login, logout, signup };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

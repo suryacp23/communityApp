@@ -1,13 +1,6 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
-import {
-  MenuContent,
-  MenuItem,
-  MenuRoot,
-  MenuTrigger,
-} from "../components/ui/menu";
-import { Button } from "@chakra-ui/react";
 const Home = () => {
   const { user, login, logout, loading } = useAuth();
 
@@ -18,28 +11,7 @@ const Home = () => {
     <div className="p-2">
       <nav className=" flex justify-end m-3 space-x-2 text-slate-100">
         {user ? (
-          <MenuRoot>
-            <MenuTrigger asChild>
-              <Button
-                variant="outline"
-                size="sm"
-                className="bg-slate-400 text-black p-2 rounded-sm"
-              >
-                {user.userName ?? "username"}
-              </Button>
-            </MenuTrigger>
-            <MenuContent>
-              <MenuItem value="useremail">{user.email}</MenuItem>
-              <MenuItem
-                value="signout"
-                color="fg.error"
-                _hover={{ bg: "bg.error", color: "fg.error" }}
-                onClick={handleSignout}
-              >
-                Sign out
-              </MenuItem>
-            </MenuContent>
-          </MenuRoot>
+   ""
         ) : (
           <>
             <Link
