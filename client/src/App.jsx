@@ -7,6 +7,7 @@ import { AuthProvider } from "./hooks/useAuth";
 const App = () => {
   return (
     <div>
+      
       <AuthProvider>
         <Routes>
           <Route path="/" element={<Home />} />
