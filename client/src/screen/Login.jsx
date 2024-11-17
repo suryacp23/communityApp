@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Spinner from "../components/Additionalui/Spinner";
+import { PasswordInput } from "../components/ui/password-input";
 
 const Login = () => {
   const { user, login, logout, loading, status } = useAuth();
@@ -17,33 +19,44 @@ const Login = () => {
   return (
     <div className="flex h-[100vh] w-full  justify-center items-center">
       <div
-        className=" text-white flex flex-col h-96 w-72 shadow-gray-700
-       hover:shadow-gray-500 shadow-md items-center "
-      >
-        <h4 className="m-4">LOGIN</h4>
-        <form action="" className=" flex flex-col items-center">
+        className=" text-white bg-black flex flex-col h-3/5  w-72
+      shadow-violet-500 shadow-sm items-center justify-between">
+        <div className="flex h-1/6 w-full justify-center items-center">
+          <h4 className="">LOGIN</h4>
+        </div>
+        <form
+          action=""
+          className=" flex h-2/5 flex-col items-center justify-between">
           <input
-            className=" pl-2 w-52 h-8 mt-8 rounded-sm  bg-gray-600"
+            className=" pl-2 w-52 h-8 rounded-sm  bg-gray-600"
             type="text"
             placeholder="Username"
+            maxLength={10}
             onChange={(e) => setUsername(e.target.value)}
             required
           />
-          <input
-            className="pl-2 mt-8 h-8 w-52 rounded-sm bg-gray-600 "
+          <PasswordInput
+            className="pl-2 h-8 w-52 rounded-sm bg-gray-600 "
             type="password"
             placeholder="Password"
+            maxLength={10}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          <button
-            className="bg-blue-500 shadow-lg  hover:shadow-blue-500/40  w-20 h-7 m-8 flex justify-center rounded-3xl"
-            onClick={handleLogin}
-          >
-            {loading ? "loading" : "log in"}
-          </button>
+          <div className="bg-blue-500 shadow-md  hover:shadow-blue-500/40  w-52 h-7  flex justify-center items-center rounded-sm">
+            {loading ? (
+              <Spinner />
+            ) : (
+              <button
+                className="bg-blue-500 shadow-md  hover:shadow-blue-500/40  w-52 h-7  flex justify-center rounded-sm"
+                onClick={handleLogin}>
+                {" "}
+                Login{" "}
+              </button>
+            )}
+          </div>
         </form>
-        <div className="flex ">
+        <div className="flex h-2/6 w-full justify-center items-center ">
           <p className="text-sm m-1 ">Don't have an account?</p>
           <Link className="text-blue-400" to={`/signup`}>
             Sign up
