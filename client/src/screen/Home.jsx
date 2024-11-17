@@ -8,6 +8,7 @@ import {
   MenuTrigger,
 } from "../components/ui/menu";
 import { Avatar } from "../components/ui/avatar";
+import { HStack } from "@chakra-ui/react";
 
 const Demo = () => {
   return <Avatar name="Segun Adebayo" src="https://bit.ly/sage-adebayo" />;
@@ -26,7 +27,7 @@ const Home = () => {
           <MenuRoot>
             <MenuTrigger asChild>
               <div>
-                <Avatar name={user.userName} size="2xl" />
+                <Avatar name={user.userName} size="2xl"  className="cursor-pointer bg-[]" />
               </div>
             </MenuTrigger>
             <MenuContent>
