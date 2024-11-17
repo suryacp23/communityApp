@@ -1,7 +1,7 @@
 import { HoverCard, Portal } from '@chakra-ui/react'
-import { forwardRef } from 'react'
+import * as React from 'react'
 
-export const HoverCardContent = forwardRef(
+export const HoverCardContent = React.forwardRef(
   function HoverCardContent(props, ref) {
     const { portalled = true, portalRef, ...rest } = props
 
@@ -15,13 +15,15 @@ export const HoverCardContent = forwardRef(
   },
 )
 
-export const HoverCardArrow = forwardRef(function HoverCardArrow(props, ref) {
-  return (
-    <HoverCard.Arrow ref={ref} {...props}>
-      <HoverCard.ArrowTip />
-    </HoverCard.Arrow>
-  )
-})
+export const HoverCardArrow = React.forwardRef(
+  function HoverCardArrow(props, ref) {
+    return (
+      <HoverCard.Arrow ref={ref} {...props}>
+        <HoverCard.ArrowTip />
+      </HoverCard.Arrow>
+    )
+  },
+)
 
 export const HoverCardRoot = HoverCard.Root
 export const HoverCardTrigger = HoverCard.Trigger

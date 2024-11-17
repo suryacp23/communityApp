@@ -17,20 +17,22 @@ import {
   useFileUploadContext,
   useRecipe,
 } from '@chakra-ui/react'
-import { forwardRef } from 'react'
+import * as React from 'react'
 import { LuFile, LuUpload, LuX } from 'react-icons/lu'
 
-export const FileUploadRoot = forwardRef(function FileUploadRoot(props, ref) {
-  const { children, inputProps, ...rest } = props
-  return (
-    <ChakraFileUpload.Root {...rest}>
-      <ChakraFileUpload.HiddenInput ref={ref} {...inputProps} />
-      {children}
-    </ChakraFileUpload.Root>
-  )
-})
+export const FileUploadRoot = React.forwardRef(
+  function FileUploadRoot(props, ref) {
+    const { children, inputProps, ...rest } = props
+    return (
+      <ChakraFileUpload.Root {...rest}>
+        <ChakraFileUpload.HiddenInput ref={ref} {...inputProps} />
+        {children}
+      </ChakraFileUpload.Root>
+    )
+  },
+)
 
-export const FileUploadDropzone = forwardRef(
+export const FileUploadDropzone = React.forwardRef(
   function FileUploadDropzone(props, ref) {
     const { children, label, description, ...rest } = props
     return (
@@ -48,10 +50,10 @@ export const FileUploadDropzone = forwardRef(
   },
 )
 
-const FileUploadItem = (props) => {
+const FileUploadItem = React.forwardRef(function FileUploadItem(props, ref) {
   const { file, showSize, clearable } = props
   return (
-    <ChakraFileUpload.Item file={file}>
+    <ChakraFileUpload.Item file={file} ref={ref}>
       <ChakraFileUpload.ItemPreview asChild>
         <Icon fontSize='lg' color='fg.muted'>
           <LuFile />
@@ -76,31 +78,36 @@ const FileUploadItem = (props) => {
       )}
     </ChakraFileUpload.Item>
   )
-}
-
-export const FileUploadList = forwardRef(function FileUploadList(props, ref) {
-  const { showSize, clearable, files, ...rest } = props
-
-  const fileUpload = useFileUploadContext()
-  const acceptedFiles = _nullishCoalesce(files, () => fileUpload.acceptedFiles)
-
-  if (acceptedFiles.length === 0) return null
-
-  return (
-    <ChakraFileUpload.ItemGroup ref={ref} {...rest}>
-      {acceptedFiles.map((file) => (
-        <FileUploadItem
-          key={file.name}
-          file={file}
-          showSize={showSize}
-          clearable={clearable}
-        />
-      ))}
-    </ChakraFileUpload.ItemGroup>
-  )
 })
 
-export const FileInput = forwardRef(function FileInput(props, ref) {
+export const FileUploadList = React.forwardRef(
+  function FileUploadList(props, ref) {
+    const { showSize, clearable, files, ...rest } = props
+
+    const fileUpload = useFileUploadContext()
+    const acceptedFiles = _nullishCoalesce(
+      files,
+      () => fileUpload.acceptedFiles,
+    )
+
+    if (acceptedFiles.length === 0) return null
+
+    return (
+      <ChakraFileUpload.ItemGroup ref={ref} {...rest}>
+        {acceptedFiles.map((file) => (
+          <FileUploadItem
+            key={file.name}
+            file={file}
+            showSize={showSize}
+            clearable={clearable}
+          />
+        ))}
+      </ChakraFileUpload.ItemGroup>
+    )
+  },
+)
+
+export const FileInput = React.forwardRef(function FileInput(props, ref) {
   const inputRecipe = useRecipe({ key: 'input' })
   const [recipeProps, restProps] = inputRecipe.splitVariantProps(props)
   const { placeholder = 'Select file(s)', ...rest } = restProps

@@ -22,23 +22,25 @@ function _optionalChain(ops) {
 ;('use client')
 
 import { NativeSelect as Select } from '@chakra-ui/react'
-import { forwardRef, useMemo } from 'react'
+import * as React from 'react'
 
-export const NativeSelectRoot = forwardRef(function NativeSelect(props, ref) {
-  const { icon, children, ...rest } = props
-  return (
-    <Select.Root ref={ref} {...rest}>
-      {children}
-      <Select.Indicator>{icon}</Select.Indicator>
-    </Select.Root>
-  )
-})
+export const NativeSelectRoot = React.forwardRef(
+  function NativeSelect(props, ref) {
+    const { icon, children, ...rest } = props
+    return (
+      <Select.Root ref={ref} {...rest}>
+        {children}
+        <Select.Indicator>{icon}</Select.Indicator>
+      </Select.Root>
+    )
+  },
+)
 
-export const NativeSelectField = forwardRef(
+export const NativeSelectField = React.forwardRef(
   function NativeSelectField(props, ref) {
     const { items: itemsProp, children, ...rest } = props
 
-    const items = useMemo(
+    const items = React.useMemo(
       () =>
         _optionalChain([
           itemsProp,

@@ -1,7 +1,7 @@
 import { EmptyState as ChakraEmptyState, VStack } from '@chakra-ui/react'
-import { forwardRef } from 'react'
+import * as React from 'react'
 
-export const EmptyState = forwardRef(function EmptyState(props, ref) {
+export const EmptyState = React.forwardRef(function EmptyState(props, ref) {
   const { title, description, icon, children, ...rest } = props
   return (
     <ChakraEmptyState.Root ref={ref} {...rest}>

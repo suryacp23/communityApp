@@ -6,7 +6,7 @@ function _nullishCoalesce(lhs, rhsFn) {
   }
 }
 import { Status as ChakraStatus } from '@chakra-ui/react'
-import { forwardRef } from 'react'
+import * as React from 'react'
 
 const statusMap = {
   success: 'green',
@@ -15,7 +15,7 @@ const statusMap = {
   info: 'blue',
 }
 
-export const Status = forwardRef(function Status(props, ref) {
+export const Status = React.forwardRef(function Status(props, ref) {
   const { children, value = 'info', ...rest } = props
   const colorPalette = _nullishCoalesce(
     rest.colorPalette,

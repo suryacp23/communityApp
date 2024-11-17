@@ -2,11 +2,9 @@ import {
   AbsoluteCenter,
   ProgressCircle as ChakraProgressCircle,
 } from '@chakra-ui/react'
-import { forwardRef } from 'react'
+import * as React from 'react'
 
-export const ProgressCircleRoot = ChakraProgressCircle.Root
-
-export const ProgressCircleRing = forwardRef(
+export const ProgressCircleRing = React.forwardRef(
   function ProgressCircleRing(props, ref) {
     const { trackColor, cap, color, ...rest } = props
     return (
@@ -18,7 +16,7 @@ export const ProgressCircleRing = forwardRef(
   },
 )
 
-export const ProgressCircleValueText = forwardRef(
+export const ProgressCircleValueText = React.forwardRef(
   function ProgressCircleValueText(props, ref) {
     return (
       <AbsoluteCenter>
@@ -27,3 +25,5 @@ export const ProgressCircleValueText = forwardRef(
     )
   },
 )
+
+export const ProgressCircleRoot = ChakraProgressCircle.Root

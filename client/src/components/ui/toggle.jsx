@@ -5,7 +5,7 @@ import {
   Toggle as ChakraToggle,
   useToggleContext,
 } from '@chakra-ui/react'
-import { forwardRef } from 'react'
+import * as React from 'react'
 
 const variantMap = {
   solid: { on: 'solid', off: 'outline' },
@@ -14,7 +14,7 @@ const variantMap = {
   ghost: { on: 'subtle', off: 'ghost' },
 }
 
-export const Toggle = forwardRef(function Toggle(props, ref) {
+export const Toggle = React.forwardRef(function Toggle(props, ref) {
   const { variant = 'subtle', size, children, ...rest } = props
   const variantConfig = variantMap[variant]
 
@@ -27,16 +27,18 @@ export const Toggle = forwardRef(function Toggle(props, ref) {
   )
 })
 
-const ToggleBaseButton = forwardRef(function ToggleBaseButton(props, ref) {
-  const toggle = useToggleContext()
-  const { variant, ...rest } = props
-  return (
-    <Button
-      variant={toggle.pressed ? variant.on : variant.off}
-      ref={ref}
-      {...rest}
-    />
-  )
-})
+const ToggleBaseButton = React.forwardRef(
+  function ToggleBaseButton(props, ref) {
+    const toggle = useToggleContext()
+    const { variant, ...rest } = props
+    return (
+      <Button
+        variant={toggle.pressed ? variant.on : variant.off}
+        ref={ref}
+        {...rest}
+      />
+    )
+  },
+)
 
 export const ToggleIndicator = ChakraToggle.Indicator
