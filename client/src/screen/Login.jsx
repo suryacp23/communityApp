@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Spinner from "../components/additionalui/Spinner";
 
 const Login = () => {
   const { user, login, logout, loading, status } = useAuth();
@@ -15,11 +16,10 @@ const Login = () => {
     setUsername("");
   };
   return (
-    <div className="flex h-[100vh] w-full  justify-center items-center">
+    <div className="flex h-[100vh] w-full  justify-center items-center bg-[#1a1a1a]">
       <div
-        className=" text-white flex flex-col h-96 w-72 shadow-gray-700
-       hover:shadow-gray-500 shadow-md items-center "
-      >
+        className=" text-white bg-black flex flex-col h-96 w-72
+    rounded-md items-center ">
         <h4 className="m-4">LOGIN</h4>
         <form action="" className=" flex flex-col items-center">
           <input
@@ -36,12 +36,17 @@ const Login = () => {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          <button
-            className="bg-blue-500 shadow-lg  hover:shadow-blue-500/40  w-20 h-7 m-8 flex justify-center rounded-3xl"
-            onClick={handleLogin}
-          >
-            {loading ? "loading" : "log in"}
-          </button>
+          <div className="bg-blue-500 shadow-lg  hover:shadow-blue-500/40  w-52 h-7 m-8 flex justify-center items-center rounded-sm">
+            {loading ? (
+              <Spinner />
+            ) : (
+              <button
+                className="bg-blue-500 shadow-lg  hover:shadow-blue-500/40  w-52 h-7 m-8 flex justify-center items-center rounded-sm"
+                onClick={handleLogin}>
+                log in
+              </button>
+            )}
+          </div>
         </form>
         <div className="flex ">
           <p className="text-sm m-1 ">Don't have an account?</p>
