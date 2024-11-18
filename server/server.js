@@ -4,6 +4,8 @@ import dotenv from "dotenv";
 import authRoutes from "./routes/authRoutes.js";
 import blogRoutes from "./routes/blogRoutes.js";
 import connectDB from "./utils/connectDB.js";
+const formidableMiddleware = require('express-formidable');
+ 
 const app = express();
 
 dotenv.config();
@@ -11,7 +13,7 @@ dotenv.config();
 app.use(cors({ origin: "http://localhost:5173" }));
 app.use(express.json());
 app.use(urlencoded({ extended: true }));
-
+app.use(formidableMiddleware());
 connectDB();
 
 app.use("/auth", authRoutes);
