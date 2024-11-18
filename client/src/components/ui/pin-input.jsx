@@ -1,7 +1,7 @@
 import { PinInput as ChakraPinInput, Group } from '@chakra-ui/react'
-import { forwardRef } from 'react'
+import * as React from 'react'
 
-export const PinInput = forwardRef(function PinInput(props, ref) {
+export const PinInput = React.forwardRef(function PinInput(props, ref) {
   const { count = 4, inputProps, rootRef, attached, ...rest } = props
   return (
     <ChakraPinInput.Root ref={rootRef} {...rest}>

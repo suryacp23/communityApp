@@ -7,7 +7,13 @@ import {
   MenuRoot,
   MenuTrigger,
 } from "../components/ui/menu";
-import { Button } from "@chakra-ui/react";
+import { Avatar } from "../components/ui/avatar";
+import { HStack } from "@chakra-ui/react";
+
+const Demo = () => {
+  return <Avatar name="Segun Adebayo" src="https://bit.ly/sage-adebayo" />;
+};
+
 const Home = () => {
   const { user, login, logout, loading } = useAuth();
 
@@ -20,22 +26,18 @@ const Home = () => {
         {user ? (
           <MenuRoot>
             <MenuTrigger asChild>
-              <Button
-                variant="outline"
-                size="sm"
-                className="bg-slate-400 text-black p-2 rounded-sm"
-              >
-                {user.userName ?? "username"}
-              </Button>
+              <div>
+                <Avatar name={user.userName} size="2xl"  className="cursor-pointer bg-[]" />
+              </div>
             </MenuTrigger>
             <MenuContent>
+              <MenuItem value="useremail">{user.userName}</MenuItem>
               <MenuItem value="useremail">{user.email}</MenuItem>
               <MenuItem
                 value="signout"
                 color="fg.error"
                 _hover={{ bg: "bg.error", color: "fg.error" }}
-                onClick={handleSignout}
-              >
+                onClick={handleSignout}>
                 Sign out
               </MenuItem>
             </MenuContent>
@@ -44,14 +46,12 @@ const Home = () => {
           <>
             <Link
               className="flex justify-center items-center p-2 w-20 rounded-md bg-blue-800 hover:bg-blue-600 "
-              to="/signup"
-            >
+              to="/signup">
               Sign Up
             </Link>
             <Link
               className=" flex justify-center items-center p-2 w-20 rounded-md bg-blue-800 hover:bg-blue-600 "
-              to="/login"
-            >
+              to="/login">
               Log In
             </Link>
           </>

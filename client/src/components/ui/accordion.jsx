@@ -1,8 +1,8 @@
 import { Accordion, HStack } from '@chakra-ui/react'
-import { forwardRef } from 'react'
+import * as React from 'react'
 import { LuChevronDown } from 'react-icons/lu'
 
-export const AccordionItemTrigger = forwardRef(
+export const AccordionItemTrigger = React.forwardRef(
   function AccordionItemTrigger(props, ref) {
     const { children, indicatorPlacement = 'end', ...rest } = props
     return (
@@ -25,7 +25,7 @@ export const AccordionItemTrigger = forwardRef(
   },
 )
 
-export const AccordionItemContent = forwardRef(
+export const AccordionItemContent = React.forwardRef(
   function AccordionItemContent(props, ref) {
     return (
       <Accordion.ItemContent>

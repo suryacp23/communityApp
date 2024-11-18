@@ -1,8 +1,9 @@
 import { Link, UNSAFE_ViewTransitionContext } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import { useState } from "react";
-import { Spinner } from "@chakra-ui/react";
+import Spinner from "../components/Additionalui/Spinner";
 import { ToastContainer, toast } from "react-toastify";
+import { PasswordInput } from "../components/ui/password-input";
 
 const Signup = () => {
   const { loading, signup } = useAuth();
@@ -20,18 +21,25 @@ const Signup = () => {
   };
 
   return (
-    <div className="flex bg items-center justify-center min-h-screen bg-black-50">
-      <div className="bg-black p-6 rounded-lg w-80 hover:shadow-gray-500 shadow-md">
-        <form onSubmit={handleSignup}>
-          <h4 className="m-4 text-center">Create An Account</h4>
+    <div className="flex h-[100vh] w-full  justify-center items-center">
+      <div
+        className=" text-white bg-black flex flex-col h-4/6 w-72
+      shadow-violet-500 shadow-sm items-center justify-around">
+        <div className="h-1/6 flex w-full justify-center items-center">
+          <h4 className="text-center">Create An Account</h4>
+        </div>
+        <form
+          onSubmit={handleSignup}
+          className=" flex flex-col items-center justify-between h-3/6 ">
           <input
             type="username"
             id="username"
             name="username"
             placeholder="username"
+            maxLength={10}
             value={username}
             onChange={(e) => setusername(e.target.value)}
-            className="w-full mb-4 p-2 border border-gray-300 rounded-md"
+            className="pl-2 w-52 h-8  rounded-sm  bg-gray-600"
           />
           <input
             type="email"
@@ -40,29 +48,34 @@ const Signup = () => {
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full mb-4 p-2 border border-gray-300 rounded-md"
+            className="pl-2 w-52 h-8  rounded-sm  bg-gray-600"
           />
-          <input
+          <PasswordInput
             type="password"
             id="password"
             name="password"
             placeholder="Password"
+            maxLength={12}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full mb-4 p-2 border border-gray-300 rounded-md"
+            className="pl-2 w-52 h-8  rounded-sm  bg-gray-600"
           />
-          <button
-            type="submit"
-            className="bg-blue-500 shadow-lg  hover:shadow-blue-500/40  shadow-[0_0_20px_10px_rgba(59,130,246,0.6),_0_0_30px_rgba(59,130,246,0.4) w-full h-15 mb-0 p-2  justify-center rounded-md"
-            disabled={loading}
-          >
-            {loading ? "loading..." : "Sign Up"}
-            {loading && <Spinner size={"lg"} color={"white"} />}
-          </button>
+          <div className="bg-blue-500 shadow-lg  hover:shadow-blue-500/40  w-52 h-1/6 flex justify-center items-center rounded-sm">
+            {loading ? (
+              <Spinner />
+            ) : (
+              <button
+                type="submit"
+                className="bg-blue-500 shadow-lg  hover:shadow-blue-500/40  w-52 h-7 m-8 flex justify-center items-center rounded-sm"
+                disabled={loading}>
+                Signup
+              </button>
+            )}
+          </div>
         </form>
-        <div className="text-center mt-4">
+        <div className="text-center w-full h-1/5 flex justify-center items-center">
           Already have an account?
-          <Link to="/login" className="text-blue-500 hover:underline">
+          <Link to="/login" className="text-blue-500  ">
             Log In
           </Link>
         </div>

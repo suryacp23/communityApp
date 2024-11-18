@@ -1,7 +1,7 @@
 import { Blockquote as ChakraBlockquote } from '@chakra-ui/react'
-import { forwardRef } from 'react'
+import * as React from 'react'
 
-export const Blockquote = forwardRef(function Blockquote(props, ref) {
+export const Blockquote = React.forwardRef(function Blockquote(props, ref) {
   const { children, cite, citeUrl, showDash, icon, ...rest } = props
 
   return (

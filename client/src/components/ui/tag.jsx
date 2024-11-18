@@ -1,7 +1,7 @@
 import { Tag as ChakraTag } from '@chakra-ui/react'
-import { forwardRef } from 'react'
+import * as React from 'react'
 
-export const Tag = forwardRef(function Tag(props, ref) {
+export const Tag = React.forwardRef(function Tag(props, ref) {
   const {
     startElement,
     endElement,

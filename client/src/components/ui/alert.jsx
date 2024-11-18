@@ -1,8 +1,8 @@
 import { Alert as ChakraAlert } from '@chakra-ui/react'
 import { CloseButton } from './close-button'
-import { forwardRef } from 'react'
+import * as React from 'react'
 
-export const Alert = forwardRef(function Alert(props, ref) {
+export const Alert = React.forwardRef(function Alert(props, ref) {
   const {
     title,
     children,

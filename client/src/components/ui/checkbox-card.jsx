@@ -1,7 +1,7 @@
 import { CheckboxCard as ChakraCheckboxCard } from '@chakra-ui/react'
-import { Fragment, forwardRef } from 'react'
+import * as React from 'react'
 
-export const CheckboxCard = forwardRef(function CheckboxCard(props, ref) {
+export const CheckboxCard = React.forwardRef(function CheckboxCard(props, ref) {
   const {
     inputProps,
     label,
@@ -14,7 +14,7 @@ export const CheckboxCard = forwardRef(function CheckboxCard(props, ref) {
   } = props
 
   const hasContent = label || description || icon
-  const ContentWrapper = indicator ? ChakraCheckboxCard.Content : Fragment
+  const ContentWrapper = indicator ? ChakraCheckboxCard.Content : React.Fragment
 
   return (
     <ChakraCheckboxCard.Root {...rest}>

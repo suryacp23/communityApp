@@ -1,21 +1,23 @@
 import { Drawer as ChakraDrawer, Portal } from '@chakra-ui/react'
 import { CloseButton } from './close-button'
-import { forwardRef } from 'react'
+import * as React from 'react'
 
-export const DrawerContent = forwardRef(function DrawerContent(props, ref) {
-  const { children, portalled = true, portalRef, offset, ...rest } = props
-  return (
-    <Portal disabled={!portalled} container={portalRef}>
-      <ChakraDrawer.Positioner padding={offset}>
-        <ChakraDrawer.Content ref={ref} {...rest} asChild={false}>
-          {children}
-        </ChakraDrawer.Content>
-      </ChakraDrawer.Positioner>
-    </Portal>
-  )
-})
+export const DrawerContent = React.forwardRef(
+  function DrawerContent(props, ref) {
+    const { children, portalled = true, portalRef, offset, ...rest } = props
+    return (
+      <Portal disabled={!portalled} container={portalRef}>
+        <ChakraDrawer.Positioner padding={offset}>
+          <ChakraDrawer.Content ref={ref} {...rest} asChild={false}>
+            {children}
+          </ChakraDrawer.Content>
+        </ChakraDrawer.Positioner>
+      </Portal>
+    )
+  },
+)
 
-export const DrawerCloseTrigger = forwardRef(
+export const DrawerCloseTrigger = React.forwardRef(
   function DrawerCloseTrigger(props, ref) {
     return (
       <ChakraDrawer.CloseTrigger
