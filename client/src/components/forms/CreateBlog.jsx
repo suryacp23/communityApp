@@ -1,20 +1,45 @@
-import React, { useRef } from "react";
+import React, { useState } from "react";
+import { useBlog } from "../../hooks/useBlog";
+import { useAuth } from "../../hooks/useAuth";
 
 const CreateBlog = () => {
-  const formRef = useRef();
-  const handleSubmit = async (e) => {
+  const { createBlog } = useBlog();
+  const { user } = useAuth();
+  const [formData, setFormData] = useState({
+    title: "",
+    description: "",
+    imageUrl: "",
+    user: user._id,
+  });
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = (e) => {
     e.preventDefault();
-    const data = new FormData(formRef.current);
-    //add user data to form data
-    //data.set("user","userId")
-    //call createblog(data);
-  }
+    createBlog(formData);
+  };
+
   return (
-    <div >
-      <form ref={formRef} action="/api/blog" onSubmit={handleSubmit}encType="multipart/form-data">
-        <input type="text" name="title" />
-        <input type="text" name="description" />
-        <input type="file" name="file" />
+    <div>
+      <form onSubmit={handleSubmit}>
+        <input type="text" name="title" onChange={handleChange} />
+        <textarea
+          type="text"
+          name="description"
+          value={formData.description}
+          onChange={handleChange}
+        />
+        <input
+          type="file"
+          name="imageUrl"
+          value={formData.file}
+          onChange={handleChange}
+        />
         <button type="submit">create blog</button>
       </form>
     </div>

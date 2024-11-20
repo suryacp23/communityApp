@@ -1,76 +1,77 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 const BlogContext = createContext();
 
 export const BlogProvider = ({ children }) => {
-	const [blog, setBlog] = useState(null);
-	const [blogs, setBlogs] = useState([]);
-	const [loading, setLoading] = useState(false);
-	const navigate = useNavigate();
+  const [blogs, setBlogs] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
-	const getBlog = async (blogId) => {
-		setLoading(true);
-		try {
-			const res = await fetch(`/api/blogs/${blogId}`, {
-				method: "GET",
-				credentials: "include",
-			});
-			const data = res.json();
-			if (!res.ok) {
-				throw new Error(data.error || "Failed to fetch blog");
-			} else {
-				setBlog(data);
-			}
-		} catch (error) {
-			console.log("Error fetching a blog: ", error.message);
-			toast.error(error.message);
-		} finally {
-			setLoading(false);
-		}
-	};
+  const getBlog = async (blogId) => {
+    setLoading(true);
+    try {
+      const res = await fetch(`/api/blog/${blogId}`, {
+        method: "GET",
+        credentials: "include",
+      });
+      const data = await res.json();
+      console.log(data);
+      if (!res.ok) {
+        throw new Error(data.error || "Failed to fetch blog");
+      } else {
+        return data;
+      }
+    } catch (error) {
+      console.log("Error fetching a blog: ", error.message);
+      toast.error(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-	const getBlogs = async () => {
-		setLoading(true);
-		try {
-			const res = await fetch("/api/blogs", {
-				method: "GET",
-				credentials: "include",
-			});
-			const data = await res.json();
-			if (!res.ok) {
-				throw new Error(data.error || "Failed to fetch blogs");
-			} else {
-				setBlogs(data);
-			}
-		} catch (error) {
-			console.log("Error fetching all blogs: ", error.message);
-			toast.error(error.message);
-		} finally {
-			setLoading(false);
-		}
-	};
+  const getBlogs = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch("/api/blog/blogs", {
+        method: "GET",
+        credentials: "include",
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || "Failed to fetch blogs");
+      } else {
+        setBlogs(data?.blogs);
+      }
+    } catch (error) {
+      console.log("Error fetching all blogs: ", error.message);
+      toast.error(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-	const deleteBlog = async (blogId) => {
-		setLoading(true);
-		try {
-			const res = await fetch(`/api/blog/${blogId}`, {
-				method: "DELETE",
-				credentials: "include",
-			});
-			const data = await res.json();
-			if (!res.ok) {
-				throw new Error(data["error"] || "Something went wrong");
-			}
-			toast.success("Blog deleted successfully");
-			navigate("/");
-		} catch (error) {
-			toast.error(error);
-			console.log("Error in deleting blog", error || error.message);
-		} finally {
-			setLoading(false);
-		}
-	};
+  const deleteBlog = async (blogId) => {
+    setLoading(true);
+    try {
+      const res = await fetch(`/api/blog/${blogId}`, {
+        method: "DELETE",
+        credentials: "include",
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data["error"] || "Something went wrong");
+      }
+      toast.success("Blog deleted successfully");
+      await getBlogs();
+      navigate("/");
+    } catch (error) {
+      toast.error(error);
+      console.log("Error in deleting blog", error || error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
 	const updateBlog = async (blogData, blogId) => {
 		setLoading(true);
@@ -140,5 +141,5 @@ export const BlogProvider = ({ children }) => {
 };
 
 export const useBlog = () => {
-	return useContext(BlogContext);
+  return useContext(BlogContext);
 };
