@@ -80,7 +80,7 @@ export const BlogProvider = ({ children }) => {
 				headers: {
 					"Content-Type": "application/json",
 				},
-				body: JSON.stringify(blogData),
+				body: blogData,
 				credentials: "include",
 			});
 			const data = await res.json();
@@ -105,7 +105,7 @@ export const BlogProvider = ({ children }) => {
 				headers: {
 					"Content-Type": "application/json",
 				},
-				body: JSON.stringify(blogData),
+				body: blogData,//using  formdata not need to stringfiy
 				credentials: "include",
 			});
 			const data = await res.json();
