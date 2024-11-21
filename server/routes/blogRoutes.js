@@ -1,12 +1,14 @@
 import express from "express";
 import {
-  createBlog,
-  updateBlog,
-  deleteBlog,
-  getblogs,
-  getBlogById,
+	createBlog,
+	updateBlog,
+	deleteBlog,
+	getblogs,
+	getBlogById,
 } from "../controllers/blogController.js";
 import multer from "multer";
+
+import protect from "../middleware/protect.js";
 
 const router = express.Router();
 const storage = multer.memoryStorage()
