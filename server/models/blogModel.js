@@ -25,6 +25,9 @@ const blogSchema = mongoose.Schema(
 			ref: "User",
 			required: true,
 		},
+		fileId: {
+			type: String,
+		},
 	},
 	{ timestamps: true }
 );
