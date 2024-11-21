@@ -25,23 +25,42 @@ const CreateBlog = () => {
   };
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <input type="text" name="title" onChange={handleChange} />
-        <textarea
-          type="text"
-          name="description"
-          value={formData.description}
-          onChange={handleChange}
-        />
-        <input
-          type="file"
-          name="imageUrl"
-          value={formData.file}
-          onChange={handleChange}
-        />
-        <button type="submit">create blog</button>
-      </form>
+    <div className="flex h-[100vh] w-full bg-[url('./assets/bg-02.webp')]  justify-center items-center ">
+      <div
+        className=" text-white flex 
+    items-center h-4/6 min-w-80 shadow-slate-300 shadow-sm justify-center backdrop-blur-2xl">
+        <form
+          onSubmit={handleSubmit}
+          className="flex flex-col w-3/6 h-4/5 justify-between items-center ">
+          <h1>Blog</h1>
+          <input
+            type="text"
+            name="title"
+            onChange={handleChange}
+            className="w-72 rounded-md h-8 pl-2"
+          />
+          <textarea
+            type="text"
+            name="description"
+            value={formData.description}
+            onChange={handleChange}
+            className=" max-h-28 min-h-28 w-72 rounded-md pl-2"
+            placeholder="Description"
+          />
+          <input
+            type="file"
+            name="imageUrl"
+            value={formData.file}
+            onChange={handleChange}
+            className="border border-gray-900 bg-cyan-600 rounded-md"
+          />
+          <button
+            type="submit"
+            className=" hover:bg-blue-500 bg-blue-700 h-7 w-28 rounded-md">
+            create blog
+          </button>
+        </form>
+      </div>
     </div>
   );
 };
