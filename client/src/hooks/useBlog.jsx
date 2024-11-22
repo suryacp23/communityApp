@@ -124,7 +124,6 @@ export const BlogProvider = ({ children }) => {
 	};
 
 	const blogValue = {
-		blog,
 		blogs,
 		getBlog,
 		getBlogs,

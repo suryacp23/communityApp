@@ -9,15 +9,7 @@ const client = new Client()
   .setSession(process.env.AppWrite_Api);
 
 const storage = new Storage(client);
-export const createBlog = async (req, res) => {
-const sdk = require('node-appwrite');
 
-const client = new sdk.Client()
-  .setEndpoint("https://cloud.appwrite.io/v1") // Your API Endpoint
-  .setProject("6739d36c00223845ed29") // Your project ID
-  .setSession(process.env.AppWrite_Api); // The user session to authenticate with
-
-const storage = new sdk.Storage(client);
 export const createBlog = async (req, res) => {
   try {
     const body = req.body;
@@ -36,7 +28,7 @@ export const createBlog = async (req, res) => {
         description: body.description,
         user: body.user,
         imageUrl: link,
-        //  fileId: r.$id,  //not implemented
+          fileId: r.$id,  //not implemented
       });
       const newBlog = await blog.save();
       res.status(201).json(newBlog);
@@ -80,7 +72,7 @@ export const updateBlog = async (req, res) => {
       blog.description = req.body.description || blog.description;
       blog.user = req.body.user || blog.user;
       blog.imageUrl = link || blog.imageUrl;
-      //blog.fileId: r.$id,  //not implemented
+      blog.fileId= r.$id;  //not implemented`
     }
     else {
       blog.title = req.body.title || blog.title;
