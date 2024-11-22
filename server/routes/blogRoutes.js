@@ -11,9 +11,9 @@ import protect from "../middleware/protect.js";
 
 const router = express.Router();
 
-router.route("/").post(createBlog);
+router.route("/").post(protect, createBlog);
 router.route("/:id").put(protect, updateBlog);
 router.route("/:id").delete(protect, deleteBlog);
-router.route("/blog").get(getblogs);
+router.route("/blogs").get(getblogs);
 router.route("/:blogid").get(getBlogById);
 export default router;
