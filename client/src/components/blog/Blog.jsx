@@ -1,6 +1,6 @@
 import React from "react";
 import { useBlog } from "../../hooks/useBlog";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Blog = ({ blog }) => {
   const { deleteBlog, updateBlog } = useBlog();
@@ -17,7 +17,7 @@ const Blog = ({ blog }) => {
         <p>{blog.user.userName}</p>
         <p>{blog.user.email}</p>
       </div>
-      <div>{blog.title}</div>
+      <Link to={`/blogs?blogId=${blog._id}`}>{blog.title}</Link>
       <div>
         <img src="" alt="blog image" />
       </div>
