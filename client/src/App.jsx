@@ -6,6 +6,7 @@ import { AuthProvider } from "./hooks/useAuth";
 import { BlogProvider } from "./hooks/useBlog";
 import CreateBlog from "./components/forms/CreateBlog";
 import EditBlog from "./components/forms/EditBlog";
+import Blogpage from "./screen/Blogpage";
 // import logo from "./assets/logo.svg";
 
 const App = () => {
@@ -19,6 +20,7 @@ const App = () => {
             <Route path="/login" element={<Login />} />
             <Route path="/createPost" element={<CreateBlog />} />
             <Route path="/editBlog" element={<EditBlog />} />
+            <Route path="/blogs" element={<Blogpage />} />
           </Routes>
         </AuthProvider>
       </BlogProvider>
