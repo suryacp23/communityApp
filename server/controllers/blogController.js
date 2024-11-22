@@ -10,6 +10,15 @@ const client = new Client()
 
 const storage = new Storage(client);
 export const createBlog = async (req, res) => {
+const sdk = require('node-appwrite');
+
+const client = new sdk.Client()
+  .setEndpoint("https://cloud.appwrite.io/v1") // Your API Endpoint
+  .setProject("6739d36c00223845ed29") // Your project ID
+  .setSession(process.env.AppWrite_Api); // The user session to authenticate with
+
+const storage = new sdk.Storage(client);
+export const createBlog = async (req, res) => {
   try {
     const body = req.body;
     if (req.file) {
@@ -123,5 +132,5 @@ export const getBlogById = async (req, res) => {
   } catch (error) {
     console.log("getblogById  controller error" + error.message);
     res.status(400).json({ error: error.message })
-  }
+}
 }
