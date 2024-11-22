@@ -21,10 +21,10 @@ const Signup = () => {
   };
 
   return (
-    <div className="flex h-[100vh] w-full  justify-center items-center">
+    <div className="flex h-[100vh] w-full  justify-center items-center bg-[url('./assets/bg-02.webp')]">
       <div
-        className=" text-white bg-black flex flex-col h-4/6 w-72
-      shadow-violet-500 shadow-sm items-center justify-around">
+        className=" text-white bg-transparent flex flex-col h-4/6 w-72
+      shadow-slate-300 shadow-sm items-center justify-around backdrop-blur-xl ">
         <div className="h-1/6 flex w-full justify-center items-center">
           <h4 className="text-center">Create An Account</h4>
         </div>
@@ -39,7 +39,7 @@ const Signup = () => {
             maxLength={10}
             value={username}
             onChange={(e) => setusername(e.target.value)}
-            className="pl-2 w-52 h-8  rounded-sm  bg-gray-600"
+            className="pl-2 w-52 h-8  rounded-sm text-slate-950 bg-slate-300"
           />
           <input
             type="email"
@@ -48,7 +48,7 @@ const Signup = () => {
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="pl-2 w-52 h-8  rounded-sm  bg-gray-600"
+            className="pl-2 w-52 h-8  rounded-sm text-slate-950 bg-slate-300"
           />
           <PasswordInput
             type="password"
@@ -58,15 +58,15 @@ const Signup = () => {
             maxLength={12}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="pl-2 w-52 h-8  rounded-sm  bg-gray-600"
+            className="pl-2 w-52 h-8  rounded-sm text-slate-950 bg-slate-300"
           />
-          <div className="bg-blue-500 shadow-lg  hover:shadow-blue-500/40  w-52 h-1/6 flex justify-center items-center rounded-sm">
+          <div className="bg-blue-500 shadow-lg  hover:shadow-blue-500/40  w-52 h-8 flex justify-center items-center rounded-sm">
             {loading ? (
               <Spinner />
             ) : (
               <button
                 type="submit"
-                className="bg-blue-500 shadow-lg  hover:shadow-blue-500/40  w-52 h-7 m-8 flex justify-center items-center rounded-sm"
+                className="bg-blue-500 shadow-lg  hover:shadow-blue-500/40  w-52 h-8 flex justify-center items-center rounded-sm"
                 disabled={loading}>
                 Signup
               </button>
@@ -75,7 +75,7 @@ const Signup = () => {
         </form>
         <div className="text-center w-full h-1/5 flex justify-center items-center">
           Already have an account?
-          <Link to="/login" className="text-blue-500  ">
+          <Link to="/login" className="text-blue-900 font-semibold pl-1">
             Log In
           </Link>
         </div>

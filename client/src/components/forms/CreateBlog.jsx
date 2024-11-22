@@ -38,6 +38,7 @@ const CreateBlog = () => {
             name="title"
             onChange={handleChange}
             className="w-72 rounded-md h-8 pl-2"
+            placeholder="Title"
           />
           <textarea
             type="text"
