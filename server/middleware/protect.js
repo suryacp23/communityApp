@@ -18,6 +18,8 @@ const protect = async (req, res, next) => {
 				.status(401)
 				.json({ error: "Unauthorized, please login" });
 		}
+	} else {
+		return res.status(401).json({ error: "Unauthorized, please login" });
 	}
 };
 
