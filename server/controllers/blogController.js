@@ -21,7 +21,11 @@ export const updateBlog = async (req, res) => {
     if (blog == null) {
       return res.status(404).json({ message: "Blog not found" });
     }
-
+    if (req.body.user !== blog.user) {
+      res
+        .status(401)
+        .json({ error: "unautorized you are not able to edit the blog" });
+    }
     blog.title = req.body.title || blog.title;
     blog.description = req.body.description || blog.description;
     blog.user = req.body.user || blog.user;
@@ -40,6 +44,11 @@ export const deleteBlog = async (req, res) => {
     if (blog == null) {
       return res.status(404).json({ message: "Blog not found" });
     }
+    if (req.body.user !== blog.user) {
+      return res
+        .status(401)
+        .json({ error: "unautorized you are not able to delete the blog" });
+    }
     await blog.deleteOne();
     res.json({ message: "Blog deleted" });
   } catch (error) {
@@ -47,27 +56,29 @@ export const deleteBlog = async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 };
-export const getblogs = async (req,res)=>{
+export const getblogs = async (req, res) => {
   try {
-    const blog = await Blog.find({}).populate("user",["-password"]);
+    const blog = await Blog.find({}).populate("user", ["-password"]);
     if (blog == null) {
       return res.status(200).json({ message: " No blog Found" });
     }
-    res.json({blogs:blog}) 
+    res.json({ blogs: blog });
   } catch (error) {
     console.log("getblogs  controller error" + error.message);
-    res.status(400).json({error :error.message})
+    res.status(400).json({ error: error.message });
   }
-}
-export const getBlogById= async(req,res)=>{
-try {
-    const blog = await Blog.findById(req.params.blogid).populate("user",["-password"]);
+};
+export const getBlogById = async (req, res) => {
+  try {
+    const blog = await Blog.findById(req.params.blogid).populate("user", [
+      "-password",
+    ]);
     if (blog == null) {
       return res.status(200).json({ message: " blog Not Found" });
     }
-    res.json({blog:blog})
-} catch (error) {
+    res.json({ blog: blog });
+  } catch (error) {
     console.log("getblogById  controller error" + error.message);
-    res.status(400).json({error :error.message})
-}
-}
+    res.status(400).json({ error: error.message });
+  }
+};

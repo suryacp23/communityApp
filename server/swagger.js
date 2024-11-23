@@ -182,7 +182,7 @@ const swaggerDocument = {
       },
     },
     "/blog/{id}": {
-      patch: {
+      put: {
         summary: "Update a blog by ID",
         tags: ["Blog"],
         parameters: [
@@ -210,6 +210,10 @@ const swaggerDocument = {
                     type: "string",
                     example: "https://example.com/updated-image.jpg",
                   },
+                  user: {
+                    type: "string",
+                    example: "12345678",
+                  },
                 },
               },
             },
@@ -233,6 +237,20 @@ const swaggerDocument = {
             schema: { type: "string" },
           },
         ],
+        requestBody: {
+          required: true,
+          content: {
+            "application/json": {
+              schema: {
+                type: "object",
+                properties: {
+                  user: { type: "string", example: "64b7d39e8347e77f87654321" },
+                },
+                required: ["user"],
+              },
+            },
+          },
+        },
         responses: {
           200: { description: "Blog deleted successfully" },
           404: { description: "Blog not found" },
