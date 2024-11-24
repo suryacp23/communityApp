@@ -21,10 +21,12 @@ const Blog = ({ blog }) => {
         <img
           src={blog.imageUrl}
           alt="blog image"
-          className="bg-cover h-2/5 w-full"
+          className=" object-cover h-3/6 w-full"
         />
-        <div className="pl">
-          <Avatar size="md" className="" />
+
+        <div className="pl-2 flex h-1/6 w-full items-center">
+          <Avatar size="sm" className="" />
+          <p> {blog.user.userName}</p>
         </div>
 
         <div className="h-1/4 w-full flex justify-center items-center">
