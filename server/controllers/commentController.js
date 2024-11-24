@@ -16,9 +16,11 @@ export const createComment = async (req, res, next) => {
 };
 export const getPostComments = async (req, res, next) => {
   try {
-    const comments = await Comment.find({ blogId: req.params.blogId }).sort({
-      createdAt: -1,
-    });
+    const comments = await Comment.find({ blogId: req.params.blogId })
+      .sort({
+        createdAt: -1,
+      })
+      .populate("user", ["-password"]);
     res.status(200).json(comments);
   } catch (error) {
     console.log("getpostComment controller error" + error.message);
