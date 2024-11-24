@@ -13,11 +13,12 @@ const Blog = ({ blog }) => {
     navigate(`/editBlog?blogId=${blog._id}`);
   };
   return (
-    <div className="h-[100vh] ">
+    <div className=" ">
       <div className=" text-primary bg-oxford_blue hover:bg-new_blue shadow-md shadow-slate-300  border w-80 h-72 flex text-ellipsis justify-around flex-col rounded-lg cursor-pointer">
         <Link
           className=" font-sans text-lg text-blue-300 pl-2"
-          to={`/blogs?blogId=${blog._id}`}>
+          to={`/blogs?blogId=${blog._id}`}
+        >
           {blog.title}
         </Link>
         <img
