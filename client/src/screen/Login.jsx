@@ -17,10 +17,12 @@ const Login = () => {
     setUsername("");
   };
   return (
-    <div className="flex h-[100vh] w-full bg-[url('./assets/bg-02.webp')]  justify-center items-center">
+    <div
+      className="flex h-[100vh] w-full bg-richblack
+     justify-center items-center">
       <div
-        className=" text-white flex flex-col  
-    items-center h-4/6 min-w-72 shadow-slate-300 shadow-sm justify-between backdrop-blur-2xl">
+        className=" text-primary flex flex-col  
+    items-center h-4/6 min-w-72 justify-between bg-oxford_blue rounded-md">
         <div className="flex h-1/6 w-full justify-center items-center">
           <h4 className="">LOGIN</h4>
         </div>
@@ -43,12 +45,12 @@ const Login = () => {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          <div className="bg-blue-500 shadow-md  hover:shadow-blue-500/40  w-52 h-7  flex justify-center items-center rounded-sm">
+          <div className="bg-blue-600 hover:bg-blue-500   w-52 h-7  flex justify-center items-center rounded-sm">
             {loading ? (
               <Spinner />
             ) : (
               <button
-                className="bg-blue-500 shadow-md  hover:shadow-blue-500/40  w-52 h-7  flex justify-center items-center rounded-sm"
+                className="bg-blue-600 hover:bg-blue-500 shadow-md   w-52 h-7  flex justify-center items-center rounded-sm"
                 onClick={handleLogin}>
                 {" "}
                 Login{" "}
@@ -58,7 +60,7 @@ const Login = () => {
         </form>
         <div className="flex h-2/6 w-full justify-center items-center ">
           <p className="text-sm m-1 ">Don't have an account?</p>
-          <Link className="text-blue-900 font-semibold" to={`/signup`}>
+          <Link className=" text-primary" to={`/signup`}>
             Sign up
           </Link>
         </div>

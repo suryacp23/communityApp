@@ -25,10 +25,10 @@ const CreateBlog = () => {
   };
 
   return (
-    <div className="flex h-[100vh] w-full bg-[url('./assets/bg-02.webp')]  justify-center items-center ">
+    <div className="flex h-[100vh] w-full  bg-richblack justify-center items-center ">
       <div
         className=" text-white flex 
-    items-center h-4/6 min-w-80 shadow-slate-300 shadow-sm justify-center backdrop-blur-2xl">
+    items-center h-4/6 min-w-80 shadow-slate-300 shadow-sm justify-center bg-secondary">
         <form
           onSubmit={handleSubmit}
           className="flex flex-col w-3/6 h-4/5 justify-between items-center ">
@@ -37,7 +37,7 @@ const CreateBlog = () => {
             type="text"
             name="title"
             onChange={handleChange}
-            className="w-72 rounded-md h-8 pl-2"
+            className="w-72 rounded-md h-8 pl-2  bg-slate-300 placeholder-black"
             placeholder="Title"
           />
           <textarea
@@ -45,7 +45,7 @@ const CreateBlog = () => {
             name="description"
             value={formData.description}
             onChange={handleChange}
-            className=" max-h-28 min-h-28 w-72 rounded-md pl-2"
+            className=" max-h-28 min-h-28 w-72 rounded-md pl-2  bg-slate-300 placeholder-black"
             placeholder="Description"
           />
           <input
@@ -53,11 +53,11 @@ const CreateBlog = () => {
             name="imageUrl"
             value={formData.file}
             onChange={handleChange}
-            className="border border-gray-900 bg-cyan-600 rounded-md"
+            className="border border-gray-900 bg-accent rounded-md"
           />
           <button
             type="submit"
-            className=" hover:bg-blue-500 bg-blue-700 h-7 w-28 rounded-md">
+            className=" bg-blue-600 hover:bg-blue-500 h-7 w-28 rounded-md">
             create blog
           </button>
         </form>
