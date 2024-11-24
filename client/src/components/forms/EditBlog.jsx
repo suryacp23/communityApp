@@ -14,6 +14,7 @@ const EditBlog = () => {
     imageUrl: "",
     user: user._id,
   });
+  const [file, setFile] = useState();
   useEffect(() => {
     const fetchBlog = async () => {
       const data = await getBlog(blogId);
@@ -40,7 +41,17 @@ const EditBlog = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const data = new FormData();
+    data.append("title", formData.title);
+    data.append("description", formData.description)
+    if (file) {
+      data.append("file", file)
+    }
+    data.append("user", formData.user)
     updateBlog(formData, blogId);
+  };
+  const handleFileChange = (e) => {
+    setFile(e.target.files[0])
   };
 
   return (
@@ -71,8 +82,7 @@ const EditBlog = () => {
           <input
             type="file"
             name="imageUrl"
-            value={formData.file}
-            onChange={handleChange}
+            onChange={handleFileChange}
             className="border border-gray-900 bg-accent rounded-md"
           />
           <button
