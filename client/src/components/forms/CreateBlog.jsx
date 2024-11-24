@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useBlog } from "../../hooks/useBlog";
 import { useAuth } from "../../hooks/useAuth";
 
 const CreateBlog = () => {
   const { createBlog } = useBlog();
   const { user } = useAuth();
+  const imageRef =useRef();
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -28,6 +29,7 @@ const CreateBlog = () => {
     data.append("title", formData.title);
     data.append("description", formData.description)
     data.append("file", file)
+    data.append("user", formData.user)
     createBlog(data);
   };
 
@@ -57,7 +59,7 @@ const CreateBlog = () => {
           <input
             type="file"
             name="imageUrl"
-            value={file}
+            ref={imageRef}
             onChange={handleFileChange}
             className="border border-gray-900 bg-accent rounded-md"
           />

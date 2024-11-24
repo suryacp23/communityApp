@@ -99,9 +99,6 @@ export const BlogProvider = ({ children }) => {
     try {
       const res = await fetch(`/api/blog`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
         body: blogData,
         credentials: "include",
       });

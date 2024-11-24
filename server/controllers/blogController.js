@@ -13,6 +13,7 @@ const storage = new Storage(client);
 export const createBlog = async (req, res) => {
   try {
     const body = req.body;
+    console.log(body)
     if (req.file) {
       const r = await storage.createFile(
         process.env.APPWRITE_BUCKET_ID || '',

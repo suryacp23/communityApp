@@ -47,6 +47,7 @@ const EditBlog = () => {
     if (file) {
       data.append("file", file)
     }
+    data.append("user", formData.user)
     updateBlog(formData, blogId);
   };
   const handleFileChange = (e) => {
@@ -81,7 +82,6 @@ const EditBlog = () => {
           <input
             type="file"
             name="imageUrl"
-            value={file}
             onChange={handleFileChange}
             className="border border-gray-900 bg-accent rounded-md"
           />
