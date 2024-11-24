@@ -8,9 +8,9 @@ const CreateBlog = () => {
   const [formData, setFormData] = useState({
     title: "",
     description: "",
-    imageUrl: "",
     user: user._id,
   });
+  const [file, setFile] = useState();
 
   const handleChange = (e) => {
     setFormData({
@@ -19,16 +19,22 @@ const CreateBlog = () => {
     });
   };
 
+  const handleFileChange = (e) => {
+    setFile(e.target.files[0])
+  };
   const handleSubmit = (e) => {
     e.preventDefault();
-    createBlog(formData);
+    const data = new FormData();
+    data.append("title", formData.title);
+    data.append("description", formData.description)
+    data.append("file", file)
+    createBlog(data);
   };
 
   return (
     <div className="flex h-[100vh] w-full  bg-richblack justify-center items-center ">
       <div
-        className=" text-white flex 
-    items-center h-4/6 min-w-80 shadow-slate-300 shadow-sm justify-center bg-secondary">
+        className=" text-white flex items-center h-4/6 min-w-80 shadow-slate-300 shadow-sm justify-center bg-secondary">
         <form
           onSubmit={handleSubmit}
           className="flex flex-col w-3/6 h-4/5 justify-between items-center ">
@@ -51,8 +57,8 @@ const CreateBlog = () => {
           <input
             type="file"
             name="imageUrl"
-            value={formData.file}
-            onChange={handleChange}
+            value={file}
+            onChange={handleFileChange}
             className="border border-gray-900 bg-accent rounded-md"
           />
           <button

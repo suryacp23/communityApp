@@ -78,10 +78,7 @@ export const BlogProvider = ({ children }) => {
     try {
       const res = await fetch(`/api/blog/${blogId}`, {
         method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(blogData),
+        body: blogData,
         credentials: "include",
       });
       const data = await res.json();
@@ -105,7 +102,7 @@ export const BlogProvider = ({ children }) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(blogData),
+        body: blogData,
         credentials: "include",
       });
       const data = await res.json();
