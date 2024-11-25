@@ -53,75 +53,85 @@ const Blogpage = () => {
     setComment("");
   };
   return (
-    <div className="w-4/5 mx-auto flex items-center justify-center flex-col">
-      <div className="w-full p-4 rounded-lg mt-4 flex flex-col gap-3">
-        <h1 className="sm:text-5xl text-3xl text-center">{blog?.title}</h1>
-        <img
-          src={blog?.imageUrl}
-          alt=""
-          className="border-2 border-blue-900 rounded-md w-full"
-        />
-        <p className="sm:text-xl text-lg text-justify">{blog?.description}</p>
-        <div
-          className="border-b h-2 border-slate-400 rounded-full
-         w-full"
-        ></div>
-        <p className="text-xl">
-          created by{" "}
-          <span className="text-blue-600 underline">
-            @{blog?.user.userName}
-          </span>
-        </p>
-        <Text color="fg.muted" textStyle="lg">
-          {formatTimestamp(blog?.createdAt)}
-        </Text>
-      </div>
-      {/* <hr className="border-1 w-full mt-4 border-slate-500" /> */}
-      <div className=" p-2 bg-slate-600 mt-4 rounded-full flex gap-5 justify-center items-center">
-        <div className="flex gap-2 items-center justify-center border border-transparent hover:border-slate-500 p-2 rounded">
-          <BiSolidLike /> {comments.length}
+    <div className="">
+      {loading ? (
+        <div className="h-screen w-full flex justify-center items-center">
+          <Spinner />
         </div>
-        <div className="flex gap-2 items-center justify-center border border-transparent hover:border-slate-500 p-2 rounded">
-          <MdModeComment /> {comments.length}
+      ) : (
+        <div className="w-4/5 mx-auto flex items-center justify-center flex-col">
+          <div className="w-full p-4 rounded-lg mt-4 flex flex-col gap-3">
+            <h1 className="sm:text-5xl text-3xl text-center">{blog?.title}</h1>
+            <img
+              src={blog?.imageUrl}
+              alt=""
+              className="border-2 border-blue-900 rounded-md w-full"
+            />
+            <p className="sm:text-xl text-lg text-justify">
+              {blog?.description}
+            </p>
+            <div
+              className="border-b h-2 border-slate-400 rounded-full
+             w-full"
+            ></div>
+            <p className="text-xl">
+              created by{" "}
+              <span className="text-blue-600 underline">
+                @{blog?.user.userName}
+              </span>
+            </p>
+            <Text color="fg.muted" textStyle="lg">
+              {formatTimestamp(blog?.createdAt)}
+            </Text>
+          </div>
+          {/* <hr className="border-1 w-full mt-4 border-slate-500" /> */}
+          <div className=" p-2 bg-slate-600 mt-4 rounded-full flex gap-5 justify-center items-center">
+            <div className="flex gap-2 items-center justify-center border border-transparent hover:border-slate-500 p-2 rounded">
+              <BiSolidLike /> {comments.length}
+            </div>
+            <div className="flex gap-2 items-center justify-center border border-transparent hover:border-slate-500 p-2 rounded">
+              <MdModeComment /> {comments.length}
+            </div>
+            <div className="flex gap-2 items-center justify-center border border-transparent hover:border-slate-500 p-2 rounded">
+              <ShareButton message={blog?.description} />
+            </div>
+          </div>
+          {user && (
+            <form onSubmit={handleComment}>
+              <input
+                type="text"
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
+              />
+              <button>comment</button>
+            </form>
+          )}
+          <ul className="flex flex-col gap-2 w-4/5 mx-auto mt-4">
+            {loading && <Spinner />}
+            {comments.map((comment) => {
+              return (
+                <li
+                  className="  p-2 border-b-2 border-slate-500 rounded-md"
+                  key={comment?._id}
+                >
+                  <HStack key={comment._id} gap="4">
+                    <Avatar name={comment.user.userName} size="lg" />
+                    <Stack gap="0">
+                      <Text fontWeight="medium">{comment.user.userName}</Text>
+                      <Text color="fg.muted" textStyle="sm">
+                        {formatTimestamp(comment.createdAt)}
+                      </Text>
+                    </Stack>
+                  </HStack>
+                  <div className="text-md p-2">
+                    <p>{comment?.comment}</p>
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
         </div>
-        <div className="flex gap-2 items-center justify-center border border-transparent hover:border-slate-500 p-2 rounded">
-          <ShareButton message={blog?.description} />
-        </div>
-      </div>
-      {user && (
-        <form onSubmit={handleComment}>
-          <input
-            type="text"
-            value={comment}
-            onChange={(e) => setComment(e.target.value)}
-          />
-          <button>comment</button>
-        </form>
       )}
-      <ul className="flex flex-col gap-2 w-4/5 mx-auto mt-4">
-        {loading && <Spinner />}
-        {comments.map((comment) => {
-          return (
-            <li
-              className="  p-2 border-b-2 border-slate-500 rounded-md"
-              key={comment?._id}
-            >
-              <HStack key={comment._id} gap="4">
-                <Avatar name={comment.user.userName} size="lg" />
-                <Stack gap="0">
-                  <Text fontWeight="medium">{comment.user.userName}</Text>
-                  <Text color="fg.muted" textStyle="sm">
-                    {formatTimestamp(comment.createdAt)}
-                  </Text>
-                </Stack>
-              </HStack>
-              <div className="text-md p-2">
-                <p>{comment?.comment}</p>
-              </div>
-            </li>
-          );
-        })}
-      </ul>
     </div>
   );
 };
