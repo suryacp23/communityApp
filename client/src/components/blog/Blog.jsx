@@ -14,9 +14,9 @@ const Blog = ({ blog }) => {
   };
   return (
     <div className=" ">
-      <div className=" text-primary bg-oxford_blue hover:bg-new_blue shadow-md shadow-slate-300  border w-80 h-72 flex text-ellipsis justify-around flex-col rounded-lg cursor-pointer">
+      <div className=" text-primary bg-oxford_blue hover:bg-new_blue shadow-md shadow-slate-300  border w-80 h-72 flex text-ellipsis justify-around flex-col rounded-lg">
         <Link
-          className=" font-sans text-lg text-blue-300 pl-2"
+          className=" font-sans text-lg text-blue-300 pl-2 cursor-pointer"
           to={`/blogs?blogId=${blog._id}`}
         >
           {blog.title}

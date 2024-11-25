@@ -63,10 +63,13 @@ function ShareButton({ message }) {
 
   return (
     <MenuRoot>
-      <MenuTrigger asChild className="flex items-center justify-center">
+      <MenuTrigger
+        asChild
+        className="flex items-center justify-center cursor-pointer"
+      >
         <RiShareFill />
       </MenuTrigger>
-      <MenuContent>
+      <MenuContent className="bg-black">
         {platforms.map((platform) => (
           <MenuItem
             key={platform.name}
