@@ -15,6 +15,15 @@ export default {
         robin_blue: "#06BCC1",
         new_blue: "#152138",
       },
+      animation: {
+        spin: "spin 2s linear infinite",
+      },
+      keyframes: {
+        spin: {
+          "0%": { transform: "rotate(0deg)" },
+          "100%": { transform: "rotate(360deg)" },
+        },
+      },
     },
   },
   plugins: [],
