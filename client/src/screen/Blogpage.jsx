@@ -55,7 +55,7 @@ const Blogpage = () => {
     e.preventDefault();
     if (comment === "" || comment === " ") return;
     await createComment({ comment, user: user._id, blog: blogId });
-    const commentList = await getComments();
+    const commentList = await getComments(blogId);
     setComments(commentList);
     setComment("");
   };
