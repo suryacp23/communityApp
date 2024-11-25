@@ -2,14 +2,20 @@ import { useEffect } from "react";
 import { useBlog } from "../hooks/useBlog";
 import Blog from "../components/blog/Blog";
 import Header from "../components/bigcomponents/Header";
+import SpinnerLogo from "../components/Additionalui/SpinnerLogo";
 
 const Home = () => {
-  const { blogs, getBlogs } = useBlog();
+  const { blogs, getBlogs, loading } = useBlog();
   useEffect(() => {
     getBlogs();
   }, []);
   console.log(blogs);
-
+  if (loading)
+    return (
+      <div className="h-screen w-[90vw] mx-auto flex justify-center items-center">
+        <SpinnerLogo />
+      </div>
+    );
   return (
     <div className="overflow-hidden select-none text-background bg-richblack">
       <Header />

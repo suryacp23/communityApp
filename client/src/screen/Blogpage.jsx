@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useBlog } from "../hooks/useBlog";
 import { useComments } from "../hooks/useComments";
-import Spinner from "../components/Additionalui/Spinner";
 import { useAuth } from "../hooks/useAuth";
 import { Avatar } from "../components/ui/avatar";
 import { HStack, Stack, Text } from "@chakra-ui/react";
@@ -10,6 +9,8 @@ import ShareButton from "../components/Additionalui/ShareButton";
 import { MdModeComment } from "react-icons/md";
 import { BiSolidLike } from "react-icons/bi";
 import { RiSendPlaneFill } from "react-icons/ri";
+import SpinnerLogo from "../components/Additionalui/SpinnerLogo";
+
 
 const Blogpage = () => {
   const [searchParams] = useSearchParams();
@@ -88,7 +89,7 @@ const Blogpage = () => {
             </>
           ) : (
             <div className="h-screen w-full flex justify-center items-center">
-              <Spinner />
+              <SpinnerLogo />
             </div>
           )}
         </div>
