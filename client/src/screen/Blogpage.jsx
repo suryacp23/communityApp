@@ -10,7 +10,7 @@ import { MdModeComment } from "react-icons/md";
 import { BiSolidLike } from "react-icons/bi";
 import { RiSendPlaneFill } from "react-icons/ri";
 import SpinnerLogo from "../components/Additionalui/SpinnerLogo";
-
+import Spinner from "../components/Additionalui/Spinner";
 
 const Blogpage = () => {
   const [searchParams] = useSearchParams();
@@ -55,7 +55,7 @@ const Blogpage = () => {
     e.preventDefault();
     if (comment === "" || comment === " ") return;
     await createComment({ comment, user: user._id, blog: blogId });
-    const commentList = await getComments();
+    const commentList = await getComments(blogId);
     setComments(commentList);
     setComment("");
   };
