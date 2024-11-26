@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import authRoutes from "./routes/authRoutes.js";
 import blogRoutes from "./routes/blogRoutes.js";
 import commentRoutes from "./routes/commentRoutes.js";
+import groupRoutes from "./routes/groupRoutes.js";
 import connectDB from "./utils/connectDB.js";
 import cookieParser from "cookie-parser";
 import swaggerUi from "swagger-ui-express";
@@ -22,6 +23,7 @@ connectDB();
 app.use("/auth", authRoutes);
 app.use("/blog", blogRoutes);
 app.use("/comment", commentRoutes);
+app.use("/group", groupRoutes);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.listen(process.env.PORT || 5000, () => {
