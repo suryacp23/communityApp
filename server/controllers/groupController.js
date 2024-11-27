@@ -1,6 +1,33 @@
 import Group from "../models/groupModel.js";
 import JoinRequest from "../models/joinRequestModel.js";
 
+export const createGroup = async (req, res) => {
+  const { name, blogId } = req.body;
+
+  try {
+    // Check if the group already exists
+    const existingGroup = await Group.findOne({ blogId });
+    if (existingGroup) {
+      return res.status(400).json({ message: "Group already exists" });
+    }
+
+    // Create a new group
+    const newGroup = await Group.create({
+      name,
+      blogId,
+      admin: req.user._id,
+      members: [req.user._id],
+    });
+
+    res
+      .status(201)
+      .json({ message: "Group created successfully", group: newGroup });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "Error creating group", error: err });
+  }
+};
+
 export const addModerator = async (req, res) => {
   const { groupId, userId } = req.body;
 
@@ -37,14 +64,14 @@ export const approveRequest = async (req, res) => {
     const group = joinRequest.group;
     if (action === "approve") {
       joinRequest.status = "approved";
-      await joinRequest.save();
+      await joinRequest.deleteOne();
 
       await Group.findByIdAndUpdate(group._id, {
         $push: { members: joinRequest.user },
       });
     } else if (action === "reject") {
       joinRequest.status = "rejected";
-      await joinRequest.save();
+      await joinRequest.deleteOne();
     }
 
     res.status(200).json({ message: `Join request ${action}ed` });
