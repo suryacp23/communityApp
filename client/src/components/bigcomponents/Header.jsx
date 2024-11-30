@@ -48,12 +48,15 @@ const Header = () => {
 											<MenuItem value="useremail">
 												{user.userName}
 											</MenuItem>
-											<MenuItem value="myblogs">
+											<MenuItem
+												value="dashboard"
+												className="border-none"
+											>
 												<Link
 													className="w-full"
-													to="/myblogs"
+													to="/dashboard"
 												>
-													My blogs
+													Dashboard
 												</Link>
 											</MenuItem>
 											<MenuItem
