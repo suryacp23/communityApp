@@ -36,17 +36,18 @@ const CreateBlog = () => {
 
   return (
     <div className="flex h-[100vh] w-full  bg-richblack justify-center items-center ">
-      <div className=" text-white flex items-center h-4/6 min-w-80 shadow-slate-300 shadow-sm justify-center bg-secondary">
+      <div className=" text-secondary flex items-center h-5/6 lg:h-4/6 2xl:h-3/6 w-5/6 sm:w-80 2xl:w-1/3 shadow-slate-300 shadow-sm justify-center bg-secondary">
         <form
           onSubmit={handleSubmit}
-          className="flex flex-col w-3/6 h-4/5 justify-between items-center "
-        >
-          <h1>Blog</h1>
+          className="h-5/6 lg:h-4/6 w-full pl-1 2xl:p-0 2xl:text-4xl flex flex-col gap-7 lg:gap-4 2xl:gap-14 lg:justify-around items-center ">
+          <div className="flex justify-center  items-center text-black">
+            <h1 >Blog</h1>
+          </div>
           <input
             type="text"
             name="title"
             onChange={handleChange}
-            className="w-72 rounded-md h-8 pl-2  bg-slate-300 placeholder-black"
+            className="w-64 lg:w-72 2xl:w-5/6  rounded-md h-6 lg:h-8 2xl:h-20 pl-2  bg-slate-300 placeholder-black"
             placeholder="Title"
           />
           <textarea
@@ -54,7 +55,7 @@ const CreateBlog = () => {
             name="description"
             value={formData.description}
             onChange={handleChange}
-            className=" max-h-28 min-h-28 w-72 rounded-md pl-2  bg-slate-300 placeholder-black"
+            className="  max-h-28 min-h-28 w-64 lg:w-72 2xl:w-5/6 2xl:max-h-64 2xl:min-h-64 rounded-md pl-2  bg-slate-300 placeholder-black"
             placeholder="Description"
           />
           <input
@@ -62,13 +63,12 @@ const CreateBlog = () => {
             name="imageUrl"
             ref={imageRef}
             onChange={handleFileChange}
-            className="border border-gray-900 bg-accent rounded-md"
+            className="border border-gray-900  w-64 lg:w-72  2xl:w-5/6  bg-accent rounded-md"
           />
           <button
             type="submit"
             disabled={loading}
-            className=" bg-blue-600 hover:bg-blue-500 h-7 w-28 rounded-md"
-          >
+            className=" bg-blue-600 hover:bg-blue-500 h-7 w-24  2xl:w-4/6  2xl:h-12 lg:w-28  rounded-md">
             create blog
           </button>
         </form>
