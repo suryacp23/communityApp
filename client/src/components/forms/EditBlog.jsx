@@ -43,31 +43,33 @@ const EditBlog = () => {
     e.preventDefault();
     const data = new FormData();
     data.append("title", formData.title);
-    data.append("description", formData.description)
+    data.append("description", formData.description);
     if (file) {
-      data.append("file", file)
+      data.append("file", file);
     }
-    data.append("user", formData.user)
+    data.append("user", formData.user);
     updateBlog(formData, blogId);
   };
   const handleFileChange = (e) => {
-    setFile(e.target.files[0])
+    setFile(e.target.files[0]);
   };
 
   return (
     <div className="flex h-[100vh] w-full  bg-richblack justify-center items-center ">
       <div
-        className=" text-white flex 
-    items-center h-4/6 min-w-80 shadow-slate-300 shadow-sm justify-center bg-secondary">
+        className=" text-black flex 
+    items-center h-5/6 lg:h-4/6 2xl:h-3/6 w-5/6 sm:w-80 2xl:w-1/3 shadow-slate-300 shadow-sm justify-center bg-secondary">
         <form
           onSubmit={handleSubmit}
-          className="flex flex-col w-3/6 h-4/5 justify-between items-center ">
-          <h1>Blog</h1>
+          className=" h-5/6 lg:h-4/6 w-full pl-1 2xl:p-0 2xl:text-4xl flex flex-col gap-7 lg:gap-4 2xl:gap-14 lg:justify-around items-center ">
+          <div className="flex justify-center  items-center ">
+            <h1>Blog</h1>
+          </div>
           <input
             type="text"
             name="title"
             value={formData.title}
-            className="w-72 rounded-md h-8 pl-2  bg-slate-300 placeholder-black"
+            className="w-64 lg:w-72 2xl:w-5/6  rounded-md h-6 lg:h-8 2xl:h-20 pl-2  bg-slate-300 placeholder-black"
             onChange={handleChange}
             placeholder="Title"
           />
@@ -77,17 +79,17 @@ const EditBlog = () => {
             value={formData.description}
             onChange={handleChange}
             placeholder="Description"
-            className=" max-h-28 min-h-28 w-72 rounded-md pl-2  bg-slate-300 placeholder-black"
+            className=" max-h-28 min-h-28 w-64 lg:w-72 2xl:w-5/6 2xl:max-h-64 2xl:min-h-64  rounded-md pl-2  bg-slate-300 placeholder-black"
           />
           <input
             type="file"
             name="imageUrl"
             onChange={handleFileChange}
-            className="border border-gray-900 bg-accent rounded-md"
+            className="border border-gray-900 bg-accent w-64 lg:w-72  2xl:w-5/6   rounded-md"
           />
           <button
             type="submit"
-            className=" bg-blue-500 hover:to-blue-400 h-7 w-28 rounded-md">
+            className=" bg-blue-500 hover:to-blue-400 h-7 w-24  2xl:w-4/6  2xl:h-12 lg:w-28 rounded-md">
             Edit blog
           </button>
         </form>
