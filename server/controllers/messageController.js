@@ -1,8 +1,9 @@
 import Group from "../models/groupModel.js";
 import Message from "../models/messageModel.js";
+import { io } from "../socket/socket.js";
 
 export const sendMessage = async (req, res) => {
-  const { message, groupId, senderId } = req.body;
+  const { message, groupId } = req.body;
   const user = req.user;
 
   try {
@@ -18,7 +19,13 @@ export const sendMessage = async (req, res) => {
       senderId: user._id,
       message,
     });
-    res.status(200).json(newMessage);
+    const populatedMessage = await Message.findById(newMessage._id).populate(
+      "senderId",
+      "-password" // Exclude sensitive fields like the password
+    );
+    // Emit the new message to the group room
+    io.to(groupId).emit("newMessage", populatedMessage);
+    res.status(200).json(populatedMessage);
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "error sending message" });
@@ -29,13 +36,19 @@ export const getMessages = async (req, res) => {
   const user = req.user;
   try {
     const group = await Group.findById(groupId);
-    console.log(group);
     if (!group.members.includes(user._id)) {
       res
         .status(403)
         .json({ message: "unauthorized no allowed to get message" });
+      return;
     }
-    const messages = await Message.find({ groupId }).populate("senderId");
+    const messages = await Message.find({ groupId })
+      .sort({
+        createdAt: 1,
+      })
+      .populate("senderId", ["-password"]);
+
+    io.to(groupId).emit("messagesFetched", { user: user._id });
     res.status(200).json(messages);
   } catch (error) {
     console.log(error);

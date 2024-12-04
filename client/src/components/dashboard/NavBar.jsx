@@ -10,10 +10,12 @@ const NavBar = ({ selection, setselection }) => {
             className={`${
               selection === "MyEvents" ? "bg-gray-600" : " bg-gray-800"
             } h-2/6 w-full`}
-            onClick={() => setselection("MyEvents")}>
+            onClick={() => setselection("MyEvents")}
+          >
             <Link
               className="h-full w-full flex justify-center items-center"
-              to="/dashboard/events">
+              to="/dashboard/events"
+            >
               My Events
             </Link>
           </li>
@@ -21,10 +23,12 @@ const NavBar = ({ selection, setselection }) => {
             className={`${
               selection === "Groups" ? "bg-gray-600" : " bg-gray-800"
             } h-2/6 w-full`}
-            onClick={() => setselection("Groups")}>
+            onClick={() => setselection("Groups")}
+          >
             <Link
               className="h-full w-full flex justify-center items-center"
-              to="/dashboard/groups">
+              to="/dashboard/groups"
+            >
               Groups
             </Link>
           </li>
@@ -32,11 +36,26 @@ const NavBar = ({ selection, setselection }) => {
             className={`${
               selection === "Requests" ? "bg-gray-600" : " bg-gray-800"
             } h-2/6 w-full`}
-            onClick={() => setselection("Requests")}>
+            onClick={() => setselection("Requests")}
+          >
             <Link
               className="h-full w-full flex justify-center items-center"
-              to="/dashboard/requests">
+              to="/dashboard/requests"
+            >
               Requests
+            </Link>
+          </li>
+          <li
+            className={`${
+              selection === "Chat" ? "bg-gray-600" : " bg-gray-800"
+            } h-2/6 w-full`}
+            onClick={() => setselection("chat")}
+          >
+            <Link
+              to="/dashboard/groups/chat"
+              className="h-full w-full flex justify-center items-center"
+            >
+              Chat
             </Link>
           </li>
         </ul>

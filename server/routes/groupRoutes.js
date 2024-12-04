@@ -4,6 +4,7 @@ import {
   approveRequest,
   createGroup,
   joinRequest,
+  getGroupInfo,
 } from "../controllers/groupController.js";
 import protect from "../middleware/protect.js";
 import {
@@ -13,9 +14,10 @@ import {
 
 const router = Router();
 
-router.post("/create", isAdmin, createGroup);
+router.post("/create", protect, isAdmin, createGroup);
 router.post("/join", protect, joinRequest);
-router.post("/approve", isAdminOrModerator, approveRequest);
-router.post("/addModerator", isAdmin, addModerator);
+router.post("/approve", protect, isAdminOrModerator, approveRequest);
+router.post("/addModerator", protect, isAdmin, addModerator);
+router.get("/:groupId", getGroupInfo);
 
 export default router;

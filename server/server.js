@@ -10,7 +10,7 @@ import connectDB from "./utils/connectDB.js";
 import cookieParser from "cookie-parser";
 import swaggerUi from "swagger-ui-express";
 import swaggerDocument from "./swagger.js";
-const app = express();
+import { app, server, io } from "./socket/socket.js";
 
 dotenv.config();
 
@@ -28,6 +28,8 @@ app.use("/group", groupRoutes);
 app.use("/message", messageRoutes);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-app.listen(process.env.PORT || 5000, () => {
-  console.log("server running");
+server.listen(process.env.PORT || 5000, () => {
+  console.log(
+    `server is running on http://localhost:${process.env.PORT || 5000}`
+  );
 });

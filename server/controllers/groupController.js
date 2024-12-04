@@ -23,7 +23,6 @@ export const createGroup = async (req, res) => {
       .status(201)
       .json({ message: "Group created successfully", group: newGroup });
   } catch (err) {
-    console.log(err);
     res.status(500).json({ message: "Error creating group", error: err });
   }
 };
@@ -103,5 +102,20 @@ export const joinRequest = async (req, res) => {
     res.status(200).json({ message: "Join request sent" });
   } catch (err) {
     res.status(500).json({ message: "Error sending join request", error: err });
+  }
+};
+
+export const getGroupInfo = async (req, res) => {
+  try {
+    const group = await Group.findById(req.params.groupId).populate("admin", [
+      "-password",
+    ]);
+    if (group == null) {
+      return res.status(200).json({ message: "group Not Found" });
+    }
+    res.status(200).json(group);
+  } catch (error) {
+    console.log("getGroupInfo controller error" + error.message);
+    res.status(400).json({ error: error.message });
   }
 };

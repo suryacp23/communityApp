@@ -17,8 +17,7 @@ export const createComment = async (req, res, next) => {
 };
 export const getPostComments = async (req, res, next) => {
   const { postId } = req.params;
-  console.log(req.params);
-  console.log(postId);
+
   try {
     const comments = await Comment.find({
       blog: postId,
