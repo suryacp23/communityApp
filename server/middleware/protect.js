@@ -7,7 +7,7 @@ const protect = async (req, res, next) => {
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
       const user = await User.findById(decoded.userId);
       if (user) {
-        // req.user = user;
+        req.user = user;
         next();
       } else {
         return res

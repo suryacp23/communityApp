@@ -1,14 +1,14 @@
 import Group from "../models/groupModel.js";
 
 const isAdminOrModerator = async (req, res, next) => {
-  const { userId } = req.user;
+  const user = req.user;
   const { groupId } = req.body;
   try {
     const group = await Group.findById(groupId);
     if (!group) return res.status(404).json({ message: "Group not found" });
 
     const isAuthorized =
-      group.admin.equals(userId) || group.moderators.includes(userId);
+      group.admin.equals(user._id) || group.moderators.includes(user._id);
 
     if (!isAuthorized) {
       return res.status(403).json({ message: "Access denied" });
@@ -21,13 +21,13 @@ const isAdminOrModerator = async (req, res, next) => {
 };
 
 const isAdmin = async (req, res, next) => {
-  const { userId } = req.user;
+  const user = req.user;
   const { groupId } = req.body;
   try {
     const group = await Group.findById(groupId);
     if (!group) return res.status(404).json({ message: "Group not found" });
 
-    const isAuthorized = group.admin.equals(userId);
+    const isAuthorized = group.admin.equals(user?._id);
     if (!isAuthorized) {
       return res.status(403).json({ message: "Access denied" });
     }

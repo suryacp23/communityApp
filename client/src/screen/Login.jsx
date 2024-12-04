@@ -19,20 +19,24 @@ const Login = () => {
   return (
     <div
       className="flex h-[100vh] w-full bg-richblack
-     justify-center items-center">
+     justify-center items-center"
+    >
       <div
         className=" text-primary flex flex-col  
-    items-center h-4/6 min-w-72 justify-between bg-oxford_blue rounded-md">
+    items-center h-4/6 min-w-72 justify-between bg-oxford_blue rounded-md"
+      >
         <div className="flex h-1/6 w-full justify-center items-center">
           <h4 className="">LOGIN</h4>
         </div>
         <form
           action=""
-          className=" flex h-2/5 flex-col items-center justify-between">
+          className=" flex h-2/5 flex-col items-center justify-between"
+        >
           <input
             className=" pl-2 w-52 h-8 rounded-sm text-slate-950 bg-slate-300 placeholder-black"
             type="text"
             placeholder="Username"
+            value={username}
             maxLength={10}
             onChange={(e) => setUsername(e.target.value)}
             required
@@ -41,6 +45,7 @@ const Login = () => {
             className=" pl-2 w-52 h-8 rounded-sm text-slate-950 bg-slate-300 placeholder-black"
             type="password"
             placeholder="Password"
+            value={password}
             maxLength={10}
             onChange={(e) => setPassword(e.target.value)}
             required
@@ -51,7 +56,8 @@ const Login = () => {
             ) : (
               <button
                 className="bg-blue-600 hover:bg-blue-500 shadow-md   w-52 h-7  flex justify-center items-center rounded-sm"
-                onClick={handleLogin}>
+                onClick={handleLogin}
+              >
                 {" "}
                 Login{" "}
               </button>

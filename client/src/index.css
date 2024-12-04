@@ -3,12 +3,15 @@
 @tailwind utilities;
 
 ::-webkit-scrollbar {
-	width: 5px;
-	background: white;
+  width: 5px;
+  background: rgb(6, 2, 2);
 }
 ::-webkit-scrollbar-track {
-	background: rgba(100, 100, 217, 0.557);
+  background: rgba(149, 149, 149, 0.233);
+  border-radius: 10px;
 }
 ::-webkit-scrollbar-thumb {
-	background: rgb(10, 10, 122);
+  background: rgb(1, 43, 92);
+  width: 7px;
+  border-radius: 10px;
 }
