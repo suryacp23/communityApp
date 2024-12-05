@@ -37,7 +37,7 @@ const Login = () => {
             type="text"
             placeholder="Username"
             value={username}
-            maxLength={10}
+            maxLength={16}
             onChange={(e) => setUsername(e.target.value)}
             required
           />

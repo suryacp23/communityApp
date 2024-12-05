@@ -3,6 +3,10 @@ export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
+      fontFamily: {
+        poppins: ['"poppins"', "sans-serif"], // Add your custom font here
+        customFont: ['"YourCustomFont"', "serif"], // Example for local fonts
+      },
       colors: {
         primary: "#ecf0f1",
         secondary: "#34495e",
