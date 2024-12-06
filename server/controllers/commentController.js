@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import Comment from "../models/commentModel.js";
+import Blog from "../models/blogModel.js";
 export const createComment = async (req, res, next) => {
   try {
     const { comment, blog, user } = req.body;
@@ -9,6 +10,9 @@ export const createComment = async (req, res, next) => {
       user,
     });
     await newComment.save();
+    await Blog.findByIdAndUpdate(blog, {
+      $inc: { comments: 1 },
+    });
     res.status(200).json(newComment);
   } catch (error) {
     console.log("createComment controller error" + error.message);

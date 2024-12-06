@@ -18,7 +18,7 @@ export const GroupProvider = ({ children }) => {
         console.log("Error fetching groups");
         throw new Error(data.error || "Error fetching groups");
       } else {
-        setGroups(data);
+        return data;
       }
     } catch (error) {
       console.log("Error at Get groups", error);

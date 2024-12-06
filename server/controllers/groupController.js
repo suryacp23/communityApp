@@ -68,6 +68,9 @@ export const approveRequest = async (req, res) => {
       await Group.findByIdAndUpdate(group._id, {
         $push: { members: joinRequest.user },
       });
+      await User.findByIdAndUpdate(joinRequest.user, {
+        $push: { groups: group._id },
+      });
     } else if (action === "reject") {
       joinRequest.status = "rejected";
       await joinRequest.deleteOne();
@@ -113,6 +116,24 @@ export const getGroupInfo = async (req, res) => {
     if (group == null) {
       return res.status(200).json({ message: "group Not Found" });
     }
+    res.status(200).json(group);
+  } catch (error) {
+    console.log("getGroupInfo controller error" + error.message);
+    res.status(400).json({ error: error.message });
+  }
+};
+
+export const getGroups = async (req, res) => {
+  try {
+    const user = req.user;
+    const group = await Group.find({ admin: user._id }).populate(
+      "admin",
+      "-password"
+    );
+    if (group == null) {
+      return res.status(200).json({ message: "group Not Found" });
+    }
+    console.log(group);
     res.status(200).json(group);
   } catch (error) {
     console.log("getGroupInfo controller error" + error.message);

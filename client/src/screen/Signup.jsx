@@ -24,19 +24,21 @@ const Signup = () => {
     <div className="flex h-[100vh] w-full  justify-center items-center bg-richblack">
       <div
         className=" text-white flex flex-col h-4/6 w-72
-     bg-oxford_blue items-center justify-around rounded-md ">
+     bg-oxford_blue items-center justify-around rounded-md "
+      >
         <div className="h-1/6 flex w-full justify-center items-center">
           <h4 className="text-center">Create An Account</h4>
         </div>
         <form
           onSubmit={handleSignup}
-          className=" flex flex-col items-center justify-between h-3/6  ">
+          className=" flex flex-col items-center justify-between h-3/6  "
+        >
           <input
             type="username"
             id="username"
             name="username"
             placeholder="username"
-            maxLength={10}
+            maxLength={16}
             value={username}
             onChange={(e) => setusername(e.target.value)}
             className="pl-2 w-52 h-8  rounded-sm text-slate-950 bg-slate-300 placeholder-black"
@@ -55,7 +57,7 @@ const Signup = () => {
             id="password"
             name="password"
             placeholder="Password"
-            maxLength={12}
+            maxLength={10}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             className="pl-2 w-52 h-8  rounded-sm text-slate-950 bg-slate-300 placeholder-black"
@@ -67,7 +69,8 @@ const Signup = () => {
               <button
                 type="submit"
                 className="bg-blue-600 hover:bg-blue-500 shadow-lg   w-52 h-8 flex justify-center items-center rounded-sm"
-                disabled={loading}>
+                disabled={loading}
+              >
                 Signup
               </button>
             )}

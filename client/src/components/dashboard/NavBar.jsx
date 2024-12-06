@@ -52,7 +52,7 @@ const NavBar = ({ selection, setselection }) => {
             onClick={() => setselection("chat")}
           >
             <Link
-              to="/dashboard/groups/chat"
+              to="/chat"
               className="h-full w-full flex justify-center items-center"
             >
               Chat

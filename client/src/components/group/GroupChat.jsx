@@ -6,22 +6,24 @@ import { useSocketContext } from "../../context/socketContext";
 import { formatTimestamp } from "../../utils/time.js";
 import { RiSendPlaneFill } from "react-icons/ri";
 
-const GroupChat = () => {
+const GroupChat = ({ currentGroup }) => {
   const [conversation, setConversation] = useState([]);
   const [input, setInput] = useState("");
   const { socket } = useSocketContext();
   const { user } = useAuth();
-  const groupid = "6746f281874ad217124e5684";
+  const groupid = currentGroup;
   const { getGroupInfo } = useGroup();
   const [groupInfo, setGroupInfo] = useState(null);
   // console.log(getGroupInfo(groupid));
+  console.log(currentGroup);
   useEffect(() => {
     const fetchGroup = async (groupid) => {
       const data = await getGroupInfo(groupid);
       setGroupInfo(data);
+      console.log(data);
     };
     fetchGroup(groupid);
-  }, [groupid]);
+  }, [groupid, user]);
 
   const scrollRef = useRef(null);
   console.log(groupInfo);
@@ -43,7 +45,7 @@ const GroupChat = () => {
   }, [conversation]);
   const fetchChat = async () => {
     try {
-      const data = await fetch("/api/message/6746f281874ad217124e5684", {
+      const data = await fetch(`/api/message/${groupid}`, {
         credentials: "include",
       });
       const chat = await data.json();
@@ -55,7 +57,7 @@ const GroupChat = () => {
   useEffect(() => {
     fetchChat();
     console.log(conversation);
-  }, [groupid, user]);
+  }, [groupid]);
   const handleSend = async (e) => {
     e.preventDefault();
     if (!input.trim()) return;
@@ -71,9 +73,17 @@ const GroupChat = () => {
     setInput("");
   };
   return (
-    <div className="relative w-[80vw] h-[88vh] shadow-md rounded-lg">
+    <div className="relative h-full w-full shadow-md rounded-lg">
       <div className="w-full h-5/6 flex items-center justify-center">
         <ul className="flex flex-col gap-2 w-4/5 mx-auto h-[60vh] overflow-y-scroll scroll-smooth">
+          {conversation?.length == 0 && (
+            <div
+              className="h-full w-full flex
+             justify-center items-center"
+            >
+              <p>start new conversation</p>
+            </div>
+          )}
           {conversation?.map((chat) => {
             const isSender = user._id === chat.senderId._id;
             // console.log(groupInfo);

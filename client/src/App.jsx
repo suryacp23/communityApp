@@ -17,6 +17,7 @@ import GroupPage from "./components/group/GroupPage";
 import GroupChat from "./components/group/GroupChat";
 import { SocketContextProvider } from "./context/socketContext";
 import { GroupProvider } from "./hooks/useGroup";
+import Chatpage from "./screen/Chatpage";
 // import logo from "./assets/logo.svg";
 
 const App = () => {
@@ -41,9 +42,9 @@ const App = () => {
                     <Route path="events" element={<MyBlogs />} />
                     <Route path="groups" element={<Groups />} />
                     <Route path="groups/:id" element={<GroupPage />} />
-                    <Route path="groups/chat" element={<GroupChat />} />
                     <Route path="requests" element={<Requests />} />
                   </Route>
+                  <Route path="/chat" element={<Chatpage />} />
                 </Routes>
               </SocketContextProvider>
             </GroupProvider>

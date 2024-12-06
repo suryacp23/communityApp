@@ -4,7 +4,7 @@ import { Outlet } from "react-router-dom";
 import NavBar from "../../components/dashboard/NavBar.jsx";
 import { useState } from "react";
 const DashBoard = () => {
-  const [selection, setselection] = useState("MyEvents");
+  const [selection, setselection] = useState("");
   const [aside, setaside] = useState(false);
 
   return (
