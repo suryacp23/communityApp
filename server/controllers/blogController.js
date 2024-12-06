@@ -1,7 +1,9 @@
 import { InputFile } from "node-appwrite/file";
 import Blog from "../models/blogModel.js";
+import Group from "../models/groupModel.js";
 import { Client, ID, Storage } from "node-appwrite";
 import mongoose from "mongoose";
+import User from "../models/userModel.js";
 const client = new Client()
   .setEndpoint("https://cloud.appwrite.io/v1")
   .setProject("6739d36c00223845ed29")
@@ -13,34 +15,34 @@ export const createBlog = async (req, res) => {
   try {
     const body = req.body;
     console.log(body);
-    if (req.file) {
-      const r = await storage.createFile(
-        process.env.APPWRITE_BUCKET_ID || "",
-        ID.unique(),
-        InputFile.fromBuffer(req.file.buffer, req.file.originalname || "name")
-      );
-      const link = `https://cloud.appwrite.io/v1/storage/buckets/${process.env.APPWRITE_BUCKET_ID}/files/${r.$id}/view?project=${process.env.ProjectId}`;
-      const blog = new Blog({
-        title: body.title,
-        description: body.description,
-        user: body.user,
-        imageUrl: link,
-        fileId: r.$id,
-      });
-      const newBlog = await blog.save();
-      res.status(201).json(newBlog);
-    } else {
-      //if file not exist
-      const blog = new Blog({
-        title: body.title,
-        description: body.description,
-        user: body.user,
-      });
-      const newBlog = await blog.save();
-      res.status(201).json(newBlog);
-    }
+
+    const r = await storage.createFile(
+      process.env.APPWRITE_BUCKET_ID || "",
+      ID.unique(),
+      InputFile.fromBuffer(req.file.buffer, req.file.originalname || "name")
+    );
+    const link = `https://cloud.appwrite.io/v1/storage/buckets/${process.env.APPWRITE_BUCKET_ID}/files/${r.$id}/view?project=${process.env.ProjectId}`;
+    const blog = new Blog({
+      title: body.title,
+      description: body.description,
+      user: body.user,
+      imageUrl: link,
+      fileId: r.$id,
+    });
+    const newBlog = await blog.save();
+    // Create a new group
+    const newGroup = await Group.create({
+      name: body.title,
+      blogId: newBlog._id,
+      admin: req.user._id,
+      members: [req.user._id],
+    });
+    await User.findByIdAndUpdate(req.user._id, {
+      $inc: { groups: 1 },
+    });
+    res.status(201).json(newBlog);
   } catch (error) {
-    console.log("Create blog controller error" + error.message);
+    console.log("Create blog controller error" + error);
     res.status(400).json({ error: error.message });
   }
 };
@@ -87,7 +89,10 @@ export const updateBlog = async (req, res) => {
 };
 export const deleteBlog = async (req, res) => {
   try {
-    const blog = await Blog.findById(req.params.id);
+    const [blog, group] = await Promise.all([
+      Blog.findById(req.params.id),
+      Group.findOne({ blogId: req.params.id }), // Adjusted to find by `blogId`
+    ]);
     if (blog == null) {
       return res
         .status(404)
@@ -99,7 +104,14 @@ export const deleteBlog = async (req, res) => {
         error: "unautorized you are not able to delete the blog",
       });
     }
-    await blog.deleteOne();
+    await Promise.all([blog.deleteOne(), group?.deleteOne()]);
+
+    const user = await User.findById(blog.user._id);
+    if (user.groups > 0) {
+      await User.findByIdAndUpdate(blog.user._id, { $inc: { groups: -1 } });
+    } else {
+      throw new Error("Cannot decrement, groups value is already at zero.");
+    }
     res.json({ message: "Blog deleted" });
   } catch (error) {
     console.log("delete blog controller error" + error.message);
