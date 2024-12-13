@@ -17,8 +17,8 @@ const Home = () => {
       </div>
     );
   return (
-    <div className="overflow-hidden select-none text-background bg-richblack">
-      <Header />
+    <div className="overflow-hidden select-none text-background bg-[#31312f]">
+   <Header/>
       <div className="flex items-center justify-around m-14">
         <div className=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 sm:p-6">
           {blogs?.map((blog) => {
