@@ -17,13 +17,14 @@ const Navbar = () => {
   const { user, login, logout, loading } = useAuth();
   const [active, setActive] = useState("Home");
   return (
-    <div className="h-[12vh] w-screen flex justify-end">
+    <div className="h-[12vh] w-screen flex justify-end ">
       {user ? (
         <div className="h-full w-full flex justify-center items-center gap-x-8">
           <div className="h-10 w-1/2 flex justify-center p-2">
             <ul className=" h-full w-full flex justify-between items-center ">
               <li className="h-7 w-24 text-center  text-white">
                 <Link
+                  to={"/home1"}
                   className="h-7 w-24 text-center text-white"
                   onClick={() => {
                     setActive("Home");
@@ -40,6 +41,7 @@ const Navbar = () => {
               </li>
               <li className="h-7 w-24 text-center   text-white">
                 <Link
+                  to={"/events"}
                   className="h-7 w-24 text-center   text-white"
                   onClick={() => {
                     setActive("Events");
@@ -101,11 +103,7 @@ const Navbar = () => {
                   </MenuTrigger>
                   <MenuContent>
                     <MenuItem value="useremail">{user.userName}</MenuItem>
-                    <MenuItem value="dashboard" className="border-none">
-                      <Link className="w-full" to="/dashboard">
-                        Dashboard
-                      </Link>
-                    </MenuItem>
+
                     <MenuItem
                       value="signout"
                       color="fg.error"
