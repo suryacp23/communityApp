@@ -17,12 +17,12 @@ const Navbar = () => {
   const { user, login, logout, loading } = useAuth();
   const [active, setActive] = useState("Home");
   return (
-    <div className="h-[12vh] w-screen flex justify-end ">
+    <div className="h-[10vh] w-screen flex justify-end   text-xs">
       {user ? (
         <div className="h-full w-full flex justify-center items-center gap-x-8">
-          <div className="h-10 w-1/2 flex justify-center p-2">
+          <div className="h-10 w-2/3 flex justify-center p-2">
             <ul className=" h-full w-full flex justify-between items-center ">
-              <li className="h-7 w-24 text-center  text-white">
+              <li className="h-7 w-24 text-center text-white">
                 <Link
                   to={"/home1"}
                   className="h-7 w-24 text-center text-white"
@@ -78,9 +78,9 @@ const Navbar = () => {
                     active == "Groups" ? "h-1 w-24 bg-violet-500 rounded " : ""
                   } `}></div>
               </li>
-              <li className="h-7 w-24 text-center  text-white">
+              <li className="h-7 w-[100px] text-center  text-white">
                 <Link
-                  className="h-7 w-24 text-center   text-white"
+                  className="h-7 w-[100px] text-center   text-white"
                   onClick={() => {
                     setActive("CreateEvents");
                     navigate("/CreateEvents");
@@ -95,27 +95,29 @@ const Navbar = () => {
                   } `}></div>
               </li>
               <li>
-                <MenuRoot>
-                  <MenuTrigger asChild>
-                    <div>
-                      <Avatar name={user.userName} size="xl" />
-                    </div>
-                  </MenuTrigger>
-                  <MenuContent>
-                    <MenuItem value="useremail">{user.userName}</MenuItem>
+                <div>
+                  <MenuRoot>
+                    <MenuTrigger asChild>
+                      <div>
+                        <Avatar name={user.userName} size="md" />
+                      </div>
+                    </MenuTrigger>
+                    <MenuContent>
+                      <MenuItem value="useremail">{user.userName}</MenuItem>
 
-                    <MenuItem
-                      value="signout"
-                      color="fg.error"
-                      _hover={{
-                        bg: "bg.error",
-                        color: "fg.error",
-                      }}
-                      onClick={handleSignout}>
-                      Sign out
-                    </MenuItem>
-                  </MenuContent>
-                </MenuRoot>
+                      <MenuItem
+                        value="signout"
+                        color="fg.error"
+                        _hover={{
+                          bg: "bg.error",
+                          color: "fg.error",
+                        }}
+                        onClick={handleSignout}>
+                        Sign out
+                      </MenuItem>
+                    </MenuContent>
+                  </MenuRoot>
+                </div>
               </li>
             </ul>
           </div>

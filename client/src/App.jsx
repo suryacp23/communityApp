@@ -23,6 +23,7 @@ import Login1 from "./Version1/Login1";
 import Signup1 from "./Version1/Signup1";
 import EventPage from "./Version1/EventPage";
 import CreateEvents from "./Version1/forms/CreateEvents";
+import EditEvents from "./Version1/forms/EditEvents";
 
 // import logo from "./assets/logo.svg";
 
@@ -48,6 +49,7 @@ const App = () => {
                   <Route path="/signup1" element={<Signup1 />} />
                   <Route path="/events" element={<EventPage />} />
                   <Route path="/createEvents" element={<CreateEvents />} />
+                  <Route path="/editEvents" element={<EditEvents />} />
                   <Route path="/dashboard" element={<DashBoard />}>
                     <Route index element={<Profile />} />
                     <Route path="events" element={<MyBlogs />} />
