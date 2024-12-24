@@ -29,16 +29,14 @@ const Header = () => {
                 <li>
                   <Link
                     to={"/createPost"}
-                    className="flex justify-center items-center p-2 rounded-md bg-blue-600 hover:bg-blue-500"
-                  >
+                    className="flex justify-center items-center p-2 rounded-md bg-blue-600 hover:bg-blue-500">
                     Create post
                   </Link>
                 </li>
                 <li>
                   <Link
                     to={"/chat"}
-                    className="flex justify-center items-center p-2 rounded-md bg-blue-600 hover:bg-blue-500"
-                  >
+                    className="flex justify-center items-center p-2 rounded-md bg-blue-600 hover:bg-blue-500">
                     chat
                   </Link>
                 </li>
@@ -63,8 +61,7 @@ const Header = () => {
                           bg: "bg.error",
                           color: "fg.error",
                         }}
-                        onClick={handleSignout}
-                      >
+                        onClick={handleSignout}>
                         Sign out
                       </MenuItem>
                     </MenuContent>
@@ -75,14 +72,12 @@ const Header = () => {
               <>
                 <Link
                   className="flex justify-center items-center p-2 w-20 rounded-md bg-blue-600  hover:bg-blue-500"
-                  to="/signup"
-                >
+                  to="/signup">
                   Sign Up
                 </Link>
                 <Link
                   className=" flex justify-center items-center p-2 w-20 rounded-md  bg-blue-600  hover:bg-blue-500 "
-                  to="/login"
-                >
+                  to="/login">
                   Log In
                 </Link>
               </>

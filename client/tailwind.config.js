@@ -1,3 +1,5 @@
+import { list } from 'postcss';
+
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
@@ -6,11 +8,14 @@ export default {
       fontFamily: {
         poppins: ['"poppins"', "sans-serif"], // Add your custom font here
         customFont: ['"YourCustomFont"', "serif"], // Example for local fonts
+        mochiy: ['"Mochiy Pop One"', "sans-serif"],
       },
       colors: {
-        primary: "#ecf0f1",
-        secondary: "#34495e",
-        background: "#7f8c8d",
+        primary: "#1F1F1F",
+        secondary: "#AB57Fa",
+        background: "#31312f",
+        lightrose: "#df73c4",
+        lightblue:"#1cd0c7",
         accent: "#1abc9c",
         richblack: "#0D0C1D",
         oxford_blue: "#161B33",

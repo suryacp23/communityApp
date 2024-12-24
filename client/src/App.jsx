@@ -18,6 +18,13 @@ import GroupChat from "./components/group/GroupChat";
 import { SocketContextProvider } from "./context/socketContext";
 import { GroupProvider } from "./hooks/useGroup";
 import Chatpage from "./screen/Chatpage";
+import Home1 from "./Version1/Home1";
+import Login1 from "./Version1/Login1";
+import Signup1 from "./Version1/Signup1";
+import EventPage from "./Version1/EventPage";
+import CreateEvents from "./Version1/forms/CreateEvents";
+import EditEvents from "./Version1/forms/EditEvents";
+
 // import logo from "./assets/logo.svg";
 
 const App = () => {
@@ -37,6 +44,12 @@ const App = () => {
                   <Route path="/blogs" element={<Blogpage />} />
                   <Route path="/myBlogs" element={<MyBlogs />} />
                   <Route path="*" element={<Home />} />
+                  <Route path="/home1" element={<Home1 />} />
+                  <Route path="/login1" element={<Login1 />} />
+                  <Route path="/signup1" element={<Signup1 />} />
+                  <Route path="/events" element={<EventPage />} />
+                  <Route path="/createEvents" element={<CreateEvents />} />
+                  <Route path="/editEvents" element={<EditEvents />} />
                   <Route path="/dashboard" element={<DashBoard />}>
                     <Route index element={<Profile />} />
                     <Route path="events" element={<MyBlogs />} />
