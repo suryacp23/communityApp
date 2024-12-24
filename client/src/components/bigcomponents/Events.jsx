@@ -1,5 +1,5 @@
 import React from "react";
-import { Avatar } from "../../components/ui/avatar";
+import { Avatar } from "../ui/avatar";
 import { formatTimestamp } from "../../utils/time";
 
 const Events = ({ blog }) => {

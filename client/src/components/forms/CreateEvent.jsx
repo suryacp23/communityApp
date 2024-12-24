@@ -1,7 +1,6 @@
+import Navbar from "../bigcomponents/Navbar";
 
-import Navbar from "../../components/bigcomponents/Navbar";
-
-const CreateEvents = () => {
+const CreateEvent = () => {
   return (
     <div className=" h-screen w-screen flex-col bg-background flex items-center font-mochiy select-none ">
       <Navbar />
@@ -152,4 +151,4 @@ const CreateEvents = () => {
   );
 };
 
-export default CreateEvents;
+export default CreateEvent;

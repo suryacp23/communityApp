@@ -1,12 +1,12 @@
 import React from "react";
-import Navbar from "../components/bigcomponents/Navbar";
+import Navbar from "../bigcomponents/Navbar.jsx";
 // import Blog from "../components/blog/Blog";
-import SpinnerLogo from "../components/Additionalui/SpinnerLogo";
+import SpinnerLogo from "../Additionalui/SpinnerLogo.jsx";
 import { useQuery } from "@tanstack/react-query";
-import { fetchBlogs } from "./api";
-import Events from "./user/Events";
-import Spinner from "../components/Additionalui/Spinner";
-import HamburgerMenu from "../components/bigcomponents/HamburgerMenu";
+import { fetchBlogs } from "../../services/api.js";
+import Events from "../bigcomponents/Events.jsx";
+import Spinner from "../Additionalui/Spinner.jsx";
+import HamburgerMenu from "../bigcomponents/HamburgerMenu.jsx";
 
 const EventPage = () => {
   const { isLoading, error, isError, data } = useQuery({

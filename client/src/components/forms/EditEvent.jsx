@@ -1,6 +1,6 @@
-import Navbar from "../../components/bigcomponents/Navbar";
+import Navbar from "../bigcomponents/Navbar";
 
-const EditEvents = () => {
+const EditEvent = () => {
   return (
     <div className=" h-screen w-screen flex-col bg-background flex items-center font-mochiy select-none ">
       <Navbar />
@@ -144,11 +144,11 @@ const EditEvents = () => {
         </div>
 
         <button className="bg-violet-500 text-white p-2 rounded-md w-40">
-          EditEvent
+          Create Event
         </button>
       </form>
     </div>
   );
 };
 
-export default EditEvents;
+export default EditEvent;
