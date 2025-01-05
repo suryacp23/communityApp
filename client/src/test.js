@@ -377,3 +377,96 @@ export const joinRequests = [
     status: "pending",
   },
 ];
+export const chat = [
+  { id: 1, name: "Alice", message: "Good morning, everyone!", time: "8:00 AM" },
+  {
+    id: 2,
+    name: "Bob",
+    message: "Morning, Alice! How are you?",
+    time: "8:02 AM",
+  },
+  {
+    id: 3,
+    name: "Charlie",
+    message: "Good morning! Ready for the meeting?",
+    time: "8:03 AM",
+  },
+  {
+    id: 1,
+    name: "Alice",
+    message: "Doing well, Bob. Yes, all set for the meeting.",
+    time: "8:04 AM",
+  },
+  {
+    id: 2,
+    name: "Bob",
+    message: "Great to hear! Did anyone check the agenda?",
+    time: "8:05 AM",
+  },
+  {
+    id: 3,
+    name: "Charlie",
+    message: "I did. Looks pretty straightforward.",
+    time: "8:06 AM",
+  },
+  {
+    id: 1,
+    name: "Alice",
+    message: "Perfect. Let's try to wrap it up quickly today.",
+    time: "8:07 AM",
+  },
+  {
+    id: 4,
+    name: "Diana",
+    message: "Hey team! Just joined. What did I miss?",
+    time: "8:08 AM",
+  },
+  {
+    id: 2,
+    name: "Bob",
+    message: "Not much, Diana. Just prepping for the meeting.",
+    time: "8:09 AM",
+  },
+  {
+    id: 2,
+    name: "Bob",
+    message: "Welcome, Diana! Grab a coffee and join us. 😊",
+    time: "8:10 AM",
+  },
+  {
+    id: 4,
+    name: "Diana",
+    message: "Haha, already did! Let’s get started.",
+    time: "8:11 AM",
+  },
+  {
+    id: 1,
+    name: "Alice",
+    message: "Alright, team. First topic: project deadlines.",
+    time: "8:12 AM",
+  },
+  {
+    id: 2,
+    name: "Bob",
+    message: "We might need a one-week extension for Task 3.",
+    time: "8:14 AM",
+  },
+  {
+    id: 4,
+    name: "Diana",
+    message: "Agreed. Task 3 has a lot of dependencies.",
+    time: "8:15 AM",
+  },
+  {
+    id: 3,
+    name: "Charlie",
+    message: "I'll coordinate with the client and confirm.",
+    time: "8:16 AM",
+  },
+  {
+    id: 1,
+    name: "Alice",
+    message: "Sounds good. Let’s finalize by EOD today.",
+    time: "8:17 AM",
+  },
+];
