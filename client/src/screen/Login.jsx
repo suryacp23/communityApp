@@ -1,14 +1,25 @@
 import React, { useState } from "react";
-import { PasswordInput } from "../components/ui/password-input";
-import { Input } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
-import Spinner from "../components/Additionalui/Spinner";
+import { Link, useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import { logindata } from "../services/api.js";
+import { useAuth } from "../hooks/useAuth.jsx";
 
-const Login1 = () => {
+const Login = () => {
+  const navigate = useNavigate();
+  const { setUser } = useAuth();
   const { mutate, isPending } = useMutation({
     mutationFn: ({ userName, password }) => logindata({ userName, password }),
+    onSuccess: (data) => {
+      console.log("Login successful:", data); // Now data is available
+      localStorage.setItem("token", JSON.stringify(data));
+      setUser(data);
+      setuserName("");
+      setPassword("");
+      navigate("/events");
+    },
+    onError: (error) => {
+      console.error("Login failed:", error.message);
+    },
   });
   const [userName, setuserName] = useState("");
   const [password, setPassword] = useState("");
@@ -20,12 +31,12 @@ const Login1 = () => {
   };
 
   return (
-    <div className="h-screen w-screen relative bg-background flex justify-center md:justify-end items-center  font-mochiy">
+    <div className="h-screen relative bg-background flex justify-center md:justify-end items-center  font-mochiy">
       <div className="h-7 md:h-10 w-[90vw] md:w-[75vw] bg-lightrose absolute top-0 left-0 rounded-br-full"></div>
       <div className="h-7 md:h-10 w-[90vw] md:w-[75vw] bg-lightblue absolute  right-0 bottom-0 rounded-tl-full"></div>
       <div className="h-4/5 w-3/5  lg:w-4/5 hidden md:flex flex-col justify-center items-center">
         <div className="h-3/5 w-full lg:w-3/5 hidden md:flex justify-center relative items-center capitalize">
-          <h4 className="absolute left-0 text-xl  lg:text-4xl p-10 font-mochiy  hidden md:flex items-center h-full w-full">
+          <h4 className="absolute left-0 text-xl  lg:text-4xl p-10 font-mochiy  hidden md:flex items-center h-full w-full text-white">
             Unlock your potential log in and take the first step toward
             greatness!
           </h4>
@@ -48,7 +59,7 @@ const Login1 = () => {
             placeholder="UserName"
             className="bg-slate-100 h-9 md:h-12 w-full text-xs md:text-base lg:text-xl rounded-md placeholder-slate-600 pl-4  "
           />
-          <PasswordInput
+          <input
             type="password"
             id="password"
             value={password}
@@ -60,7 +71,7 @@ const Login1 = () => {
           <div className="bg-slate-950 h-9 md:h-10 w-full text-slate-100 rounded-md md:text-lg lg:text-xl">
             {isPending ? (
               <div className="h-9 md:h-10 w-full flex justify-center items-center">
-                <Spinner />
+                loading
               </div>
             ) : (
               <button
@@ -74,9 +85,9 @@ const Login1 = () => {
           </div>
         </form>
         <div className="h-1/6 w-full flex justify-center items-start  text-xs md:text-base lg:text-xl ">
-          <h2>
-            don’t have account?
-            <Link to={"/signup"} className="text-black">
+          <h2 className="flex gap-2">
+            <span>don’t have account?</span>
+            <Link to={"/signup"} className="text-blue-950 underline">
               Signup
             </Link>
           </h2>
@@ -86,4 +97,4 @@ const Login1 = () => {
   );
 };
 
-export default Login1;
+export default Login;

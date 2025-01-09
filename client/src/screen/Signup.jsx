@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { PasswordInput } from "../components/ui/password-input";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import { SignupData } from "../services/api.js";
-import { ToastContainer } from "react-toastify";
-import Spinner from "../components/Additionalui/Spinner";
+import { useAuth } from "../hooks/useAuth.jsx";
 
-const Signup1 = () => {
+const Signup = () => {
+  const navigate = useNavigate();
+  const { setUser } = useAuth();
   const [userName, setuserName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -14,6 +14,17 @@ const Signup1 = () => {
   const { mutate, isError, error, isPending } = useMutation({
     mutationFn: ({ userName, email, password }) =>
       SignupData({ userName, email, password }),
+    onSuccess: (data) => {
+      console.log("Login successful:", data); // Now data is available
+      localStorage.setItem("token", JSON.stringify(data));
+      setUser(data);
+      setuserName("");
+      setPassword("");
+      navigate("/events");
+    },
+    onError: (error) => {
+      console.error("Login failed:", error.message);
+    },
   });
 
   const handleSubmit = (e) => {
@@ -25,12 +36,12 @@ const Signup1 = () => {
   };
 
   return (
-    <div className="h-screen w-screen relative bg-background flex justify-center md:justify-end items-center  font-mochiy">
+    <div className="h-screen relative bg-background flex justify-center md:justify-end items-center  font-mochiy">
       <div className="h-7 md:h-10 w-[90vw] md:w-[75vw] bg-lightrose absolute top-0 left-0 rounded-br-full"></div>
       <div className="h-7 md:h-10 w-[90vw] md:w-[75vw] bg-lightblue absolute  right-0 bottom-0 rounded-tl-full"></div>
       <div className="h-4/5  w-3/5  lg:w-4/5 hidden md:flex flex-col justify-center items-center">
         <div className="h-3/4  w-4/5 lg:w-3/5 hidden md:flex justify-center relative items-center capitalize">
-          <h4 className="absolute left-0  text-xl md:text-2xl  lg:text-4xl p-10 font-mochiy  hidden md:flex items-center h-full w-full">
+          <h4 className="absolute left-0  text-xl md:text-2xl  lg:text-4xl p-10 font-mochiy  hidden md:flex items-center h-full w-full text-white">
             Unlock your potential log in and take the first step toward
             greatness!
           </h4>
@@ -62,7 +73,7 @@ const Signup1 = () => {
             className="bg-slate-100  h-9 md:h-10 w-full text-xs md:text-base lg:text-xl rounded-md placeholder-slate-600 pl-4  "
           />
 
-          <PasswordInput
+          <input
             type="password"
             placeholder="Password"
             id="password"
@@ -73,7 +84,7 @@ const Signup1 = () => {
           <div className="bg-slate-950 h-9 md:h-10 w-full text-slate-100 rounded-md md:text-lg lg:text-xl">
             {isPending ? (
               <div className="h-9 md:h-10 w-full flex justify-center items-center">
-                <Spinner />
+                loading
               </div>
             ) : (
               <button
@@ -87,17 +98,16 @@ const Signup1 = () => {
           </div>
         </form>
         <div className="h-1/6 w-full flex justify-center items-start ">
-          <h2>
-            Already have account?
-            <Link to={"/login"} className="text-black">
+          <h2 className="flex gap-2">
+            <span>Already have account?</span>
+            <Link to={"/login"} className="text-blue-900 underline">
               Login
             </Link>
           </h2>
         </div>
       </div>
-      <ToastContainer />
     </div>
   );
 };
 
-export default Signup1;
+export default Signup;

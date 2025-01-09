@@ -1,5 +1,5 @@
 export const getRandomColor = () => {
-  let randomColor = Math.floor(Math.random() * 16777215).toString(16);
+  const colors = ["#81C784", "#7E57C2", "#64B5F6", "#EC407A", "#FFB74D"];
 
-  return `#${randomColor.padStart(6, "0")}`;
+  return colors[Math.floor(Math.random() * colors.length)];
 };
