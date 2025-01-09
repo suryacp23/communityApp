@@ -1,10 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useGroup } from "../../hooks/useGroup";
-import { Avatar } from "../../components/ui/avatar";
+import Avatar from "../Additionalui/Avatar";
 import { useAuth } from "../../hooks/useAuth";
 import { useSocketContext } from "../../context/socketContext";
-import { formatTimestamp } from "../../utils/time.js";
-import { RiSendPlaneFill } from "react-icons/ri";
+import { VscSend } from "react-icons/vsc";
+import { chat } from "../../test";
+import { getRandomColor } from "../../utils/color";
 
 const GroupChat = ({ currentGroup }) => {
   const [conversation, setConversation] = useState([]);
@@ -14,19 +15,16 @@ const GroupChat = ({ currentGroup }) => {
   const groupid = currentGroup;
   const { getGroupInfo } = useGroup();
   const [groupInfo, setGroupInfo] = useState(null);
-  // console.log(getGroupInfo(groupid));
-  console.log(currentGroup);
+
+  const scrollRef = useRef(null);
+
   useEffect(() => {
     const fetchGroup = async (groupid) => {
       const data = await getGroupInfo(groupid);
       setGroupInfo(data);
-      console.log(data);
     };
     fetchGroup(groupid);
   }, [groupid, user]);
-
-  const scrollRef = useRef(null);
-  console.log(groupInfo);
 
   useEffect(() => {
     socket?.emit("joinRoom", groupid);
@@ -43,21 +41,7 @@ const GroupChat = ({ currentGroup }) => {
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [conversation]);
-  const fetchChat = async () => {
-    try {
-      const data = await fetch(`/api/message/${groupid}`, {
-        credentials: "include",
-      });
-      const chat = await data.json();
-      setConversation(chat);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  useEffect(() => {
-    fetchChat();
-    console.log(conversation);
-  }, [groupid]);
+
   const handleSend = async (e) => {
     e.preventDefault();
     if (!input.trim()) return;
@@ -68,96 +52,74 @@ const GroupChat = ({ currentGroup }) => {
       body: JSON.stringify({ message: input, groupId: groupid }),
     });
     const data = await res.json();
-    console.log(data);
     socket.emit("newMessage", data);
     setInput("");
   };
+  const color = getRandomColor();
+
   return (
-    <div className="relative h-full w-full shadow-md rounded-lg">
-      <div className="w-full h-5/6 flex items-center justify-center">
-        <ul className="flex flex-col gap-2 w-4/5 mx-auto h-[60vh] overflow-y-scroll scroll-smooth">
-          {conversation?.length == 0 && (
-            <div
-              className="h-full w-full flex
-             justify-center items-center"
-            >
-              <p>start new conversation</p>
-            </div>
-          )}
-          {conversation?.map((chat) => {
-            const isSender = user._id === chat.senderId._id;
-            // console.log(groupInfo);
-            // console.log("group" + groupInfo.admin?._id);
-            // console.log(groupInfo.admin?._id == chat.senderId._id);
-
-            return (
-              <li
-                key={chat?._id}
-                ref={scrollRef}
-                className={`flex items-end ${
-                  isSender ? "flex-row-reverse" : "flex-row"
-                } w-full`}
-              >
-                <div className={`${isSender ? "ml-2" : "mr-2"}`}>
-                  <Avatar name={chat?.senderId?.userName} />
-                </div>
-
-                <div
-                  className={`p-2 flex ${
-                    isSender ? "justify-end" : "justify-start"
-                  } flex-col bg-violet-950 rounded-lg p-2 max-w-[50%] w-fit`}
-                >
-                  <p
-                    className={`text-xs ${
-                      isSender ? "text-right" : "text-left"
-                    }  p-1`}
-                  >
-                    <span className="pr-2">
-                      {"~" + chat?.senderId?.userName}
-                    </span>
-                    <span
-                      className={`${
-                        groupInfo?.admin?._id == chat.senderId._id
-                          ? "inline-block"
-                          : "hidden"
-                      } bg-green-500 text-xs text-black px-2 rounded-full`}
-                    >
-                      admin
-                    </span>
-                  </p>
-                  <p
-                    className={` ${
-                      isSender ? "ml-auto" : "mr-auto"
-                    } font-mono p-2 `}
-                  >
-                    {chat?.message}
-                  </p>
-                  <p
-                    className={`text-xs ${
-                      isSender ? "text-left" : "text-right"
-                    }  p-1`}
-                  >
-                    <span className="italic font-light">
-                      {" "}
-                      {formatTimestamp(chat.createdAt)}
-                    </span>
-                  </p>
-                </div>
-              </li>
-            );
-          })}
-        </ul>
+    <div className="relative h-full w-full bg-background flex justify-between flex-col">
+      <div className="h-20 w-full  flex justify-center md:justify-start items-center p-3 gap-3 bg-gray-700 text-white">
+        <Avatar size={"sm"} name={groupInfo?.name || "Group"} />
+        <h1 className="text-lg font-semibold">
+          {groupInfo?.name || "Group Name"}
+        </h1>
       </div>
-      <form onSubmit={handleSend} className="w-4/5 mx-auto flex gap-2 p-2">
+
+      <div className="flex flex-col overflow-y-scroll ">
+        {chat.map((message, index) => {
+          const isSender = message.id === 1;
+          return (
+            <div
+              key={index}
+              className={`flex items-end p-2 gap-1 ${
+                isSender ? "flex-row-reverse" : "justify-start"
+              }`}>
+              <Avatar
+                size="sm"
+                name={message.name}
+                className=""
+                bgColor={getRandomColor()}
+              />
+              <div
+                className={`max-w-[85%] w-fit md:max-w-[70%] rounded-lg text-justify p-2 ${
+                  isSender
+                    ? "bg-[#3c74d4fb] text-white rounded-br-none text-right"
+                    : "bg-[#4c5259] text-white rounded-bl-none text-left"
+                }`}>
+                <p
+                  className={`text-xs md:text-sm pb-1 text-slate-950 opacity-50 `}>
+                  {message.name}
+                </p>
+                <p className="text-xs md:text-sm">{message.message}</p>
+                <span
+                  className={`text-xs text-slate-900 opacity-55 p-1 " ${
+                    isSender ? " flex justify-start" : " flex justify-end"
+                  }`}>
+                  {message.time}
+                </span>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      <form
+      
+        onSubmit={handleSend}
+        className=" w-full md:w-full h-16 p-4 bg-gray-600 flex  items-center justify-between">
         <input
           type="text"
           value={input}
-          className="h-10 w-full rounded-full text-white bg-oxford_blue px-2"
-          placeholder="Message"
           onChange={(e) => setInput(e.target.value)}
+          placeholder="Type a message"
+          className="flex h-10 p-2 w-[95%] text-slate-200 bg-slate-700 rounded-full  border border-gray-500"
         />
-        <button className="h-10 bg-purple-950 p-2 w-10 rounded-full flex justify-center items-center">
-          <RiSendPlaneFill />
+        <button
+          type="submit"
+          className=" bg-slate-200 text-black p-2 rounded-full">
+          <VscSend size={20} />
+         
         </button>
       </form>
     </div>
