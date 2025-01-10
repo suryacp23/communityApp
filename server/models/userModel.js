@@ -1,31 +1,35 @@
 import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema(
-  {
-    userName: {
-      type: String,
-      required: true,
-      unique: true,
-    },
-    email: {
-      type: String,
-      required: true,
-      unique: true,
-    },
-    password: {
-      type: String,
-      required: true,
-    },
-    isAdmin: {
-      type: Boolean,
-      default: false,
-    },
-    groups: {
-      type: Number,
-      default: 0,
-    },
-  },
-  { timestamps: true }
+	{
+		userName: {
+			type: String,
+			required: true,
+			unique: true,
+		},
+		email: {
+			type: String,
+			required: true,
+			unique: true,
+		},
+		password: {
+			type: String,
+			required: true,
+		},
+		groups: [
+			{
+				type: mongoose.Schema.Types.ObjectId,
+				ref: "Group",
+			},
+		],
+		eventsApplied: [
+			{
+				type: mongoose.Schema.Types.ObjectId,
+				ref: "Event",
+			},
+		],
+	},
+	{ timestamps: true }
 );
 
 const User = mongoose.model("User", userSchema);

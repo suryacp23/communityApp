@@ -1,25 +1,21 @@
 import mongoose from "mongoose";
 
-const commentSchema = mongoose.Schema(
+const likeSchema = new mongoose.Schema(
 	{
-		user: {
+		userId: {
 			type: mongoose.Schema.Types.ObjectId,
 			ref: "User",
 			required: true,
 		},
-		event: {
+		eventId: {
 			type: mongoose.Schema.Types.ObjectId,
 			ref: "Event",
-			required: true,
-		},
-		comment: {
-			type: String,
 			required: true,
 		},
 	},
 	{ timestamps: true }
 );
 
-const Comment = mongoose.model("Comment", commentSchema);
+const Like = mongoose.model("Like", likeSchema);
 
-export default Comment;
+export default Like;
