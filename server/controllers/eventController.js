@@ -114,32 +114,28 @@ export const updateEvent = async (req, res) => {
 };
 export const deleteEvent = async (req, res) => {
 	try {
-		const [event, groups] = await Promise.all([
-			Event.findById(req.params.id),
-			Group.find({ eventId: req.params.id }), // Adjusted to find by `eventId`
-		]);
+		const event = await Event.findById(req.params.id).populate("userId");
+		console.log(event);
 		if (event == null) {
-			return res
-				.status(404)
-				.json({ message: "event not found" })
-				.populate("user");
+			return res.status(404).json({ message: "event not found" });
 		}
-		if (req.body.user !== event.user._id.toString()) {
+
+		if (req.body.user !== event.userId._id.toString()) {
 			return res.status(401).json({
 				error: "unautorized you are not able to delete the event",
 			});
 		}
-
+		console.log(event._id);
 		await Promise.all([
 			event.deleteOne(),
-			Group.deleteMany({ eventId: event["_id"] }),
+			Group.deleteMany({ eventId: event._id }),
 		]);
 
-		const user = await User.findById(event.user._id);
+		// const user = await User.findById(event.user._id);
 
 		res.json({ message: "Event deleted" });
 	} catch (error) {
-		console.log("delete event controller error" + error.message);
+		console.log("delete event controller error" + error);
 		res.status(400).json({ error: error.message });
 	}
 };
