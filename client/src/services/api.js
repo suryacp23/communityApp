@@ -2,7 +2,7 @@ import axios from "axios";
 
 // Fetch blogs
 export const fetchBlogs = () =>
-  axios.get("/api/blog/blogs").then((res) => res.data);
+  axios.get("/api/events").then((res) => res.data);
 
 // Sign up a user
 export const SignupData = ({ userName, email, password }) =>

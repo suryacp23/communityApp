@@ -72,7 +72,7 @@ const GroupChat = ({ currentGroup }) => {
   };
 
   return (
-    <div className="relative h-full w-full bg-background flex flex-col justify-between">
+    <div className="relative h-full w-full bg-background flex flex-col justify-between font-mochiy">
       <div className="h-20 w-full flex items-center p-3 gap-3 bg-gray-700 text-white">
         <Avatar size={"sm"} name={groupInfo?.data?.name || "Group name"} />
         <h1 className="text-lg font-semibold">

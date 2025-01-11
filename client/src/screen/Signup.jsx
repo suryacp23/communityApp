@@ -3,7 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import { SignupData } from "../services/api.js";
 import { useAuth } from "../hooks/useAuth.jsx";
-
+import Spinner from "../components/Spinner.jsx";
+import PasswordInput from "../components/PasswordInput.jsx";
 const Signup = () => {
   const navigate = useNavigate();
   const { setUser } = useAuth();
@@ -54,8 +55,7 @@ const Signup = () => {
         <form
           action=""
           onSubmit={handleSubmit}
-          className="h-4/5 w-4/5 md:w-3/5 flex flex-col gap-9 justify-center text-slate-950 items-center "
-        >
+          className="h-4/5 w-4/5 md:w-3/5 flex flex-col gap-9 justify-center text-slate-950 items-center ">
           <input
             type="text"
             id="username"
@@ -73,7 +73,7 @@ const Signup = () => {
             className="bg-slate-100  h-9 md:h-10 w-full text-xs md:text-base lg:text-xl rounded-md placeholder-slate-600 pl-4  "
           />
 
-          <input
+          <PasswordInput
             type="password"
             placeholder="Password"
             id="password"
@@ -84,14 +84,13 @@ const Signup = () => {
           <div className="bg-slate-950 h-9 md:h-10 w-full text-slate-100 rounded-md md:text-lg lg:text-xl">
             {isPending ? (
               <div className="h-9 md:h-10 w-full flex justify-center items-center">
-                loading
+                <Spinner />
               </div>
             ) : (
               <button
                 type="submit"
                 className="bg-slate-950 h-9 md:h-10 w-full text-slate-100 rounded-md md:text-lg lg:text-xl"
-                disabled={isPending}
-              >
+                disabled={isPending}>
                 Signup
               </button>
             )}
