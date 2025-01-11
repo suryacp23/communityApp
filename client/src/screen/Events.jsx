@@ -2,7 +2,8 @@ import EventList from "../components/EventList";
 import Header from "../components/Header";
 
 const Events = () => (
-  <div className="w-full h-screen">
+
+  <div className="w-full h-screen font-mochiy">
     <Header />
 
     <section>

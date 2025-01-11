@@ -15,7 +15,7 @@ const CommentForm = ({ eventId }) => {
   }, [user]);
 
   // Mutation to create a comment
-  const mutation = useMutation({
+  const { isPending, mutate } = useMutation({
     mutationFn: createComment,
     onSuccess: () => {
       queryClient.invalidateQueries(["comments", eventId]);
@@ -34,17 +34,16 @@ const CommentForm = ({ eventId }) => {
       return;
     }
     if (!commentText.trim()) return;
-    mutation.mutate({
+    mutate({
       comment: commentText,
       user: user._id,
-      blog: eventId,
+      event: eventId,
     });
   };
   return (
     <form
       onSubmit={handleAddComment}
-      className="flex flex-col justify-end items-end"
-    >
+      className="flex flex-col justify-end items-end">
       <textarea
         value={commentText}
         onChange={(e) => setCommentText(e.target.value)}
@@ -55,9 +54,8 @@ const CommentForm = ({ eventId }) => {
       <button
         type="submit"
         className="px-4 w-fit py-2 bg-blue-800 text-white rounded-lg hover:bg-blue-950 transition"
-        disabled={mutation.isLoading}
-      >
-        {mutation.isLoading ? "Adding..." : "Add Comment"}
+        disabled={isPending}>
+        {isPending ? "Adding..." : "Add Comment"}
       </button>
     </form>
   );

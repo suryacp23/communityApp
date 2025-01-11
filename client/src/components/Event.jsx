@@ -38,7 +38,7 @@ const Event = ({ event }) => {
                   />
                 </div>
                 <div className="text-black font-bold text-sm">
-                  {event.user.userName}
+                  {event.userId.userName}
                 </div>
               </div>
 
@@ -46,7 +46,7 @@ const Event = ({ event }) => {
               <div className="flex items-center gap-4 text-black\80 text-sm">
                 <div className="flex items-center space-x-1">
                   <span className=" text-lg font-semibold">
-                    {formatCount(event.likes || 1e6)}
+                    {formatCount(event.likes || 0)}
                   </span>
                   <p className=" text-sm">
                     <BiSolidLike size={25} />
@@ -54,7 +54,7 @@ const Event = ({ event }) => {
                 </div>
                 <div className="flex items-center space-x-1">
                   <span className="text-lg font-semibold">
-                    {formatCount(event.comments || 1e6)}
+                    {formatCount(event.comments || 0)}
                   </span>
                   <p className="font-bold">
                     <MdModeComment size={25} />

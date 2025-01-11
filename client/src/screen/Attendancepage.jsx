@@ -1,6 +1,7 @@
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { attendance } from "../services/api";
+import Spinner from "../components/"
 
 const Attendancepage = () => {
 	const { isLoading, data } = useQuery({
@@ -9,7 +10,7 @@ const Attendancepage = () => {
 		refetchInterval: 100,
 	});
 	if (isLoading) {
-		return <p>Loading...</p>;
+		return <Spinner/>;
 	}
 	return (
 		<div>

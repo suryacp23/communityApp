@@ -3,6 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import { logindata } from "../services/api.js";
 import { useAuth } from "../hooks/useAuth.jsx";
+import Spinner from "../components/Spinner.jsx";
+import PasswordInput from "../components/PasswordInput.jsx";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -31,7 +33,7 @@ const Login = () => {
   };
 
   return (
-    <div className="h-screen relative bg-background flex justify-center md:justify-end items-center  font-mochiy">
+    <div className="h-screen max-w-screen-2xl relative bg-background flex justify-center md:justify-end items-center  font-mochiy">
       <div className="h-7 md:h-10 w-[90vw] md:w-[75vw] bg-lightrose absolute top-0 left-0 rounded-br-full"></div>
       <div className="h-7 md:h-10 w-[90vw] md:w-[75vw] bg-lightblue absolute  right-0 bottom-0 rounded-tl-full"></div>
       <div className="h-4/5 w-3/5  lg:w-4/5 hidden md:flex flex-col justify-center items-center">
@@ -49,8 +51,7 @@ const Login = () => {
         <form
           action=""
           onSubmit={handleSubmit}
-          className="h-4/5 w-4/5  md:w-3/5 flex flex-col gap-9 justify-center text-slate-950 items-center "
-        >
+          className="h-4/5 w-4/5  md:w-3/5 flex flex-col gap-9 justify-center text-slate-950 items-center ">
           <input
             type="text"
             id="username"
@@ -59,7 +60,7 @@ const Login = () => {
             placeholder="UserName"
             className="bg-slate-100 h-9 md:h-12 w-full text-xs md:text-base lg:text-xl rounded-md placeholder-slate-600 pl-4  "
           />
-          <input
+          <PasswordInput
             type="password"
             id="password"
             value={password}
@@ -71,14 +72,13 @@ const Login = () => {
           <div className="bg-slate-950 h-9 md:h-10 w-full text-slate-100 rounded-md md:text-lg lg:text-xl">
             {isPending ? (
               <div className="h-9 md:h-10 w-full flex justify-center items-center">
-                loading
+                <Spinner />
               </div>
             ) : (
               <button
                 type="submit"
                 className="bg-slate-950 h-9 md:h-10 w-full text-slate-100 rounded-md md:text-lg lg:text-xl"
-                disabled={isPending}
-              >
+                disabled={isPending}>
                 Login
               </button>
             )}
