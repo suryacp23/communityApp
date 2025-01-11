@@ -46,6 +46,14 @@ const eventSchema = mongoose.Schema(
 			type: Number,
 			default: 0,
 		},
+		swags: {
+			type: String,
+			default: "",
+		},
+		refreshments: {
+			type: String,
+			default: "",
+		},
 	},
 	{ timestamps: true }
 );

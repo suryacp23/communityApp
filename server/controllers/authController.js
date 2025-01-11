@@ -46,7 +46,13 @@ export const login = async (req, res) => {
 			(await bcrypt.compare(password, userExists.password))
 		) {
 			generateToken(res, userExists._id);
-			res.status(200).json(userExists);
+			res.status(200).json({
+				_id: userExists._id,
+				userName: userExists.userName,
+				email: userExists.email,
+				groups: userExists.groups,
+				eventsApplied: userExists.eventsApplied,
+			});
 		} else {
 			return res
 				.status(401)
