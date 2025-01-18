@@ -8,6 +8,7 @@ import Signup from "./screen/Signup";
 import Group from "./screen/Group";
 import GetStarted from "./screen/GetStarted";
 import Dashboard from "./screen/Dashboard";
+import Attendancepage from "./screen/Attendancepage";
 
 const navLinks = [
   { label: "Events", href: "/events" },
@@ -36,6 +37,10 @@ const App = () => {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route
+            path="/events/:eventId/attendance"
+            element={<Attendancepage />}
+          />
         </Routes>
       </div>
     </Router>
