@@ -1,8 +1,15 @@
+<<<<<<< HEAD
 import React, { useRef, useEffect, useState } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
 import { Html5Qrcode } from "html5-qrcode";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { checkAttendance, getAttendances } from "../services/api";
+=======
+import React from "react";
+import { useQuery } from "@tanstack/react-query";
+import { attendance } from "../services/api";
+import Spinner from "../components/"
+>>>>>>> 69994d6ce2cad7dc26a9c567b8c5214923af9548
 
 const Attendancepage = () => {
 	const { eventId } = useParams();
@@ -11,6 +18,7 @@ const Attendancepage = () => {
 		queryKey: ["attendance"],
 		queryFn: () => getAttendances(eventId),
 	});
+<<<<<<< HEAD
 	const present =
 		data?.attendances?.filter((el) => el.isAttended === true).length || 0;
 
@@ -88,6 +96,11 @@ const Attendancepage = () => {
 		html5QrCode.current = new Html5Qrcode("reader");
 	}, []);
 
+=======
+	if (isLoading) {
+		return <Spinner/>;
+	}
+>>>>>>> 69994d6ce2cad7dc26a9c567b8c5214923af9548
 	return (
 		<div className="text-white font-mono max-w-screen-2xl h-screen o">
 			<header className="text-center py-3 text-pink-300 ">
