@@ -1,12 +1,15 @@
 import Application from "../models/applicationModel.js";
 import mongoose from "mongoose";
 import { redisClient } from "../redis/redis.js";
+import { attendanceQueue } from "../queues/attendanceQueue.js";
 
 export const getAttendance = async (req, res) => {
 	try {
 		const { eventId } = req.params;
+		console.log(eventId);
 		const attendances = await Application.aggregate([
-			// Step 1: Lookup (populate) the `eventId` field from the `events` collection
+			//join collections
+			// Lookup (populate) the `eventId` field from the `events` collection
 			{
 				$match: {
 					eventId: new mongoose.Types.ObjectId(eventId), // Filter by eventId
@@ -43,11 +46,13 @@ export const getAttendance = async (req, res) => {
 					preserveNullAndEmptyArrays: true,
 				},
 			},
-			// Step 7: Project only the required fields
+			// Step 5: Project only the required fields
 			{
 				$project: {
-					_id: 1, // Attendance ID
+					_id: 1, // include attendance ID
 					userName: "$user.userName", // User's name
+					email: "$user.email",
+					appliedTo: "$appliedTo",
 					isAttended: "$isAttended",
 				},
 			},
@@ -61,7 +66,7 @@ export const getAttendance = async (req, res) => {
 		console.log(redisData);
 		setAllEventInRedis(eventId, redisData);
 		res.status(200).json({
-			data: redisData,
+			attendances: attendances,
 			message: "Fetched data successfully",
 		});
 	} catch (error) {
@@ -76,11 +81,17 @@ export const getAttendance = async (req, res) => {
 
 export const updateAttendance = async (req, res) => {
 	try {
+		const { eventId: ongoingEventId } = req.params;
 		const { eventId, applicationId } = req.body;
 
 		// Validate inputs
 		if (!eventId || !applicationId) {
 			return res.status(400).json({ message: "Invalid data" });
+		}
+		if (eventId !== ongoingEventId) {
+			return res
+				.status(404)
+				.json({ message: "User not registered to this event" });
 		}
 
 		// Get data from Redis for the event
@@ -99,17 +110,19 @@ export const updateAttendance = async (req, res) => {
 
 		// Save the updated data back to Redis
 		await redisClient.hSet(key, applicationId, JSON.stringify(updatedData));
-
+		attendanceQueue.add({ applicationId }); //add an async task to the queue
 		// Respond with updated data
 		return res.status(200).json({
 			message: "Attendance updated successfully",
 			data: updatedData,
+			success: true,
 		});
 	} catch (error) {
 		console.error(error);
 		res.status(500).json({ message: "Server error", error: error.message });
 	}
 };
+
 export const closeAttendance = async (req, res) => {
 	try {
 		const { eventId } = req.body;
@@ -155,22 +168,23 @@ export const closeAttendance = async (req, res) => {
 
 async function setAllEventInRedis(eventId, attendanceData) {
 	try {
-		const redisKey = `event:${eventId}`; // Unique key for the event
+		const redisKey = `event:${eventId}`; // Unique hash key for the event
 
 		// Save each item to the Redis hash
 		for (const [id, value] of Object.entries(attendanceData)) {
 			const result = await redisClient.hSet(redisKey, id, value); // Use `hSet` to store key-value in hash
-			console.log(`HSET Result: ${result}`);
+			console.log(`HSET Result: ${result}`); //result = 0 --> data is updated
 		}
 
-		// Optional: Set expiration for the hash (e.g., 7 days)
-		await redisClient.expire(redisKey, 7 * 24 * 60 * 60); // 7 days in seconds
+		//Redis hash expiration time: 2 hours in sec.
+		await redisClient.expire(redisKey, 2 * 60 * 60);
 
 		console.log(`Attendance data for event ${eventId} saved to Redis.`);
 	} catch (error) {
 		console.error("Error saving event data to Redis:", error.message);
 	}
 }
+
 async function getAllEventFromRedis(eventId) {
 	try {
 		const redisKey = `event:${eventId}`;
