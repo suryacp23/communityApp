@@ -28,6 +28,7 @@ const CreateEvents = () => (
 		<section>Create Events Page</section>
 	</div>
 );
+<<<<<<< HEAD
 
 const App = () => {
   return (
@@ -50,6 +51,36 @@ const App = () => {
       </div>
     </Router>
   );
+=======
+const Dashboard = () => (
+	<div className="w-full h-screen">
+		<Header navLinks={navLinks} />
+		<section>Dashboard</section>
+	</div>
+);
+
+const App = () => {
+	return (
+		<Router>
+			<div className="max-w-screen-wide bg-background mx-auto">
+				<Routes>
+					<Route path="/" element={<GetStarted />} />
+					<Route path="/events" element={<Events />} />
+					<Route path="/events/:eventId" element={<Event />} />
+					<Route path="/groups" element={<Group />} />
+					<Route path="/create-events" element={<CreateEvents />} />
+					<Route path="/dashboard" element={<Dashboard />} />
+					<Route path="/login" element={<Login />} />
+					<Route path="/signup" element={<Signup />} />
+					<Route
+						path="/events/:eventId/attendance"
+						element={<Attendancepage />}
+					/>
+				</Routes>
+			</div>
+		</Router>
+	);
+>>>>>>> 8732cf9 (Backend (#49))
 };
 
 export default App;

@@ -4,6 +4,7 @@ import JoinRequest from "../models/requestModel.js";
 export const createGroup = async (req, res) => {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   const { name, eventId, isHead } = req.body;
 =======
   const { name, eventId } = req.body;
@@ -11,6 +12,9 @@ export const createGroup = async (req, res) => {
 =======
   const { name, eventId, isHead } = req.body;
 >>>>>>> 72330df (added request)
+=======
+  const { name, eventId } = req.body;
+>>>>>>> 8732cf9 (Backend (#49))
 
   try {
     // Check if the group already exists
@@ -27,12 +31,15 @@ export const createGroup = async (req, res) => {
       members: [req.user._id],
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       isHead,
 =======
 >>>>>>> 8732cf9 (Backend (#49))
 =======
       isHead,
 >>>>>>> 72330df (added request)
+=======
+>>>>>>> 8732cf9 (Backend (#49))
     });
 
     res.status(201).json({
@@ -115,6 +122,7 @@ export const approveRequest = async (req, res) => {
       joinRequest.status = "approved";
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       await joinRequest.save();
 =======
       await joinRequest.deleteOne();
@@ -122,6 +130,9 @@ export const approveRequest = async (req, res) => {
 =======
       await joinRequest.save();
 >>>>>>> 72330df (added request)
+=======
+      await joinRequest.deleteOne();
+>>>>>>> 8732cf9 (Backend (#49))
 
       await Group.findByIdAndUpdate(group._id, {
         $push: { members: joinRequest.user },
@@ -133,6 +144,7 @@ export const approveRequest = async (req, res) => {
       joinRequest.status = "rejected";
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       await joinRequest.save();
 =======
       await joinRequest.deleteOne();
@@ -140,6 +152,9 @@ export const approveRequest = async (req, res) => {
 =======
       await joinRequest.save();
 >>>>>>> 72330df (added request)
+=======
+      await joinRequest.deleteOne();
+>>>>>>> 8732cf9 (Backend (#49))
     }
 
     res.status(200).json({ message: `Join request ${action}ed` });
@@ -151,6 +166,7 @@ export const approveRequest = async (req, res) => {
 };
 
 export const joinRequest = async (req, res) => {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 =======
@@ -261,6 +277,31 @@ export const joinRequest = async (req, res) => {
 >>>>>>> 8732cf9 (Backend (#49))
 =======
 >>>>>>> 72330df (added request)
+=======
+  const { userId, groupId } = req.body;
+
+  try {
+    const existingRequest = await JoinRequest.findOne({
+      user: userId,
+      group: groupId,
+    });
+    if (existingRequest)
+      return res.status(400).json({ message: "Join request already sent" });
+
+    const joinRequest = new JoinRequest({ user: userId, group: groupId });
+    await joinRequest.save();
+
+    await Group.findByIdAndUpdate(groupId, {
+      $push: { joinRequests: joinRequest._id },
+    });
+
+    res.status(200).json({ message: "Join request sent" });
+  } catch (err) {
+    res.status(500).json({ message: "Error sending join request", error: err });
+  }
+};
+
+>>>>>>> 8732cf9 (Backend (#49))
 export const getGroupJoinRequests = async (req, res) => {
   const { groupId } = req.params;
 
