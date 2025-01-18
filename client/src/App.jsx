@@ -9,6 +9,7 @@ import Group from "./screen/Group";
 import GetStarted from "./screen/GetStarted";
 import Attendancepage from "./screen/Attendancepage";
 import Dashboard from "./screen/Dashboard";
+import Attendancepage from "./screen/Attendancepage";
 
 const navLinks = [
 	{ label: "Events", href: "/events" },
@@ -23,37 +24,28 @@ const CreateEvents = () => (
 		<section>Create Events Page</section>
 	</div>
 );
-<<<<<<< HEAD
-const Dashboard = () => (
-	<div className="w-full h-screen">
-		<Header navLinks={navLinks} />
-		<section>Dashboard</section>
-	</div>
-);
-=======
->>>>>>> 1d3f203 (added request)
 
 const App = () => {
-	return (
-		<Router>
-			<div className="max-w-screen-wide bg-background mx-auto">
-				<Routes>
-					<Route path="/" element={<GetStarted />} />
-					<Route path="/events" element={<Events />} />
-					<Route path="/events/:eventId" element={<Event />} />
-					<Route path="/groups" element={<Group />} />
-					<Route path="/create-events" element={<CreateEvents />} />
-					<Route path="/dashboard" element={<Dashboard />} />
-					<Route path="/login" element={<Login />} />
-					<Route path="/signup" element={<Signup />} />
-					<Route
-						path="/events/:eventId/attendance"
-						element={<Attendancepage />}
-					/>
-				</Routes>
-			</div>
-		</Router>
-	);
+  return (
+    <Router>
+      <div className="max-w-screen-wide bg-background mx-auto">
+        <Routes>
+          <Route path="/" element={<GetStarted />} />
+          <Route path="/events" element={<Events />} />
+          <Route path="/events/:eventId" element={<Event />} />
+          <Route path="/groups" element={<Group />} />
+          <Route path="/create-events" element={<CreateEvents />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route
+            path="/events/:eventId/attendance"
+            element={<Attendancepage />}
+          />
+        </Routes>
+      </div>
+    </Router>
+  );
 };
 
 export default App;
