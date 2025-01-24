@@ -41,3 +41,7 @@ export const getgroupInfo = async (groupId) => {
 export const fetchChat = async (groupid) => {
   return axios.get(`/api/message/${groupid}`);
 };
+
+export const request = async (groupId) => {
+  return axios.post(`api/group/request`, groupId, { withCredentials: true });
+};

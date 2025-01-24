@@ -2,7 +2,7 @@ import Group from "../models/groupModel.js";
 import JoinRequest from "../models/requestModel.js";
 
 export const createGroup = async (req, res) => {
-  const { name, eventId } = req.body;
+  const { name, eventId, isHead } = req.body;
 
   try {
     // Check if the group already exists
@@ -17,6 +17,7 @@ export const createGroup = async (req, res) => {
       eventId,
       admin: req.user._id,
       members: [req.user._id],
+      isHead,
     });
 
     res.status(201).json({
@@ -97,7 +98,7 @@ export const approveRequest = async (req, res) => {
     const group = joinRequest.group;
     if (action === "approve") {
       joinRequest.status = "approved";
-      await joinRequest.deleteOne();
+      await joinRequest.save();
 
       await Group.findByIdAndUpdate(group._id, {
         $push: { members: joinRequest.user },
@@ -107,7 +108,7 @@ export const approveRequest = async (req, res) => {
       });
     } else if (action === "reject") {
       joinRequest.status = "rejected";
-      await joinRequest.deleteOne();
+      await joinRequest.save();
     }
 
     res.status(200).json({ message: `Join request ${action}ed` });
@@ -119,29 +120,56 @@ export const approveRequest = async (req, res) => {
 };
 
 export const joinRequest = async (req, res) => {
-  const { userId, groupId } = req.body;
+  const { eventId, events } = req.body;
+  const userId = "6740173101d916d7e6efdf2e";
+  // const groupIds = JSON.parse(events);
+  // console.log(groupIds);
 
   try {
-    const existingRequest = await JoinRequest.findOne({
+    const groups = await Group.find({ eventId });
+    console.log(groups);
+
+    const validGroupIds = groups.map((group) => group._id.toString());
+    const filteredGroupIds = events.filter((groupId) =>
+      validGroupIds.includes(groupId)
+    );
+
+    if (filteredGroupIds.length === 0) {
+      return res.status(400).json({ message: "Invalid group IDs" });
+    }
+
+    const existingRequests = await JoinRequest.find({
+      user: userId,
+      group: { $in: filteredGroupIds },
+    });
+
+    const existingGroupIds = existingRequests.map((req) =>
+      req.group.toString()
+    );
+    const newGroupIds = filteredGroupIds.filter(
+      (groupId) => !existingGroupIds.includes(groupId)
+    );
+
+    if (newGroupIds.length === 0) {
+      return res
+        .status(400)
+        .json({ message: "Join requests already sent for all groups" });
+    }
+
+    const joinRequests = newGroupIds.map((groupId) => ({
       user: userId,
       group: groupId,
-    });
-    if (existingRequest)
-      return res.status(400).json({ message: "Join request already sent" });
+    }));
 
-    const joinRequest = new JoinRequest({ user: userId, group: groupId });
-    await joinRequest.save();
+    await JoinRequest.insertMany(joinRequests);
 
-    await Group.findByIdAndUpdate(groupId, {
-      $push: { joinRequests: joinRequest._id },
-    });
-
-    res.status(200).json({ message: "Join request sent" });
+    res.status(200).json({ message: "Join requests sent successfully" });
   } catch (err) {
-    res.status(500).json({ message: "Error sending join request", error: err });
+    res
+      .status(500)
+      .json({ message: "Error sending join requests", error: err });
   }
 };
-
 export const getGroupJoinRequests = async (req, res) => {
   const { groupId } = req.params;
 

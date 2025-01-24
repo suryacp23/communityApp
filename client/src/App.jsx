@@ -7,6 +7,7 @@ import Login from "./screen/Login";
 import Signup from "./screen/Signup";
 import Group from "./screen/Group";
 import GetStarted from "./screen/GetStarted";
+import Dashboard from "./screen/Dashboard";
 
 const navLinks = [
   { label: "Events", href: "/events" },
@@ -19,12 +20,6 @@ const CreateEvents = () => (
   <div className="w-full h-screen">
     <Header navLinks={navLinks} />
     <section>Create Events Page</section>
-  </div>
-);
-const Dashboard = () => (
-  <div className="w-full h-screen">
-    <Header navLinks={navLinks} />
-    <section>Dashboard</section>
   </div>
 );
 
