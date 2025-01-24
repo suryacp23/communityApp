@@ -7,8 +7,8 @@ import Login from "./screen/Login";
 import Signup from "./screen/Signup";
 import Group from "./screen/Group";
 import GetStarted from "./screen/GetStarted";
-import Dashboard from "./screen/Dashboard";
 import Attendancepage from "./screen/Attendancepage";
+import Dashboard from "./screen/Dashboard";
 
 const navLinks = [
   { label: "Events", href: "/events" },

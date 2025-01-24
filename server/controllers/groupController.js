@@ -3,10 +3,14 @@ import JoinRequest from "../models/requestModel.js";
 
 export const createGroup = async (req, res) => {
 <<<<<<< HEAD
+<<<<<<< HEAD
   const { name, eventId, isHead } = req.body;
 =======
   const { name, eventId } = req.body;
 >>>>>>> 8732cf9 (Backend (#49))
+=======
+  const { name, eventId, isHead } = req.body;
+>>>>>>> 72330df (added request)
 
   try {
     // Check if the group already exists
@@ -22,9 +26,13 @@ export const createGroup = async (req, res) => {
       admin: req.user._id,
       members: [req.user._id],
 <<<<<<< HEAD
+<<<<<<< HEAD
       isHead,
 =======
 >>>>>>> 8732cf9 (Backend (#49))
+=======
+      isHead,
+>>>>>>> 72330df (added request)
     });
 
     res.status(201).json({
@@ -106,10 +114,14 @@ export const approveRequest = async (req, res) => {
     if (action === "approve") {
       joinRequest.status = "approved";
 <<<<<<< HEAD
+<<<<<<< HEAD
       await joinRequest.save();
 =======
       await joinRequest.deleteOne();
 >>>>>>> 8732cf9 (Backend (#49))
+=======
+      await joinRequest.save();
+>>>>>>> 72330df (added request)
 
       await Group.findByIdAndUpdate(group._id, {
         $push: { members: joinRequest.user },
@@ -120,10 +132,14 @@ export const approveRequest = async (req, res) => {
     } else if (action === "reject") {
       joinRequest.status = "rejected";
 <<<<<<< HEAD
+<<<<<<< HEAD
       await joinRequest.save();
 =======
       await joinRequest.deleteOne();
 >>>>>>> 8732cf9 (Backend (#49))
+=======
+      await joinRequest.save();
+>>>>>>> 72330df (added request)
     }
 
     res.status(200).json({ message: `Join request ${action}ed` });
@@ -136,10 +152,14 @@ export const approveRequest = async (req, res) => {
 
 export const joinRequest = async (req, res) => {
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 72330df (added request)
   const { eventId, events } = req.body;
   const userId = "6740173101d916d7e6efdf2e";
   // const groupIds = JSON.parse(events);
   // console.log(groupIds);
+<<<<<<< HEAD
 
   try {
     const groups = await Group.find({ eventId });
@@ -188,29 +208,59 @@ export const joinRequest = async (req, res) => {
 };
 =======
   const { userId, groupId } = req.body;
+=======
+>>>>>>> 72330df (added request)
 
   try {
-    const existingRequest = await JoinRequest.findOne({
+    const groups = await Group.find({ eventId });
+    console.log(groups);
+
+    const validGroupIds = groups.map((group) => group._id.toString());
+    const filteredGroupIds = events.filter((groupId) =>
+      validGroupIds.includes(groupId)
+    );
+
+    if (filteredGroupIds.length === 0) {
+      return res.status(400).json({ message: "Invalid group IDs" });
+    }
+
+    const existingRequests = await JoinRequest.find({
+      user: userId,
+      group: { $in: filteredGroupIds },
+    });
+
+    const existingGroupIds = existingRequests.map((req) =>
+      req.group.toString()
+    );
+    const newGroupIds = filteredGroupIds.filter(
+      (groupId) => !existingGroupIds.includes(groupId)
+    );
+
+    if (newGroupIds.length === 0) {
+      return res
+        .status(400)
+        .json({ message: "Join requests already sent for all groups" });
+    }
+
+    const joinRequests = newGroupIds.map((groupId) => ({
       user: userId,
       group: groupId,
-    });
-    if (existingRequest)
-      return res.status(400).json({ message: "Join request already sent" });
+    }));
 
-    const joinRequest = new JoinRequest({ user: userId, group: groupId });
-    await joinRequest.save();
+    await JoinRequest.insertMany(joinRequests);
 
-    await Group.findByIdAndUpdate(groupId, {
-      $push: { joinRequests: joinRequest._id },
-    });
-
-    res.status(200).json({ message: "Join request sent" });
+    res.status(200).json({ message: "Join requests sent successfully" });
   } catch (err) {
-    res.status(500).json({ message: "Error sending join request", error: err });
+    res
+      .status(500)
+      .json({ message: "Error sending join requests", error: err });
   }
 };
+<<<<<<< HEAD
 
 >>>>>>> 8732cf9 (Backend (#49))
+=======
+>>>>>>> 72330df (added request)
 export const getGroupJoinRequests = async (req, res) => {
   const { groupId } = req.params;
 
