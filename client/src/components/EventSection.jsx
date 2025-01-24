@@ -1,4 +1,6 @@
 import React from "react";
+import { useMutation } from "@tanstack/react-query";
+import { request } from "../services/api";
 
 const EventSection = () => {
   const blogData = {
@@ -14,6 +16,12 @@ const EventSection = () => {
     paid: true,
     amount: 500,
     user: "John Doe",
+  };
+  const { mutate, data } = useMutation({
+    mutationFn: (groupId) => request(groupId),
+  });
+  const handleJoin = async () => {
+    
   };
 
   return (
@@ -66,6 +74,7 @@ const EventSection = () => {
         <p>
           <strong>Posted by:</strong> {blogData.user}
         </p>
+        <button onClick={handleJoin}>join</button>
       </div>
     </div>
   );

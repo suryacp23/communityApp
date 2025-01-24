@@ -55,3 +55,7 @@ export const checkAttendance = async ({ eventId, decodedText }) => {
 	);
 	return response.data;
 };
+
+export const request = async (groupId) => {
+  return axios.post(`api/group/request`, groupId, { withCredentials: true });
+};
