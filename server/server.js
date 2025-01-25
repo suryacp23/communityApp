@@ -8,6 +8,7 @@ import groupRoutes from "./routes/groupRoutes.js";
 import messageRoutes from "./routes/messageRoutes.js";
 import attendanceRoutes from "./routes/attendanceRoutes.js";
 import applicationRoutes from "./routes/applicationRoutes.js";
+import paymentRoutes from "./routes/paymentRoutes.js";
 import connectDB from "./utils/connectDB.js";
 import cookieParser from "cookie-parser";
 import swaggerUi from "swagger-ui-express";
@@ -35,6 +36,7 @@ app.use("/group", groupRoutes);
 app.use("/message", messageRoutes);
 app.use("/attendance", attendanceRoutes);
 app.use("/applications", applicationRoutes);
+app.use("/payment", paymentRoutes);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 server.listen(process.env.PORT || 5000, () => {

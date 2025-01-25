@@ -10,6 +10,7 @@ import GetStarted from "./screen/GetStarted";
 import Attendancepage from "./screen/Attendancepage";
 import Dashboard from "./screen/Dashboard";
 import CreateEvents from "./screen/CreateEvents";
+import PaymentPage from "./screen/PaymentPage";
 
 const navLinks = [
   { label: "Events", href: "/events" },
@@ -36,6 +37,8 @@ const App = () => {
             path="/events/:eventId/attendance"
             element={<Attendancepage />}
           />
+          <Route path="/payment" element={<PaymentPage />} />
+          <Route path="*" element={<div>Not Found</div>} />
         </Routes>
       </div>
     </Router>

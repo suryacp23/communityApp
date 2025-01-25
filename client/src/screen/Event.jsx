@@ -1,7 +1,7 @@
 import React from "react";
 import EventSection from "../components/EventSection";
 import CommentSection from "../components/CommentSection";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 const Event = () => {
   const { eventId } = useParams();
@@ -9,6 +9,7 @@ const Event = () => {
   return (
     <div className="w-full min-h-screen p-2">
       <EventSection />
+      <Link to="/payment">payment</Link>
       <CommentSection eventId={eventId} />
     </div>
   );
