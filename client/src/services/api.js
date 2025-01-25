@@ -67,4 +67,7 @@ export const getGroupJoinRequests = async (groupId) => {
     .then((res) => res.data);
 };
 
-export const createEvent = () => axios.post("/api/events");
+export const createEvent = (formData) =>
+  axios
+    .post("/api/events", formData, { withCredentials: true })
+    .then((res) => res.data);

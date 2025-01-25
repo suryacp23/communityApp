@@ -67,7 +67,7 @@ export const createEvent = async (req, res) => {
     Promise.all([
       Group.insertMany(technicalGroups),
       Group.insertMany(nonTechnicalGroups),
-      Group.insert(headGroup),
+      new Group(headGroup).save(),
     ]).catch((err) => {
       throw err;
     });

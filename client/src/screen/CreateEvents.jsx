@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import {
   FaUsers,
   FaUserFriends,
@@ -12,6 +12,7 @@ import { IoFastFoodSharp } from "react-icons/io5";
 import { useMutation } from "@tanstack/react-query";
 import { createEvent } from "../services/api";
 import Spinner from "../components/Spinner.jsx";
+import { useAuth } from "../hooks/useAuth.jsx";
 
 const steps = [
   { label: "Group Details", icon: FaUsers },
@@ -20,7 +21,10 @@ const steps = [
 ];
 
 const CreateEvents = () => {
+  const { user } = useAuth();
   const [step, setStep] = useState(1);
+  const [file, setFile] = useState();
+  const imageRef = useRef();
   const [formData, setFormData] = useState({
     eventName: "",
     description: "",
@@ -36,10 +40,11 @@ const CreateEvents = () => {
     certificate: false,
     technicalInput: "",
     nonTechnicalInput: "",
+    user: user._id,
   });
 
   const { isLoading, mutate } = useMutation({
-    mutationFn: createEvent,
+    mutationFn: (formData) => createEvent(formData),
   });
   const handleChange = (name, value) => {
     setFormData((prevState) => ({
@@ -55,8 +60,15 @@ const CreateEvents = () => {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    mutate(formData);
-    console.log(formData);
+    const data = new FormData();
+    data.append("title", formData.eventName);
+    data.append("description", formData.description);
+    data.append("file", file);
+    data.append("user", formData.user);
+    data.append("technicalEvents", JSON.stringify(formData.technical));
+    data.append("nonTechnicalEvents", JSON.stringify(formData.nonTechnical));
+    mutate(data);
+    console.log(data);
   };
 
   const updateInput = (field, value) => {
@@ -83,6 +95,9 @@ const CreateEvents = () => {
       });
     }
   };
+  const handleFileChange = (e) => {
+    setFile(e.target.files[0]);
+  };
 
   // Delete an event from the respective field
   const deleteEvent = (field, index) => {
@@ -108,7 +123,8 @@ const CreateEvents = () => {
             return (
               <div
                 key={index}
-                className="relative flex flex-col items-center w-full">
+                className="relative flex flex-col items-center w-full"
+              >
                 {index > 0 && (
                   <div
                     className={`absolute top-4 -left-1/2 h-1 transition-all duration-500 ${
@@ -124,7 +140,8 @@ const CreateEvents = () => {
                       : step === index + 1
                       ? "bg-green-500"
                       : "bg-gray-300"
-                  }`}>
+                  }`}
+                >
                   {step > index + 1 ? <FaCheck /> : <Icon />}
                 </div>
                 <span className="text-sm sm:block hidden">
@@ -163,7 +180,9 @@ const CreateEvents = () => {
               <input
                 className="h-10 lg:h-12 w-full bg-[#222222] text-[#e0e0e0] rounded-md cursor-pointer border border-[#333333] focus:outline-none focus:ring-2 focus:ring-[#4a90e2]"
                 type="file"
-                onChange={(e) => handleChange("imageUrl", e.target.files[0])}
+                name="imageUrl"
+                ref={imageRef}
+                onChange={handleFileChange}
               />
 
               {/* Event Date */}
@@ -196,7 +215,8 @@ const CreateEvents = () => {
               {/* Next Button */}
               <button
                 className="w-full bg-[#4a90e2] hover:bg-[#3b7ccc] text-[#e0e0e0] font-semibold p-3 rounded-md transition duration-300"
-                onClick={nextStep}>
+                onClick={nextStep}
+              >
                 Next →
               </button>
             </div>
@@ -221,10 +241,12 @@ const CreateEvents = () => {
                     className="p-2 md:px-5 h-10 lg:h-12 border border-[#333333] w-5/6 rounded-md focus:outline-none focus:ring-2 focus:ring-[#4a90e2] bg-[#222222] text-[#e0e0e0] placeholder-[#888888]"
                   />
                   <button
+                    type="button"
                     className="bg-[#333333] hover:bg-[#4a4a4a] text-[#e0e0e0] h-10 w-7 md:w-10 lg:h-12 lg:w-12 rounded-md transition duration-300"
                     onClick={() =>
                       addEvent("technical", formData.technicalInput)
-                    }>
+                    }
+                  >
                     +
                   </button>
                 </div>
@@ -237,8 +259,10 @@ const CreateEvents = () => {
                           {event}
                         </p>
                         <button
+                          type="button"
                           className="text-[#ff5c5c] opacity-85 p-1 rounded-md hover:opacity-100"
-                          onClick={() => deleteEvent("technical", index)}>
+                          onClick={() => deleteEvent("technical", index)}
+                        >
                           X
                         </button>
                       </span>
@@ -260,10 +284,12 @@ const CreateEvents = () => {
                     className="p-2 md:px-5 h-10 lg:h-12 border border-[#333333] w-5/6 rounded-md focus:outline-none focus:ring-2 focus:ring-[#4a90e2] bg-[#222222] text-[#e0e0e0] placeholder-[#888888]"
                   />
                   <button
+                    type="button"
                     className="bg-[#333333] hover:bg-[#4a4a4a] text-[#e0e0e0] h-10 w-7   md:w-10  lg:h-12 lg:w-12 rounded-md transition duration-300"
                     onClick={() =>
                       addEvent("nonTechnical", formData.nonTechnicalInput)
-                    }>
+                    }
+                  >
                     +
                   </button>
                 </div>
@@ -275,8 +301,10 @@ const CreateEvents = () => {
                           {event}
                         </p>
                         <button
+                          type="button"
                           className="text-[#ff5c5c] opacity-85 p-1 rounded-md hover:opacity-100"
-                          onClick={() => deleteEvent("nonTechnical", index)}>
+                          onClick={() => deleteEvent("nonTechnical", index)}
+                        >
                           X
                         </button>
                       </span>
@@ -289,12 +317,14 @@ const CreateEvents = () => {
               <div className="flex justify-between gap-4">
                 <button
                   className="bg-[#333333] hover:bg-[#4a4a4a] text-[#e0e0e0] p-2 rounded-md transition duration-300"
-                  onClick={prevStep}>
+                  onClick={prevStep}
+                >
                   ← Back
                 </button>
                 <button
                   className="bg-[#4a90e2] hover:bg-[#3b7ccc] text-[#f0f0f0] p-2 rounded-md transition duration-300"
-                  onClick={nextStep}>
+                  onClick={nextStep}
+                >
                   Next →
                 </button>
               </div>
@@ -355,7 +385,8 @@ const CreateEvents = () => {
               <div className="flex flex-col gap-4">
                 <button
                   className="w-full bg-blue-500 text-white p-2 rounded-md"
-                  disabled={isLoading}>
+                  disabled={isLoading}
+                >
                   Submit ✅
                 </button>
               </div>
