@@ -20,8 +20,8 @@ router.post("/create", protect, isAdmin, createGroup);
 router.post("/addModerator", protect, isAdmin, addModerator);
 router.get("/:groupId", getGroupInfo);
 router.get("/", protect, getGroups);
-router.post("/request", joinRequest);
+router.post("/request", protect, joinRequest);
 router.post("/approve", protect, approveRequest);
-router.get("/request", protect, getGroupJoinRequests);
+router.get("/request/:groupId", getGroupJoinRequests);
 
 export default router;

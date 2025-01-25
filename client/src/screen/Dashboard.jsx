@@ -13,7 +13,7 @@ export default function Dashboard() {
   return (
     <div className="w-full mx-auto">
       {/* Tab Headers */}
-      <div className="flex justify-between border-b border-gray-700">
+      <div className="flex justify-around border-b border-gray-700">
         {tabs.map((tab) => (
           <button
             key={tab.path}

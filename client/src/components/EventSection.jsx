@@ -17,11 +17,12 @@ const EventSection = () => {
     amount: 500,
     user: "John Doe",
   };
+  const groupId = "67824d27290c008ea216b4ca";
   const { mutate, data } = useMutation({
     mutationFn: (groupId) => request(groupId),
   });
   const handleJoin = async () => {
-    
+    mutate(groupId);
   };
 
   return (
