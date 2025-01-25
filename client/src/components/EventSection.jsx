@@ -1,8 +1,19 @@
 import React from "react";
 import { useMutation } from "@tanstack/react-query";
 import { request } from "../services/api";
+import { useQuery } from "@tanstack/react-query";
+import { Fetchevent } from "../services/api.js";
+import { useParams } from "react-router-dom";
 
 const EventSection = () => {
+  const params = useParams();
+  const eventid = params.eventId;
+  const { data } = useQuery({
+    queryKey: ["getevents", eventid],
+    queryFn: () => Fetchevent(eventid),
+  });
+  console.log(data);
+
   const blogData = {
     title: "TechFest 2024",
     description: "A grand festival celebrating technology and innovation.",
@@ -17,8 +28,8 @@ const EventSection = () => {
     amount: 500,
     user: "John Doe",
   };
-  const groupId = "67824d27290c008ea216b4ca";
-  const { mutate, data } = useMutation({
+
+  const { mutate, data: groups } = useMutation({
     mutationFn: (groupId) => request(groupId),
   });
   const handleJoin = async () => {

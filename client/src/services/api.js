@@ -4,6 +4,9 @@ import axios from "axios";
 export const fetchBlogs = () =>
   axios.get("/api/events").then((res) => res.data);
 
+export const Fetchevent = (eventId) =>
+  axios.get(`/api/events/${eventId}`).then((res) => res.data);
+
 // Sign up a user
 export const SignupData = ({ userName, email, password }) =>
   axios
@@ -63,3 +66,5 @@ export const getGroupJoinRequests = async (groupId) => {
     .get(`/api/group/request/${groupId}`, { withCredentials: true })
     .then((res) => res.data);
 };
+
+export const createEvent = () => axios.post("/api/events");

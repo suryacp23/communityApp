@@ -49,11 +49,11 @@ const CommentForm = ({ eventId }) => {
         onChange={(e) => setCommentText(e.target.value)}
         placeholder="Write your comment here..."
         rows="3"
-        className="w-full p-3 border text-white border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-zinc-400 mb-4 bg-zinc-600"
+        className="w-full p-3 border text-white max-h-32 max-w-full min-h-32 border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-zinc-400  bg-zinc-600"
       />
       <button
         type="submit"
-        className="px-4 w-fit py-2 bg-blue-800 text-white rounded-lg hover:bg-blue-950 transition"
+        className="px-4 w-fit py-2 bg-blue-800 text-white rounded-lg hover:bg-blue-950 transition mt-3"
         disabled={isPending}>
         {isPending ? "Adding..." : "Add Comment"}
       </button>

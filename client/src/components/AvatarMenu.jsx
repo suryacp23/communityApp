@@ -3,6 +3,8 @@ import { signout } from "../services/api";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import { useAuth } from "../hooks/useAuth";
+import Avatar from "./Avatar";
+import { getRandomColor } from "../utils/color";
 
 export default function UserMenu() {
   const [isOpen, setIsOpen] = useState(false);
@@ -40,10 +42,10 @@ export default function UserMenu() {
   return (
     <div className="relative inline-block">
       <button onClick={() => setIsOpen(!isOpen)} className="focus:outline-none">
-        <img
-          src={user.avatar}
-          alt="User Avatar"
-          className="w-10 h-10 rounded-full border border-gray-300"
+        <Avatar
+          size="sm"
+          name={info.userName}
+          bgColor={getRandomColor(info.userName)}
         />
       </button>
       {isOpen && (
@@ -54,8 +56,7 @@ export default function UserMenu() {
             <hr className="my-2" />
             <button
               className="w-full text-left px-4 py-2 text-red-600 hover:bg-gray-100"
-              onClick={handleLogout}
-            >
+              onClick={handleLogout}>
               Sign Out
             </button>
           </div>
