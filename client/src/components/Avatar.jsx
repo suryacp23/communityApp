@@ -1,6 +1,7 @@
 import React from "react";
+import { getRandomColor } from "../utils/color"; // Adjust the path to your utility file
 
-const Avatar = ({ size, name, className = "", bgColor = "#ccc" }) => {
+const Avatar = ({ size, name, className = "" }) => {
   const getSizeClass = () => {
     switch (size) {
       case "sm":
@@ -14,12 +15,14 @@ const Avatar = ({ size, name, className = "", bgColor = "#ccc" }) => {
     }
   };
 
+  // Get a consistent color based on the name
+  const bgColor = getRandomColor(name);
+
   return (
     <div
       className={`flex items-center justify-center rounded-full ${getSizeClass()} ${className}`}
-      style={{ backgroundColor: bgColor }} // Apply background color dynamically
-    >
-      {"u"}
+      style={{ backgroundColor: bgColor }}>
+      {name ? name.charAt(0).toUpperCase() : "U"}
     </div>
   );
 };

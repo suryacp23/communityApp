@@ -34,6 +34,8 @@ const CreateEvents = () => {
     snacks: false,
     swags: false,
     certificate: false,
+    technicalInput: "",
+    nonTechnicalInput: "",
   });
 
   const { isLoading, mutate } = useMutation({

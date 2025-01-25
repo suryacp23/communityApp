@@ -53,11 +53,7 @@ const CommentForm = ({ eventId }) => {
       />
       <button
         type="submit"
-<<<<<<< HEAD
         className="px-4 w-fit py-2 bg-blue-800 text-white rounded-lg hover:bg-blue-950 transition mt-3"
-=======
-        className="px-4 w-fit py-2 bg-blue-800 text-white rounded-lg hover:bg-blue-950 transition"
->>>>>>> 69994d6ce2cad7dc26a9c567b8c5214923af9548
         disabled={isPending}>
         {isPending ? "Adding..." : "Add Comment"}
       </button>

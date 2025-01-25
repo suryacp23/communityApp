@@ -1,8 +1,19 @@
 import React from "react";
+<<<<<<< HEAD
 import { useMutation } from "@tanstack/react-query";
 import { request } from "../services/api";
+=======
+import { useQuery } from "@tanstack/react-query";
+import { Fetchevent } from "../services/api.js";
+>>>>>>> 0aa5fb2 (chatpage updated)
 
 const EventSection = () => {
+  const { data } = useQuery({
+    queryKey: ["getevents"],
+    queryFn: ()=>Fetchevent(),
+  });
+  console.log(data);
+
   const blogData = {
     title: "TechFest 2024",
     description: "A grand festival celebrating technology and innovation.",
