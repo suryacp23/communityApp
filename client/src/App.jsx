@@ -37,7 +37,7 @@ const App = () => {
             path="/events/:eventId/attendance"
             element={<Attendancepage />}
           />
-          <Route path="/payment" element={<PaymentPage />} />
+          <Route path="/payments/:eventId" element={<PaymentPage />} />
           <Route path="*" element={<div>Not Found</div>} />
         </Routes>
       </div>

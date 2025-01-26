@@ -86,7 +86,6 @@ const EventSection = () => {
         <p>
           <strong>Posted by:</strong> {blogData.user}
         </p>
-        <button onClick={handleJoin}>join</button>
       </div>
     </div>
   );

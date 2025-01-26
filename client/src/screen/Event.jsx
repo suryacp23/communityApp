@@ -9,7 +9,7 @@ const Event = () => {
   return (
     <div className="w-full min-h-screen p-2">
       <EventSection />
-      <Link to="/payment">payment</Link>
+      <Link to={`/payments/${eventId}`}>payment</Link>
       <CommentSection eventId={eventId} />
     </div>
   );

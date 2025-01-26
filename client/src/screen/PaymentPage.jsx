@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useParams } from "react-router-dom";
 
 const loadRazorpayScript = () => {
   return new Promise((resolve) => {
@@ -11,17 +12,18 @@ const loadRazorpayScript = () => {
 };
 
 const PaymentPage = () => {
+  const params = useParams();
   const [pending, setPending] = useState("idle");
   const handlePayment = async () => {
     setPending("processing");
     const isScriptLoaded = await loadRazorpayScript();
-    if (!isScriptLoaded) {
+    if (!isScriptLoaded || params.eventId === undefined) {
       alert("Razorpay SDK failed to load. Are you online?");
       return;
     }
 
     // Step 1: Call backend to create an order
-    const response = await fetch("api/payment/create-order", {
+    const response = await fetch("/api/payment/create-order", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -31,6 +33,7 @@ const PaymentPage = () => {
         currency: "INR",
         receipt: "receipt#1",
       }),
+      credentials: "include",
     });
 
     const order = await response.json();
@@ -49,17 +52,18 @@ const PaymentPage = () => {
       description: "Test Transaction",
       order_id: order.id,
       handler: async function (response) {
-        // Send payment response to backend for verification
-        const verifyResponse = await fetch("api/payment/verify-payment", {
+        const verifyResponse = await fetch("/api/payment/verify-payment", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
+            groupId: params.eventId,
             razorpay_order_id: response.razorpay_order_id,
             razorpay_payment_id: response.razorpay_payment_id,
             razorpay_signature: response.razorpay_signature,
           }),
+          credentials: "include",
         });
 
         const verifyResult = await verifyResponse.json();
