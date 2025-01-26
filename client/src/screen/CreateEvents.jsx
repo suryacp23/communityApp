@@ -13,6 +13,7 @@ import { useMutation } from "@tanstack/react-query";
 import { createEvent } from "../services/api";
 import Spinner from "../components/Spinner.jsx";
 import { useAuth } from "../hooks/useAuth.jsx";
+import { useNavigate } from "react-router-dom";
 
 const steps = [
   { label: "Group Details", icon: FaUsers },
@@ -25,6 +26,7 @@ const CreateEvents = () => {
   const [step, setStep] = useState(1);
   const [file, setFile] = useState();
   const imageRef = useRef();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     eventName: "",
     description: "",
@@ -68,7 +70,9 @@ const CreateEvents = () => {
     data.append("technicalEvents", JSON.stringify(formData.technical));
     data.append("nonTechnicalEvents", JSON.stringify(formData.nonTechnical));
     mutate(data);
+
     console.log(data);
+    navigate("/events");
   };
 
   const updateInput = (field, value) => {

@@ -12,22 +12,8 @@ const EventSection = () => {
     queryKey: ["getevents", eventid],
     queryFn: () => Fetchevent(eventid),
   });
-  console.log(data);
-
-  const blogData = {
-    title: "TechFest 2024",
-    description: "A grand festival celebrating technology and innovation.",
-    imageUrl:
-      "https://imgs.search.brave.com/UbzRKgvPzPr8FEuIozbX7ohFztcZCeWKmX_OMv6xlew/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9kZWVw/YWkub3JnL3N0YXRp/Yy9pbWFnZXMvZG9s/cGhpbjEuc3Zn",
-    eventDate: "2024-01-15",
-    startTime: "10:00 AM",
-    endTime: "6:00 PM",
-    technical: ["Coding Contest", "Tech Talks", "AI Workshop"],
-    nonTechnical: ["Networking Session", "Career Guidance", "Fun Games"],
-    paid: true,
-    amount: 500,
-    user: "John Doe",
-  };
+  const event = data?.event;
+  console.log(data?.event);
 
   const { mutate, data: groups } = useMutation({
     mutationFn: (groupId) => request(groupId),
@@ -42,40 +28,40 @@ const EventSection = () => {
         {/* Left Section */}
         <div className="md:w-2/3 p-6">
           <img
-            src={blogData.imageUrl}
-            alt={blogData.title}
+            src={event?.imageUrl}
+            alt={event?.title}
             className="w-full h-[60vh] object-contain rounded-lg mb-6"
           />
           <h1 className="text-3xl font-bold text-gray-100 mb-4">
-            {blogData.title}
+            {event?.title}
           </h1>
-          <p className="text-gray-200">{blogData.description}</p>
+          <p className="text-gray-200">{event?.description}</p>
         </div>
 
         {/* Right Section */}
         <div className="md:w-1/3 p-6 border-t md:border-t-0 md:border-l border-gray-800">
           <p className="text-gray-300 mb-4">
-            <strong>Event Date:</strong> {blogData.eventDate}
+            <strong>Event Date:</strong> {event?.eventDate}
           </p>
           <p className="text-gray-300 mb-4">
-            <strong>Start Time:</strong> {blogData.startTime}
+            <strong>Start Time:</strong> {event?.startTime}
           </p>
           <p className="text-gray-300 mb-4">
-            <strong>End Time:</strong> {blogData.endTime}
+            <strong>End Time:</strong> {event?.endTime}
           </p>
           <p className="text-gray-300 mb-4">
-            <strong>Technical Events:</strong> {blogData.technical.join(", ")}
+            <strong>Technical Events:</strong> {event?.technical.join(", ")}
           </p>
           <p className="text-gray-300 mb-4">
             <strong>Non-Technical Events:</strong>{" "}
-            {blogData.nonTechnical.join(", ")}
+            {event?.nonTechnical.join(", ")}
           </p>
           <p className="text-gray-300 mb-4">
-            <strong>Paid:</strong> {blogData.paid ? "Yes" : "No"}
+            <strong>Paid:</strong> {event?.paid ? "Yes" : "No"}
           </p>
-          {blogData.paid && (
+          {event?.paid && (
             <p className="text-gray-300">
-              <strong>Amount:</strong> ₹{blogData.amount}
+              <strong>Amount:</strong> ₹{event.amount}
             </p>
           )}
         </div>
@@ -84,7 +70,7 @@ const EventSection = () => {
       {/* Footer Section */}
       <div className="bg-gray-800 text-gray-100 text-sm px-6 py-4 text-right">
         <p>
-          <strong>Posted by:</strong> {blogData.user}
+          <strong>Posted by:</strong> {event?.userId.userName}
         </p>
       </div>
     </div>
