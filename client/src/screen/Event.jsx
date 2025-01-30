@@ -8,11 +8,9 @@ const Event = () => {
 
   return (
     <div className="w-full min-h-screen p-2">
-      <EventSection />
-      <Link to={`/payments/${eventId}`}>payment</Link>
-      <CommentSection eventId={eventId} />
+     <EventSection />
+     <CommentSection eventId={eventId} />
     </div>
   );
 };
-
 export default Event;

@@ -107,7 +107,7 @@ const GroupChat = ({ currentGroup }) => {
 
               {/* Chat Bubble */}
               <div
-                className={`p-3 flex ${
+                className={`p-2 flex ${
                   isSender
                     ? "justify-end bg-gray-800"
                     : "justify-start bg-gray-700"
