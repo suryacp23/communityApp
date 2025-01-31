@@ -90,25 +90,8 @@ const PaymentPage = () => {
   };
 
   return (
-    <div>
-      {pending === "processing" && <p>Processing payment...</p>}
-      {pending === "success" && <p>Payment successful!</p>}
-      {pending === "try again" && <p>Payment failed. Please try again.</p>}
-      {pending === "idle" && (
-        <button
-          onClick={handlePayment}
-          style={{
-            padding: "10px 20px",
-            backgroundColor: "#3399cc",
-            color: "#fff",
-            border: "none",
-            borderRadius: "5px",
-            cursor: "pointer",
-          }}
-        >
-          Pay ₹500
-        </button>
-      )}
+    <div className="flex justify-center items-center min-h-screen p-4 sm:p-8 text-sm md:text-base lg:text-lg">
+      {" "}
     </div>
   );
 };

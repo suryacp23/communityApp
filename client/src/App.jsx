@@ -11,6 +11,7 @@ import Attendancepage from "./screen/Attendancepage";
 import Dashboard from "./screen/Dashboard";
 import CreateEvents from "./screen/CreateEvents";
 import PaymentPage from "./screen/PaymentPage";
+// import GroupPage from "./components/GroupPage";
 
 const navLinks = [
   { label: "Events", href: "/events" },
@@ -18,7 +19,6 @@ const navLinks = [
   { label: "Create Events", href: "/create-events" },
   { label: "Dashboard", href: "/dashboard" },
 ];
-
 
 const App = () => {
   return (
@@ -31,6 +31,7 @@ const App = () => {
           <Route path="/groups" element={<Group />} />
           <Route path="/create-events" element={<CreateEvents />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          {/* <Route path="/GroupPage" element={<GroupPage />} /> */}
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route

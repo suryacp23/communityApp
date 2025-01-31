@@ -1,9 +1,11 @@
 import React from "react";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { request } from "../services/api";
 import { useQuery } from "@tanstack/react-query";
 import { Fetchevent } from "../services/api.js";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import { deleteEvent } from "../services/api";
+
 
 const EventSection = () => {
   const params = useParams();
@@ -14,7 +16,9 @@ const EventSection = () => {
   });
   const event = data?.event;
   console.log(data?.event);
+  
 
+  
   const { mutate, data: groups } = useMutation({
     mutationFn: (groupId) => request(groupId),
   });
@@ -40,6 +44,7 @@ const EventSection = () => {
 
         {/* Right Section */}
         <div className="md:w-1/3 p-6 border-t md:border-t-0 md:border-l border-gray-800">
+         
           <p className="text-gray-300 mb-4">
             <strong>Event Date:</strong> {event?.eventDate}
           </p>
@@ -64,6 +69,13 @@ const EventSection = () => {
               <strong>Amount:</strong> ₹{event.amount}
             </p>
           )}
+          <div className="h-1/5 w-full  py-4 justify-center items-center">
+            <Link
+              className={`px-3 py-2 bg-blue-500 rounded-lg`}
+              to={`/payments/${eventid}`}>
+              Apply
+            </Link>
+          </div>
         </div>
       </div>
 

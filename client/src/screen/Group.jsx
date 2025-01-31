@@ -31,7 +31,7 @@ const Group = () => {
         </button>
 
         <div
-          className={`h-full w-[95%] md:w-2/5 flex flex-col justify-between items-center absolute bg-primary select-none transform transition-transform duration-300 ${
+          className={`h-full w-[95%] md:w-2/5 flex flex-col justify-between items-center overflow-scroll absolute bg-primary select-none transform transition-transform duration-300 ${
             isSidebarOpen ? "translate-x-0 z-10 left-0" : "-translate-x-full  "
           } md:translate-x-0 md:relative `}>
           <div className="h-14 w-full flex items-center text-start p-2 gap-2 text-xl">
@@ -47,7 +47,7 @@ const Group = () => {
             {data?.map((group) => (
               <li
                 key={group._id}
-                className={`hover:bg-gray-600 h-16 lg:h-16 w-[90%] p-2 cursor-pointer flex  items-center rounded-md text-white hover:scale-x-105 hover:shadow-md transition-all duration-300 ${
+                className={`hover:bg-gray-600 h-16 lg:h-16 w-[90%] p-2 cursor-pointer flex  items-center rounded-md text-white hover:scale-x-105 hover:shadow-md transition-all duration-200 ${
                   currentGroup === group._id ? "bg-purple-600" : "bg-background"
                 }`}
                 onClick={() => setCurrentGroup(group._id)}>
