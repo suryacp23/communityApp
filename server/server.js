@@ -15,6 +15,7 @@ import swaggerUi from "swagger-ui-express";
 import swaggerDocument from "./swagger.js";
 import { app, server, io } from "./socket/socket.js";
 import { connectRedis } from "./redis/redis.js";
+import profileRoutes from "./routes/profileRoutes.js";
 
 dotenv.config();
 
@@ -37,6 +38,7 @@ app.use("/message", messageRoutes);
 app.use("/attendance", attendanceRoutes);
 app.use("/applications", applicationRoutes);
 app.use("/payment", paymentRoutes);
+app.use("/profile", profileRoutes);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 server.listen(process.env.PORT || 5000, () => {

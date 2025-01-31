@@ -28,6 +28,9 @@ const userSchema = new mongoose.Schema(
 				ref: "Event",
 			},
 		],
+		profile_image_url: {
+			type: String,
+		},
 	},
 	{ timestamps: true }
 );
