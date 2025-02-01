@@ -21,7 +21,7 @@ export default {
 			},
 			fontFamily: {
 				poppins: ['"poppins"', "sans-serif"], // Add your custom font here
-				customFont: ['"YourCustomFont"', "serif"], // Example for local fonts
+				roboto: ["Roboto", "sans-serif"], // Example for local fonts
 				mochiy: ['"Mochiy Pop One"', "sans-serif"],
 			},
 			colors: {
