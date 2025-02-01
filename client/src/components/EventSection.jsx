@@ -12,23 +12,23 @@ const EventSection = () => {
 	const { data } = useQuery({
 		queryKey: ["getevents", eventid],
 		queryFn: () => Fetchevent(eventid),
+		enabled: !!eventid,
 	});
 	const event = data?.event;
 	console.log(data?.event);
 
-	const { mutate, data: groups } = useMutation({
+	/* const { mutate, data: groups } = useMutation({
 		mutationFn: (groupId) => request(groupId),
-	});
-	const handleJoin = async () => {
+	}); */
+	/* const handleJoin = async () => {
 		mutate(groupId);
-	};
-
+	}; */
 	return (
 		<div className="w-full bg-[#1f1f1f]  border border-gray-800 shadow-lg rounded-lg overflow-hidden">
 			<div className="flex flex-col md:flex-row">
 				{/* Left Section */}
 				<div className="relative md:w-2/3 p-6">
-					<EventOptions eventId={eventid} />
+					<EventOptions event={data?.event} />
 					<img
 						src={event?.imageUrl}
 						alt={event?.title}

@@ -16,7 +16,7 @@ const upload = multer({ storage: storage });
 
 router.route("/").get(getEvents);
 router.route("/").post(protect, upload.single("file"), createEvent);
-router.route("/:id").put(protect, upload.single("file"), updateEvent);
 router.route("/:id").delete(protect, deleteEvent);
 router.route("/:id").get(getEventById);
+router.route("/:id").put(protect, upload.single("file"), updateEvent);
 export default router;

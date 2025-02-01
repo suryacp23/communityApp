@@ -8,14 +8,14 @@ export const fetchBlogs = () =>
 export const fetchUserEvents = (userId) =>
 	axios.get(`/api/events?userId=${userId}`).then((res) => res.data);
 
-
-
 export const Fetchevent = (eventId) =>
 	axios.get(`/api/events/${eventId}`).then((res) => res.data);
 
-//delete events
+//delete event
 export const deleteEvent = (eventId) =>
-  axios.delete(`/api/events/${eventId}`).then((res) => res.data);
+	axios
+		.delete(`/api/events/${eventId}`, { withCredentials: true })
+		.then((res) => res.data);
 
 // Sign up a user
 export const SignupData = ({ userName, email, password }) =>
