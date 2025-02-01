@@ -1,6 +1,5 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Header from "./components/Header";
 import Events from "./screen/Events";
 import Event from "./screen/Event";
 import Login from "./screen/Login";
@@ -14,36 +13,39 @@ import PaymentPage from "./screen/PaymentPage";
 // import GroupPage from "./components/GroupPage";
 
 const navLinks = [
-  { label: "Events", href: "/events" },
-  { label: "Groups", href: "/groups" },
-  { label: "Create Events", href: "/create-events" },
-  { label: "Dashboard", href: "/dashboard" },
+	{ label: "Events", href: "/events" },
+	{ label: "Groups", href: "/groups" },
+	{ label: "Create Events", href: "/create-events" },
+	{ label: "Dashboard", href: "/dashboard" },
 ];
 
 const App = () => {
-  return (
-    <Router>
-      <div className="max-w-screen-wide bg-background mx-auto">
-        <Routes>
-          <Route path="/" element={<GetStarted />} />
-          <Route path="/events" element={<Events />} />
-          <Route path="/events/:eventId" element={<Event />} />
-          <Route path="/groups" element={<Group />} />
-          <Route path="/create-events" element={<CreateEvents />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          {/* <Route path="/GroupPage" element={<GroupPage />} /> */}
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route
-            path="/events/:eventId/attendance"
-            element={<Attendancepage />}
-          />
-          <Route path="/payments/:eventId" element={<PaymentPage />} />
-          <Route path="*" element={<div>Not Found</div>} />
-        </Routes>
-      </div>
-    </Router>
-  );
+	return (
+		<Router>
+			<div className="max-w-screen-wide bg-background mx-auto">
+				<Routes>
+					<Route path="/" element={<GetStarted />} />
+					<Route path="/events" element={<Events />} />
+					<Route path="/events/:eventId" element={<Event />} />
+					<Route path="/groups" element={<Group />} />
+					<Route path="/create-events" element={<CreateEvents />} />
+					<Route path="/dashboard" element={<Dashboard />} />
+					{/* <Route path="/GroupPage" element={<GroupPage />} /> */}
+					<Route path="/login" element={<Login />} />
+					<Route path="/signup" element={<Signup />} />
+					<Route
+						path="/events/:eventId/attendance"
+						element={<Attendancepage />}
+					/>
+					<Route
+						path="/payments/:eventId"
+						element={<PaymentPage />}
+					/>
+					<Route path="*" element={<div>Not Found</div>} />
+				</Routes>
+			</div>
+		</Router>
+	);
 };
 
 export default App;

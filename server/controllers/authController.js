@@ -27,6 +27,7 @@ export const signUp = async (req, res) => {
 				_id: savedUser._id,
 				userName,
 				email,
+				profile_image_url: user.profile_image_url,
 			});
 		} else {
 			return res.status(400).json({ error: error.message });
