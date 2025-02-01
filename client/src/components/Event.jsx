@@ -4,6 +4,7 @@ import { MdModeComment } from "react-icons/md";
 import { formatTimestamp } from "../utils/time";
 import { formatCount } from "../utils/numberFormat";
 import { Link } from "react-router-dom";
+import LikeButton from "./LikeButton";
 
 const Event = ({ event }) => {
   return (
@@ -51,6 +52,7 @@ const Event = ({ event }) => {
                   <p className=" text-sm">
                     <BiSolidLike size={25} />
                   </p>
+                  <LikeButton eventId={event._id} />
                 </div>
                 <div className="flex items-center space-x-1">
                   <span className="text-lg font-semibold">

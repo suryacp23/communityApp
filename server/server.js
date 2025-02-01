@@ -9,6 +9,7 @@ import messageRoutes from "./routes/messageRoutes.js";
 import attendanceRoutes from "./routes/attendanceRoutes.js";
 import applicationRoutes from "./routes/applicationRoutes.js";
 import paymentRoutes from "./routes/paymentRoutes.js";
+import likeRoutes from "./routes/likeRoutes.js";
 import connectDB from "./utils/connectDB.js";
 import cookieParser from "cookie-parser";
 import swaggerUi from "swagger-ui-express";
@@ -28,7 +29,7 @@ connectDB();
 connectRedis();
 
 app.get("/ping", (req, res) => {
-	res.send("PONG");
+  res.send("PONG");
 });
 app.use("/auth", authRoutes);
 app.use("/events", eventRoutes);
@@ -39,10 +40,11 @@ app.use("/attendance", attendanceRoutes);
 app.use("/applications", applicationRoutes);
 app.use("/payment", paymentRoutes);
 app.use("/profile", profileRoutes);
+app.use("/like", likeRoutes);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 server.listen(process.env.PORT || 5000, () => {
-	console.log(
-		`server is running on http://localhost:${process.env.PORT || 5000}`
-	);
+  console.log(
+    `server is running on http://localhost:${process.env.PORT || 5000}`
+  );
 });
