@@ -70,19 +70,86 @@ export const getGroupInfo = async (req, res) => {
 
 export const getGroups = async (req, res) => {
   try {
-    const user = req.user;
-    const group = await Group.find({ admin: user._id }).populate(
-      "admin",
-      "-password"
-    );
-    if (group == null) {
-      return res.status(200).json({ message: "group Not Found" });
+    const userId = req.user._id; // User ID from the request
+
+    const result = await Group.aggregate([
+      {
+        $match: {
+          members: userId, // Filter groups where the user is a member
+        },
+      },
+      {
+        $group: {
+          _id: "$eventId", // Group by eventId
+          totalGroups: { $sum: 1 }, // Count groups per eventId
+          membersCount: { $sum: { $size: "$members" } }, // Sum total members per eventId
+          groups: { $push: "$$ROOT" }, // Include all groups for each event
+        },
+      },
+      {
+        $unwind: "$groups", // Unwind groups to perform lookup
+      },
+      // Populate admin
+      {
+        $lookup: {
+          from: "users", // Reference the User collection
+          localField: "groups.admin",
+          foreignField: "_id",
+          as: "groups.admin",
+        },
+      },
+      {
+        $unwind: { path: "$groups.admin", preserveNullAndEmptyArrays: true },
+      },
+      // Populate moderators
+      {
+        $lookup: {
+          from: "users",
+          localField: "groups.moderators",
+          foreignField: "_id",
+          as: "groups.moderators",
+        },
+      },
+      // Populate members
+      {
+        $lookup: {
+          from: "users",
+          localField: "groups.members",
+          foreignField: "_id",
+          as: "groups.members",
+        },
+      },
+      // Populate eventId
+      {
+        $lookup: {
+          from: "events", // Reference the Event collection
+          localField: "_id", // Since _id is now eventId
+          foreignField: "_id",
+          as: "eventDetails",
+        },
+      },
+      {
+        $unwind: { path: "$eventDetails", preserveNullAndEmptyArrays: true },
+      },
+      {
+        $group: {
+          _id: "$_id",
+          eventDetails: { $first: "$eventDetails" }, // Attach populated event details
+          totalGroups: { $first: "$totalGroups" },
+          membersCount: { $first: "$membersCount" },
+          groups: { $push: "$groups" }, // Re-group populated groups
+        },
+      },
+    ]);
+
+    if (!result.length) {
+      return res.status(404).json({ message: "No groups found" });
     }
-    console.log(group);
-    res.status(200).json(group);
+
+    res.status(200).json(result);
   } catch (error) {
-    console.log("getGroupInfo controller error" + error.message);
-    res.status(400).json({ error: error.message });
+    console.error("Error fetching grouped data:", error);
+    res.status(500).json({ message: "Internal server error" });
   }
 };
 
