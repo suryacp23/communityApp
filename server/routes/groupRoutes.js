@@ -3,6 +3,7 @@ import {
   addModerator,
   approveRequest,
   createGroup,
+  getGroupByEventId,
   getGroupInfo,
   getGroupJoinRequests,
   getGroups,
@@ -23,5 +24,6 @@ router.get("/", protect, getGroups);
 router.post("/request", protect, joinRequest);
 router.post("/approve", protect, approveRequest);
 router.get("/request/:groupId", getGroupJoinRequests);
+router.get("/byEvent/:eventId", getGroupByEventId);
 
 export default router;

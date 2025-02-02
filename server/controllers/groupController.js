@@ -1,5 +1,6 @@
 import Group from "../models/groupModel.js";
 import JoinRequest from "../models/requestModel.js";
+import User from "../models/userModel.js";
 
 export const createGroup = async (req, res) => {
   const { name, eventId, isHead } = req.body;
@@ -36,15 +37,19 @@ export const addModerator = async (req, res) => {
     const group = await Group.findById(groupId);
     if (!group) return res.status(404).json({ message: "Group not found" });
 
-    if (!group.admin.equals(req.user.userId)) {
+    if (!group.admin.equals(req.user._id)) {
       return res.status(403).json({ message: "Only admin can add moderators" });
     }
-
-    if (group.moderators.includes(userId)) {
+    const user = await User.findOne({ email: userId });
+    if (!user) {
+      return res.status(404).json({ message: "user not found" });
+    }
+    if (group.moderators.includes(user._id)) {
       return res.status(400).json({ message: "User is already a moderator" });
     }
 
-    group.moderators.push(userId);
+    group.moderators.push(user._id);
+    group.members.push(user._id);
     await group.save();
 
     res.status(200).json({ message: "Moderator added successfully" });
@@ -55,9 +60,10 @@ export const addModerator = async (req, res) => {
 
 export const getGroupInfo = async (req, res) => {
   try {
-    const group = await Group.findById(req.params.groupId).populate("admin", [
-      "-password",
-    ]);
+    const group = await Group.findById(req.params.groupId)
+      .populate("admin", ["-password"])
+      .populate("moderators", ["-password"])
+      .populate("members", ["-password"]);
     if (group == null) {
       return res.status(200).json({ message: "group Not Found" });
     }
@@ -258,5 +264,27 @@ export const getGroupJoinRequests = async (req, res) => {
     res
       .status(500)
       .json({ message: "Error fetching join requests", error: err });
+  }
+};
+
+export const getGroupByEventId = async (req, res) => {
+  try {
+    const groups = await Group.find({ eventId: req.params.eventId });
+
+    const filteredGroups = groups
+      .filter((group) => !group.isHead)
+      .map((group) => ({
+        _id: group._id,
+        name: group.name,
+      }));
+
+    if (filteredGroups.length === 0) {
+      return res.status(404).json({ message: "No groups found" });
+    }
+
+    res.status(200).json(filteredGroups);
+  } catch (error) {
+    console.log("getGroupByEventId controller error: " + error.message);
+    res.status(400).json({ error: error.message });
   }
 };
