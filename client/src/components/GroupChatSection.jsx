@@ -165,20 +165,20 @@ const GroupChatSection = ({ selectedGroup, toggleSidebar }) => {
       <form
         onSubmit={handleSend}
         className="w-full h-[8.33%] px-4 py-2 bg-zinc-700 flex items-center justify-between rounded-b-lg
-         border-t border-gray-600"
+         border-t border-gray-600 overflow-hidden"
       >
         <input
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder="Type a message..."
-          className="h-full w-[90%] text-slate-200 bg-zinc-800 p-2 rounded-l-lg border border-zinc-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="h-full w-[90%] text-slate-200 bg-zinc-800 p-2 rounded-l-lg border border-zinc-600 focus:outline-none focus:ring-2 focus:ring-purple-500"
         />
         <button
           type="submit"
-          className="bg-purple-600 h-full w-[10%] hover:bg-purple-800 text-white p-2 rounded-r-lg shadow-md transition-transform transform hover:scale-110"
+          className="bg-purple-600 h-full w-[10%] flex items-center justify-center hover:bg-purple-800 text-white p-2 rounded-r-lg shadow-md transition-transform transform hover:scale-110"
         >
-          Send
+          <VscSend size={20} />
         </button>
       </form>
     </div>

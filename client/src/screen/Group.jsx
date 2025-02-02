@@ -1,79 +1,32 @@
-import React, { useEffect, useState } from "react";
-import GroupChat from "../components/GroupChat";
-import { Link } from "react-router-dom";
-import { IoMdArrowRoundBack } from "react-icons/io";
-import Avatar from "../components/Avatar";
-import { IoMenu } from "react-icons/io5";
-import { getRandomColor } from "../utils/color";
-import { getgroups } from "../services/api";
-import { useQuery } from "@tanstack/react-query";
-const Group = () => {
-  const [currentGroup, setCurrentGroup] = useState("");
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+import React, { useState } from "react";
+import GroupSidebar from "../components/GroupSidebar";
+import GroupChatSection from "../components/GroupChatSection";
+import GroupEmptyView from "../components/GroupEmptyView";
 
+const GroupV1 = () => {
+  const [selectedGroup, setSelectedGroup] = useState(null);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
-
-  const { data, error, isError, isPending } = useQuery({
-    queryKey: ["getgroups"],
-    queryFn: getgroups,
-  });
-  console.log(data);
-  console.log(currentGroup);
   return (
-    <>
-      <div className="h-screen w-full flex justify-center items-center font-mochiy bg-background relative">
-        <button
-          onClick={toggleSidebar}
-          className="absolute top-4 left-4 md:hidden bg-primary text-white p-2 rounded-lg shadow-lg z-30">
-          <IoMenu />
-        </button>
-
-        <div
-          className={`h-full w-[95%] md:w-2/5 flex flex-col justify-between items-center overflow-scroll absolute bg-primary select-none transform transition-transform duration-300 ${
-            isSidebarOpen ? "translate-x-0 z-10 left-0" : "-translate-x-full  "
-          } md:translate-x-0 md:relative `}>
-          <div className="h-14 w-full flex items-center text-start p-2 gap-2 text-xl">
-            <Link to="/">
-              <IoMdArrowRoundBack className=" hidden md:block h-10 w-10 text-gray-600" />
-            </Link>
-            <div className=" flex h-10 w-10 justify-center px-20 md:px-2 md:py-2 text-white md:justify-start">
-              Groups
-            </div>
-          </div>
-
-          <ul className="h-5/6 w-full flex flex-col gap-1 justify-start items-center">
-            {data?.map((group) => (
-              <li
-                key={group._id}
-                className={`hover:bg-gray-600 h-16 lg:h-16 w-[90%] p-2 cursor-pointer flex  items-center rounded-md text-white hover:scale-x-105 hover:shadow-md transition-all duration-200 ${
-                  currentGroup === group._id ? "bg-purple-600" : "bg-background"
-                }`}
-                onClick={() => setCurrentGroup(group._id)}>
-                <Avatar
-                  name={group.name}
-                  size="md"
-                  bgColor={getRandomColor(group._id)}
-                />
-                <h3 className="px-2">{group.name}</h3>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        {isSidebarOpen && (
-          <div
-            className="fixed  bg-black bg-opacity-50 md:hidden"
-            onClick={toggleSidebar}></div>
-        )}
-        <div className=" hidden md:block h-full w-1 bg-slate-400"></div>
-        <div className="h-full w-full md:w-3/4">
-          <GroupChat currentGroup={currentGroup} />
-        </div>
-      </div>
-    </>
+    <div className="flex p-2 w-full h-screen gap-2">
+      <GroupSidebar
+        selectedGroup={selectedGroup}
+        setSelectedGroup={setSelectedGroup}
+        isSidebarOpen={isSidebarOpen}
+        toggleSidebar={toggleSidebar}
+      />
+      {selectedGroup ? (
+        <GroupChatSection
+          selectedGroup={selectedGroup}
+          toggleSidebar={toggleSidebar}
+        />
+      ) : (
+        <GroupEmptyView toggleSidebar={toggleSidebar} />
+      )}
+    </div>
   );
 };
 
-export default Group;
+export default GroupV1;
