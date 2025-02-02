@@ -6,7 +6,16 @@ const PaymentSchema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
-  groupId: { type: mongoose.Schema.Types.ObjectId,ref:"Group", required: true },
+  groupId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Group",
+    required: true,
+  },
+  eventId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Event",
+    required: true,
+  },
   razorpayOrderId: { type: String, required: true },
   razorpayPaymentId: { type: String, required: true },
   razorpaySignature: { type: String, required: true },
