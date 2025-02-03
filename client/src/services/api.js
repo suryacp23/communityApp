@@ -64,8 +64,10 @@ export const createComment = (comment) =>
     .post(`/api/comment/create`, comment, { withCredentials: true })
     .then((res) => res.data);
 
-export const getgroups = async () => {
-  return axios.get(`/api/group`).then((res) => res.data);
+
+export const getgroups = async (role = "member") => {
+  return axios.get(`/api/group?role=${role}`).then((res) => res.data);
+
 };
 
 export const getgroupInfo = async (groupId) => {
@@ -106,3 +108,14 @@ export const createEvent = (formData) =>
 export const updateLike = (eventId) => {
   axios.post(`api/like/${eventId}`);
 };
+
+export const getGroupByEventId = (eventId) =>
+  axios
+    .get(`/api/group/byEvent/${eventId}`, { withCredentials: true })
+    .then((res) => res.data);
+
+export const getAppliedEvents = (eventId) =>
+  axios
+    .get(`/api/payment/${eventId}`, { withCredentials: true })
+    .then((res) => res.data);
+

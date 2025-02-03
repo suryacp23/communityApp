@@ -2,6 +2,7 @@ import Razorpay from "razorpay";
 import crypto from "crypto";
 import dotenv from "dotenv";
 import Payment from "../models/paymentModel.js";
+import Group from "../models/groupModel.js";
 dotenv.config();
 
 const razorpayInstance = new Razorpay({
@@ -43,6 +44,7 @@ export const verifyPayment = async (req, res) => {
     razorpay_payment_id,
     razorpay_signature,
     groupId,
+    eventId,
   } = req.body;
   const userId = req.user._id;
   const hmac = crypto.createHmac("sha256", process.env.RAZORPAY_KEY_SECRET);
@@ -53,14 +55,37 @@ export const verifyPayment = async (req, res) => {
     const payment = new Payment({
       groupId,
       userId,
+      eventId,
       razorpayOrderId: razorpay_order_id,
       razorpayPaymentId: razorpay_payment_id,
       razorpaySignature: razorpay_signature,
+    });
+
+    await Group.findByIdAndUpdate(groupId, {
+      $push: { members: req.user._id },
     });
 
     await payment.save();
     res.status(200).json({ message: "Payment verified successfully" });
   } else {
     res.status(400).json({ message: "Payment verification failed" });
+  }
+};
+
+export const verifyEventApplied = async (req, res) => {
+  const { eventId } = req.params;
+  try {
+    const events = await Payment.find({
+      eventId: eventId,
+      userId: req.user._id,
+    })
+      .select("groupId")
+      .populate("groupId", "name")
+      .lean();
+
+    const groupIds = events.map((event) => event.groupId);
+    res.status(200).json({ groupIds });
+  } catch (error) {
+    console.log(error);
   }
 };
