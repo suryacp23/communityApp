@@ -43,18 +43,20 @@ const CommentForm = ({ eventId }) => {
   return (
     <form
       onSubmit={handleAddComment}
-      className="flex flex-col justify-end items-end">
+      className="bg-zinc-800 p-4 rounded-lg shadow-md w-full mx-auto font-poppins flex flex-col justify-end items-end"
+    >
       <textarea
         value={commentText}
         onChange={(e) => setCommentText(e.target.value)}
         placeholder="Write your comment here..."
         rows="3"
-        className="w-full p-3 border text-white max-h-32 max-w-full min-h-32 border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-zinc-400  bg-zinc-600"
+        className="w-full p-2 border border-zinc-500 text-zinc-100 bg-zinc-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4"
       />
       <button
         type="submit"
-        className="px-4 w-fit py-2 bg-blue-800 text-white rounded-lg hover:bg-blue-950 transition mt-3"
-        disabled={isPending}>
+        className="w-fit p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition duration-200"
+        disabled={isPending}
+      >
         {isPending ? "Adding..." : "Add Comment"}
       </button>
     </form>

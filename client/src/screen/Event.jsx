@@ -1,15 +1,23 @@
 import React from "react";
 import EventSection from "../components/EventSection";
 import CommentSection from "../components/CommentSection";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import { Fetchevent } from "../services/api";
+import { useQuery } from "@tanstack/react-query";
 
 const Event = () => {
   const { eventId } = useParams();
+  const { data } = useQuery({
+    queryKey: ["getevents", eventId],
+    queryFn: () => Fetchevent(eventId),
+    enabled: !!eventId,
+  });
+  const event = data?.event;
 
   return (
     <div className="w-full min-h-screen p-2">
-     <EventSection />
-     <CommentSection eventId={eventId} />
+      <EventSection event={event} />
+      <CommentSection eventId={eventId} />
     </div>
   );
 };

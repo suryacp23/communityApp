@@ -1,92 +1,109 @@
 import React from "react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { request } from "../services/api";
-import { useQuery } from "@tanstack/react-query";
-import { Fetchevent } from "../services/api.js";
-import { Link, useParams } from "react-router-dom";
+
+import { Link, useNavigate } from "react-router-dom";
 import EventOptions from "./EventOptions.jsx";
+import { MdOutlineArrowBackIosNew } from "react-icons/md";
 
-const EventSection = () => {
-	const params = useParams();
-	const eventid = params.eventId;
-	const { data } = useQuery({
-		queryKey: ["getevents", eventid],
-		queryFn: () => Fetchevent(eventid),
-		enabled: !!eventid,
-	});
-	const event = data?.event;
-	console.log(data?.event);
+const EventSection = ({ event }) => {
+  const navigate = useNavigate();
+  console.log(event);
+  return (
+    <div className=" mx-auto p-6 w-full bg-zinc-900 rounded-lg text-gray-100">
+      {/* Header Section */}
+      <header className="text-center relative">
+        <MdOutlineArrowBackIosNew
+          size={20}
+          onClick={() => navigate("/")}
+          className="cursor-pointer transition-all ease-in-out hover:scale-150  rounded-full absolute sm:left-4 top-4"
+        />
+        <h1 className="text-4xl font-bold mb-4">{event?.title}</h1>
+        <p className="text-lg text-gray-300">{`${event?.eventDate} ${event?.startTime} - ${event?.endTime}`}</p>
+        <EventOptions event={event} />
+      </header>
 
-	/* const { mutate, data: groups } = useMutation({
-		mutationFn: (groupId) => request(groupId),
-	}); */
-	/* const handleJoin = async () => {
-		mutate(groupId);
-	}; */
-	return (
-		<div className="w-full bg-[#1f1f1f]  border border-gray-800 shadow-lg rounded-lg overflow-hidden">
-			<div className="flex flex-col md:flex-row">
-				{/* Left Section */}
-				<div className="relative md:w-2/3 p-6">
-					<EventOptions event={data?.event} />
-					<img
-						src={event?.imageUrl}
-						alt={event?.title}
-						className="w-full h-[60vh] object-contain rounded-lg mb-6"
-					/>
+      {/* Event Image */}
+      <section className="my-6 flex items-center justify-center">
+        <img
+          src={event?.imageUrl}
+          alt={event?.title}
+          className="w-5/6 object-cover rounded-lg shadow-md aspect-video"
+        />
+      </section>
 
-					<h1 className="text-3xl font-bold text-gray-100 mb-4">
-						{event?.title}
-					</h1>
-					<p className="text-gray-200">{event?.description}</p>
-				</div>
+      {/* Event Description */}
+      <section className="my-6">
+        <p className="text-lg text-gray-200">{event?.description}</p>
+      </section>
 
-				{/* Right Section */}
-				<div className="md:w-1/3 p-6 border-t md:border-t-0 md:border-l border-gray-800">
-					<p className="text-gray-300 mb-4">
-						<strong>Event Date:</strong> {event?.eventDate}
-					</p>
-					<p className="text-gray-300 mb-4">
-						<strong>Start Time:</strong> {event?.startTime}
-					</p>
-					<p className="text-gray-300 mb-4">
-						<strong>End Time:</strong> {event?.endTime}
-					</p>
-					<p className="text-gray-300 mb-4">
-						<strong>Technical Events:</strong>{" "}
-						{event?.technical.join(", ")}
-					</p>
-					<p className="text-gray-300 mb-4">
-						<strong>Non-Technical Events:</strong>{" "}
-						{event?.nonTechnical.join(", ")}
-					</p>
-					<p className="text-gray-300 mb-4">
-						<strong>Paid:</strong> {event?.paid ? "Yes" : "No"}
-					</p>
-					{event?.paid && (
-						<p className="text-gray-300">
-							<strong>Amount:</strong> ₹{event.amount}
-						</p>
-					)}
-					<div className="h-1/5 w-full  py-4 justify-center items-center">
-						<Link
-							className={`px-3 py-2 bg-blue-500 rounded-lg`}
-							to={`/payments/${eventid}`}
-						>
-							Apply
-						</Link>
-					</div>
-				</div>
-			</div>
+      {/* Organizer Info */}
+      <section className="my-6 flex items-center">
+        <img
+          src={event?.userId.profile_image_url}
+          alt={event?.userId.userName}
+          className="w-12 h-12 rounded-full mr-4"
+        />
+        <div>
+          <h3 className="text-xl font-semibold">{event?.userId.userName}</h3>
+          <p className="text-gray-200">{event?.userId.email}</p>
+        </div>
+        <div>
+          <h1>{event?.createdAt}</h1>
+        </div>
+      </section>
 
-			{/* Footer Section */}
-			<div className="bg-gray-800 text-gray-100 text-sm px-6 py-4 text-right">
-				<p>
-					<strong>Posted by:</strong> {event?.userId.userName}
-				</p>
-			</div>
-		</div>
-	);
+      {/* Event Skills */}
+      <section className="my-6">
+        <div className="mb-4">
+          <h4 className="text-xl font-semibold">Technical Skills:</h4>
+          <ul className="list-disc pl-5">
+            {event?.technical.map((skill) => (
+              <li key={skill} className="text-gray-200">
+                {skill}
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          <h4 className="text-xl font-semibold">Non-Technical Skills:</h4>
+          <ul className="list-disc pl-5">
+            {event?.nonTechnical.map((skill) => (
+              <li key={skill} className="text-gray-200">
+                {skill}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      {/* Pricing and Event Details */}
+      <section className="my-6 bg-zinc-600 p-4 rounded-lg flex gap-2 flex-col">
+        <p className="text-lg font-semibold">Price: ₹{event?.amount}</p>
+        <p className="text-gray-200">
+          {event?.paid ? "This is a paid event" : "This event is free"}
+        </p>
+        <p className="text-gray-200">
+          Swags: {event?.swags ? "Provided" : "Not Provided"}
+        </p>
+        <p className="text-gray-200">
+          Refreshments: {event?.refreshments ? "Provided" : "Not Provided"}
+        </p>
+        <Link
+          className={`p-2 bg-blue-500 w-fit rounded-lg text-center`}
+          to={`/payments/${event?._id}`}
+        >
+          Apply
+        </Link>
+      </section>
+
+      {/* Interaction Buttons */}
+      <section className="my-6 flex justify-between items-center">
+        <p className="text-lg text-gray-200">{event?.comments} Comments</p>
+        <button className="px-6 py-2 bg-zinc-600 text-white rounded-md hover:bg-gray-700">
+          Like ({event?.likes})
+        </button>
+      </section>
+    </div>
+  );
 };
 
 export default EventSection;

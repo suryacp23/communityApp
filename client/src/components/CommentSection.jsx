@@ -8,8 +8,8 @@ const CommentSection = ({ eventId }) => {
   const { user } = useAuth();
 
   return (
-    <div className="w-full mx-auto mt-5 bg-[#1f1f1f] rounded-lg p-2">
-      <h2 className="text-xl font-semibold mb-4 text-white text-center border-b border-b-zinc-600 h-10 items-center flex justify-center">
+    <div className="w-full mx-auto mt-5 bg-zinc-900 rounded-lg p-2">
+      <h2 className="text-xl font-semibold mb-4 text-white text-center h-10 items-center flex justify-center">
         Comments
       </h2>
       {user ? (

@@ -16,7 +16,7 @@ const CommentList = ({ eventId }) => {
     onError: (error) => console.error("Error fetching comments:", error),
   });
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col bg-zinc-900 rounded-lg gap-2 py-2">
       {isLoading ? (
         <p>Loading comments...</p>
       ) : isError ? (
