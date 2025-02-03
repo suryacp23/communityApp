@@ -13,7 +13,7 @@ const GroupSidebar = ({
 }) => {
   const { data, error, isError, isPending } = useQuery({
     queryKey: ["getgroups"],
-    queryFn: getgroups,
+    queryFn: () => getgroups("member"),
   });
 
   const [openEvent, setOpenEvent] = useState(null);

@@ -77,12 +77,16 @@ export const getGroupInfo = async (req, res) => {
 export const getGroups = async (req, res) => {
   try {
     const userId = req.user._id; // User ID from the request
+    const role = req.query.role || "member"; // Get role from query params, default to "member"
+
+    const matchCondition =
+      role === "admin"
+        ? { admin: userId } // Match groups where the user is an admin
+        : { members: userId };
 
     const result = await Group.aggregate([
       {
-        $match: {
-          members: userId, // Filter groups where the user is a member
-        },
+        $match: matchCondition,
       },
       {
         $group: {

@@ -61,6 +61,10 @@ export const verifyPayment = async (req, res) => {
       razorpaySignature: razorpay_signature,
     });
 
+    await Group.findByIdAndUpdate(groupId, {
+      $push: { members: req.user._id },
+    });
+
     await payment.save();
     res.status(200).json({ message: "Payment verified successfully" });
   } else {
