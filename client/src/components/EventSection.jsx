@@ -3,6 +3,7 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import EventOptions from "./EventOptions.jsx";
 import { MdOutlineArrowBackIosNew } from "react-icons/md";
+import { formatTimestamp } from "../utils/time.js";
 
 const EventSection = ({ event }) => {
   const navigate = useNavigate();
@@ -36,18 +37,20 @@ const EventSection = ({ event }) => {
       </section>
 
       {/* Organizer Info */}
-      <section className="my-6 flex items-center">
-        <img
-          src={event?.userId.profile_image_url}
-          alt={event?.userId.userName}
-          className="w-12 h-12 rounded-full mr-4"
-        />
-        <div>
-          <h3 className="text-xl font-semibold">{event?.userId.userName}</h3>
-          <p className="text-gray-200">{event?.userId.email}</p>
+      <section className="my-6 flex items-center justify-between">
+        <div className="flex">
+          <img
+            src={event?.userId.profile_image_url}
+            alt={event?.userId.userName}
+            className="w-12 h-12 rounded-full mr-4"
+          />
+          <div>
+            <h3 className="text-xl font-semibold">{event?.userId.userName}</h3>
+            <p className="text-gray-200">{event?.userId.email}</p>
+          </div>
         </div>
-        <div>
-          <h1>{event?.createdAt}</h1>
+        <div className="">
+          <h1>{formatTimestamp(event?.createdAt)}</h1>
         </div>
       </section>
 

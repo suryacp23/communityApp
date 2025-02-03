@@ -37,7 +37,7 @@ const Signup = () => {
   };
 
   return (
-    <div className="h-screen relative bg-background flex justify-center md:justify-end items-center  font-mochiy">
+    <div className="h-screen relative bg-background flex justify-center md:justify-end items-center">
       <div className="h-7 md:h-10 w-[90vw] md:w-[75vw] bg-lightrose absolute top-0 left-0 rounded-br-full"></div>
       <div className="h-7 md:h-10 w-[90vw] md:w-[75vw] bg-lightblue absolute  right-0 bottom-0 rounded-tl-full"></div>
       <div className="h-4/5  w-3/5  lg:w-4/5 hidden md:flex flex-col justify-center items-center">
@@ -55,7 +55,8 @@ const Signup = () => {
         <form
           action=""
           onSubmit={handleSubmit}
-          className="h-4/5 w-4/5 md:w-3/5 flex flex-col gap-9 justify-center text-slate-950 items-center ">
+          className="h-4/5 w-4/5 md:w-3/5 flex flex-col gap-9 justify-center text-slate-950 items-center "
+        >
           <input
             type="text"
             id="username"
@@ -90,7 +91,8 @@ const Signup = () => {
               <button
                 type="submit"
                 className="bg-slate-950 h-9 md:h-10 w-full text-slate-100 rounded-md md:text-lg lg:text-xl"
-                disabled={isPending}>
+                disabled={isPending}
+              >
                 Signup
               </button>
             )}

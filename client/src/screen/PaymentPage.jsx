@@ -139,7 +139,9 @@ const PaymentPage = () => {
             onChange={handleChange}
             className="w-full p-2 rounded-md bg-white text-black"
           >
-            <option value="">Select an Event</option>
+            <option value="" disabled>
+              Select an Event
+            </option>
             {dropDown.map((event, index) => (
               <option key={index} value={event._id}>
                 {event.name}

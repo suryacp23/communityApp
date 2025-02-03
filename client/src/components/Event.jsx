@@ -42,22 +42,30 @@ const Event = ({ event }) => {
           {event.title || "Untitled Event"}
         </h1>
         <div className="text-sm text-gray-400 flex items-center justify-between mb-4">
-          <span>{event?.isPaid || "free"}</span>
+          {event?.paid ? (
+            <span className="bg-green-500 rounded-full px-2 text-white">
+              ₹{event?.amount}
+            </span>
+          ) : (
+            <span className="bg-purple-500 rounded-full px-2 text-white">
+              free
+            </span>
+          )}
           <span>{formatTimestamp(event.createdAt) || "No date"}</span>
         </div>
-        <div className="flex justify-between items-center mt-2 w-full text-black shadow-3xl">
-          <div className=" bg-[#D9D9D9] rounded-lg p-4 w-full">
+        <div className="flex justify-between items-center mt-2 w-full text-white shadow-3xl">
+          <div className=" bg-zinc-600 rounded-lg p-4 w-full">
             <div className="flex items-center justify-between w-full">
               {/* User Info */}
               <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-full overflow-hidden border border-black">
+                <div className="w-8 h-8 rounded-full overflow-hidden">
                   <img
-                    src={event.imageUrl}
+                    src={event.userId.profile_image_url}
                     alt="User"
                     className="w-full h-full object-cover"
                   />
                 </div>
-                <div className="text-black font-bold text-sm">
+                <div className="text-white font-bold text-sm">
                   {event.userId.userName}
                 </div>
               </div>

@@ -3,6 +3,7 @@ import crypto from "crypto";
 import dotenv from "dotenv";
 import Payment from "../models/paymentModel.js";
 import Group from "../models/groupModel.js";
+import { error } from "console";
 dotenv.config();
 
 const razorpayInstance = new Razorpay({
@@ -46,29 +47,31 @@ export const verifyPayment = async (req, res) => {
     groupId,
     eventId,
   } = req.body;
-  const userId = req.user._id;
-  const hmac = crypto.createHmac("sha256", process.env.RAZORPAY_KEY_SECRET);
-  hmac.update(razorpay_order_id + "|" + razorpay_payment_id);
-  const generated_signature = hmac.digest("hex");
+  try {
+    const userId = req.user._id;
+    const hmac = crypto.createHmac("sha256", process.env.RAZORPAY_KEY_SECRET);
+    hmac.update(razorpay_order_id + "|" + razorpay_payment_id);
+    const generated_signature = hmac.digest("hex");
 
-  if (generated_signature === razorpay_signature) {
-    const payment = new Payment({
-      groupId,
-      userId,
-      eventId,
-      razorpayOrderId: razorpay_order_id,
-      razorpayPaymentId: razorpay_payment_id,
-      razorpaySignature: razorpay_signature,
-    });
+    if (generated_signature === razorpay_signature) {
+      const payment = new Payment({
+        groupId,
+        userId,
+        eventId,
+        razorpayOrderId: razorpay_order_id,
+        razorpayPaymentId: razorpay_payment_id,
+        razorpaySignature: razorpay_signature,
+      });
 
-    await Group.findByIdAndUpdate(groupId, {
-      $push: { members: req.user._id },
-    });
+      await Group.findByIdAndUpdate(groupId, {
+        $push: { members: req.user._id },
+      });
 
-    await payment.save();
-    res.status(200).json({ message: "Payment verified successfully" });
-  } else {
-    res.status(400).json({ message: "Payment verification failed" });
+      await payment.save();
+      res.status(200).json({ message: "Payment verified successfully" });
+    }
+  } catch (error) {
+    res.status(400).json({ message: "Payment verification failed", error });
   }
 };
 

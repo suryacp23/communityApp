@@ -41,9 +41,11 @@ const Header = () => {
   };
 
   return (
-    <header className="p-5 z-10 max-w-[1440px] mx-auto text-lavender_bush font-mochiy">
+    <header className="p-5 z-10 max-w-[1440px] mx-auto text-lavender_bush">
       <nav className="flex justify-between items-center">
-        <Link to={"/"}>LOGO</Link>
+        <Link to={"/events"} className=" scale-125">
+          SUE
+        </Link>
         {/* Desktop Navigation */}
         <ul className="flex justify-center items-center gap-16 max-lg:hidden relative">
           {navLinks.map((item) => (
