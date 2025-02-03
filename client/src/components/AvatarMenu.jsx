@@ -42,11 +42,19 @@ export default function UserMenu() {
   return (
     <div className="relative inline-block">
       <button onClick={() => setIsOpen(!isOpen)} className="focus:outline-none">
-        <Avatar
-          size="sm"
-          name={info.userName}
-          bgColor={getRandomColor(info.userName)}
-        />
+        {info.profile_image_url ? (
+          <img
+            src={info.profile_image_url}
+            alt=""
+            className="w-10 h-10 aspect-square rounded-full object-cover shadow-2xl shadow-slate-100"
+          />
+        ) : (
+          <Avatar
+            size={"md"}
+            name={info.userName}
+            className={getRandomColor(info.userName)}
+          />
+        )}
       </button>
       {isOpen && (
         <div className="absolute right-0 mt-2 w-fit min-w-44 bg-black shadow-lg rounded-md border border-gray-200 z-50">

@@ -4,10 +4,13 @@ import MyEvents from "../components/MyEvents";
 import { LuCircleArrowLeft } from "react-icons/lu";
 import { useNavigate } from "react-router-dom";
 import MyGroups from "../components/MyGroups";
+import RequestComponent from "../components/RequestComponent";
+import { ToastContainer } from "react-toastify";
 const tabs = [
   { name: "My Events", path: "/tab=events" },
   { name: "Profile", path: "/tab=profile" },
   { name: "Groups", path: "/tab=groups" },
+  { name: "Requests", path: "/tab=requests" },
 ];
 
 export default function Dashboard() {
@@ -45,8 +48,10 @@ export default function Dashboard() {
       <div className="p-4 text-gray-300">
         {activeTab === "/tab=events" && <MyEvents />}
         {activeTab === "/tab=profile" && <Profile />}
-		{activeTab === "/tab=groups" && <MyGroups />}
+        {activeTab === "/tab=groups" && <MyGroups />}
+        {activeTab === "/tab=requests" && <RequestComponent />}
       </div>
+      <ToastContainer />
     </div>
   );
 }

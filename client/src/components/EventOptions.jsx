@@ -38,7 +38,7 @@ const EventOptions = ({ event }) => {
     mutate(event._id);
   };
   console.log(user);
-  console.log(event?.userId._id);
+  console.log(event?.userId?._id);
 
   return (
     <div
@@ -58,7 +58,7 @@ const EventOptions = ({ event }) => {
           >
             <IoShareSocialOutline className=" inline text-lg" /> Share
           </div>
-          {user._id === event?.userId._id && (
+          {user?._id === event?.userId?._id && (
             <div className="flex flex-col gap-2">
               <div
                 onClick={() => navigate(`/updateEvent/${event._id}`)}

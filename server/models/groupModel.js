@@ -8,6 +8,7 @@ const groupSchema = mongoose.Schema(
     admin: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     moderators: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     members: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    requests:[{type:mongoose.Schema.Types.ObjectId,ref:"JoinRequest"}],
     isHead: { type: Boolean, required: true },
   },
   {

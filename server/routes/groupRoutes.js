@@ -23,7 +23,7 @@ router.get("/:groupId", getGroupInfo);
 router.get("/", protect, getGroups);
 router.post("/request", protect, joinRequest);
 router.post("/approve", protect, approveRequest);
-router.get("/request/:groupId", getGroupJoinRequests);
+router.get("/r/request", protect, getGroupJoinRequests);
 router.get("/byEvent/:eventId", getGroupByEventId);
 
 export default router;

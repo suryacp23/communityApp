@@ -197,72 +197,43 @@ export const approveRequest = async (req, res) => {
 };
 
 export const joinRequest = async (req, res) => {
-  const { eventId, events } = req.body;
-  const userId = "6740173101d916d7e6efdf2e";
-  // const groupIds = JSON.parse(events);
-  // console.log(groupIds);
-
-  try {
-    const groups = await Group.find({ eventId });
-    console.log(groups);
-
-    const validGroupIds = groups.map((group) => group._id.toString());
-    const filteredGroupIds = events.filter((groupId) =>
-      validGroupIds.includes(groupId)
-    );
-
-    if (filteredGroupIds.length === 0) {
-      return res.status(400).json({ message: "Invalid group IDs" });
-    }
-
-    const existingRequests = await JoinRequest.find({
-      user: userId,
-      group: { $in: filteredGroupIds },
-    });
-
-    const existingGroupIds = existingRequests.map((req) =>
-      req.group.toString()
-    );
-    const newGroupIds = filteredGroupIds.filter(
-      (groupId) => !existingGroupIds.includes(groupId)
-    );
-
-    if (newGroupIds.length === 0) {
-      return res
-        .status(400)
-        .json({ message: "Join requests already sent for all groups" });
-    }
-
-    const joinRequests = newGroupIds.map((groupId) => ({
-      user: userId,
-      group: groupId,
-    }));
-
-    await JoinRequest.insertMany(joinRequests);
-
-    res.status(200).json({ message: "Join requests sent successfully" });
-  } catch (err) {
-    res
-      .status(500)
-      .json({ message: "Error sending join requests", error: err });
-  }
-};
-export const getGroupJoinRequests = async (req, res) => {
-  const { groupId } = req.params;
+  const { groupId } = req.body;
+  const userId = req.user._id;
 
   try {
     const group = await Group.findById(groupId);
-    if (!group) return res.status(404).json({ message: "Group not found" });
+    console.log(group);
 
-    const joinRequests =
-      (await JoinRequest.find({
+    if (group.members.includes(userId) || group.requests.includes(userId)) {
+      return res.status(400).json({ message: "already request sent" });
+    } else {
+      group.requests.push(req.user._id);
+      await group.save();
+      await JoinRequest.create({
+        user: userId,
         group: groupId,
-        status: "pending",
-      })
+        admin: group.admin,
+      });
+    }
+
+    return res.status(200).json({
+      message: "successfully sent request",
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+export const getGroupJoinRequests = async (req, res) => {
+  try {
+    const adminId = req.user._id;
+    const requests =
+      (await JoinRequest.find({ admin: adminId })
         .populate("user", ["-password"])
         .populate("group")) || [];
 
-    res.status(200).json(joinRequests);
+    res.status(200).json(requests);
   } catch (err) {
     console.log(err);
     res

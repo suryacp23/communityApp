@@ -64,10 +64,8 @@ export const createComment = (comment) =>
     .post(`/api/comment/create`, comment, { withCredentials: true })
     .then((res) => res.data);
 
-
 export const getgroups = async (role = "member") => {
   return axios.get(`/api/group?role=${role}`).then((res) => res.data);
-
 };
 
 export const getgroupInfo = async (groupId) => {
@@ -90,14 +88,18 @@ export const checkAttendance = async ({ eventId, decodedText }) => {
   return response.data;
 };
 
-export const request = async (groupId) => {
-  return axios.post(`api/group/request`, groupId, { withCredentials: true });
+export const request = async (data) => {
+  return axios.post(`/api/group/request`, data, { withCredentials: true });
 };
 
-export const getGroupJoinRequests = async (groupId) => {
+export const getGroupJoinRequests = async () => {
   return axios
-    .get(`/api/group/request/${groupId}`, { withCredentials: true })
+    .get(`/api/group/r/request`, { withCredentials: true })
     .then((res) => res.data);
+};
+
+export const approve = async (data) => {
+  return axios.post(`/api/group/approve`, data, { withCredentials: true });
 };
 
 export const createEvent = (formData) =>
@@ -118,4 +120,3 @@ export const getAppliedEvents = (eventId) =>
   axios
     .get(`/api/payment/${eventId}`, { withCredentials: true })
     .then((res) => res.data);
-

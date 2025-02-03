@@ -64,21 +64,30 @@ const GroupSidebar = ({
           {/* Groups under Event */}
           {openEvent === event._id && (
             <div className="ml-6 mt-2 flex flex-col gap-1 ease-out">
-              {event.groups.map((group) => (
+              {event?.groups?.map((group) => (
                 <div
-                  key={group._id}
+                  key={group?._id}
                   className={`cursor-pointer flex items-center hover:bg-gray-500 p-2 border-l-2 border-gray-100 ${
-                    selectedGroup === group._id && selectedEvent === event._id
+                    selectedGroup === group?._id && selectedEvent === event?._id
                       ? "bg-purple-500"
                       : "bg-zinc-600"
                   }`}
                   onClick={() => {
-                    setSelectedGroup(group._id);
-                    setSelectedEvent(event._id);
+                    setSelectedGroup(group?._id);
+                    setSelectedEvent(event?._id);
                     toggleSidebar();
                   }}
                 >
-                  {group.name}
+                  {group.isHead ? (
+                    <p className="flex gap-2">
+                      <span>{group?.name}</span>
+                      <span className="bg-yellow-300 px-2 text-black rounded-full">
+                        head
+                      </span>
+                    </p>
+                  ) : (
+                    <p>{group?.name}</p>
+                  )}
                 </div>
               ))}
             </div>

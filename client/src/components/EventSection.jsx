@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import EventOptions from "./EventOptions.jsx";
 import { MdOutlineArrowBackIosNew } from "react-icons/md";
 import { formatTimestamp } from "../utils/time.js";
+import RequestButton from "./RequestButton.jsx";
 
 const EventSection = ({ event }) => {
   const navigate = useNavigate();
@@ -40,13 +41,13 @@ const EventSection = ({ event }) => {
       <section className="my-6 flex items-center justify-between">
         <div className="flex">
           <img
-            src={event?.userId.profile_image_url}
-            alt={event?.userId.userName}
+            src={event?.userId?.profile_image_url}
+            alt={event?.userId?.userName}
             className="w-12 h-12 rounded-full mr-4"
           />
           <div>
-            <h3 className="text-xl font-semibold">{event?.userId.userName}</h3>
-            <p className="text-gray-200">{event?.userId.email}</p>
+            <h3 className="text-xl font-semibold">{event?.userId?.userName}</h3>
+            <p className="text-gray-200">{event?.userId?.email}</p>
           </div>
         </div>
         <div className="">
@@ -90,12 +91,16 @@ const EventSection = ({ event }) => {
         <p className="text-gray-200">
           Refreshments: {event?.refreshments ? "Provided" : "Not Provided"}
         </p>
-        <Link
-          className={`p-2 bg-blue-500 w-fit rounded-lg text-center`}
-          to={`/payments/${event?._id}`}
-        >
-          Apply
-        </Link>
+        {event?.paid ? (
+          <Link
+            className={`p-2 bg-blue-500 w-fit rounded-lg text-center`}
+            to={`/payments/${event?._id}`}
+          >
+            Apply
+          </Link>
+        ) : (
+          <RequestButton />
+        )}
       </section>
 
       {/* Interaction Buttons */}

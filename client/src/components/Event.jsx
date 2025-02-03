@@ -4,9 +4,11 @@ import { MdLight, MdModeComment } from "react-icons/md";
 import { formatTimestamp } from "../utils/time";
 import { formatCount } from "../utils/numberFormat";
 import { Link } from "react-router-dom";
+import Avatar from "./Avatar";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { updateLike } from "../services/api";
+import { getRandomColor } from "../utils/color";
 
 const Event = ({ event }) => {
   const queryClient = useQueryClient();
@@ -29,10 +31,10 @@ const Event = ({ event }) => {
   return (
     <div className="bg-[#1f1f1f] shadow-3xl rounded-lg overflow-hidden select-none">
       <div className="relative h-64 sm:h-80 md:h-96 lg:h-[50vh] xl:h-[60vh] w-full">
-        <Link to={`/events/${event._id}`} className="w-full h-full">
+        <Link to={`/events/${event?._id}`} className="w-full h-full">
           <img
-            src={event.imageUrl || "/api/placeholder/400/320"}
-            alt={event.title || "Event Image"}
+            src={event?.imageUrl || "/api/placeholder/400/320"}
+            alt={event?.title || "Event Image"}
             className="object-cover w-full h-full rounded-lg z-0"
           />
         </Link>
@@ -51,7 +53,7 @@ const Event = ({ event }) => {
               free
             </span>
           )}
-          <span>{formatTimestamp(event.createdAt) || "No date"}</span>
+          <span>{formatTimestamp(event?.createdAt) || "No date"}</span>
         </div>
         <div className="flex justify-between items-center mt-2 w-full text-white shadow-3xl">
           <div className=" bg-zinc-600 rounded-lg p-4 w-full">
@@ -60,13 +62,13 @@ const Event = ({ event }) => {
               <div className="flex items-center gap-2">
                 <div className="w-8 h-8 rounded-full overflow-hidden">
                   <img
-                    src={event.userId.profile_image_url}
+                    src={event?.userId?.profile_image_url}
                     alt="User"
                     className="w-full h-full object-cover"
                   />
                 </div>
                 <div className="text-white font-bold text-sm">
-                  {event.userId.userName}
+                  {event?.userId?.userName}
                 </div>
               </div>
 
@@ -86,7 +88,7 @@ const Event = ({ event }) => {
                 </div>
                 <div className="flex items-center space-x-1">
                   <span className="text-lg font-semibold">
-                    {formatCount(event.comments || 0)}
+                    {formatCount(event?.comments || 0)}
                   </span>
                   <p className="font-bold">
                     <MdModeComment size={25} />
