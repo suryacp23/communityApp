@@ -1,12 +1,31 @@
-import React from "react";
+import React, { useState } from "react";
 import { BiSolidLike } from "react-icons/bi";
-import { MdModeComment } from "react-icons/md";
+import { MdLight, MdModeComment } from "react-icons/md";
 import { formatTimestamp } from "../utils/time";
 import { formatCount } from "../utils/numberFormat";
 import { Link } from "react-router-dom";
-import LikeButton from "./LikeButton";
+
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { updateLike } from "../services/api";
 
 const Event = ({ event }) => {
+  const queryClient = useQueryClient();
+
+  const [isLiked, setIsLiked] = useState(false);
+
+  const { mutate, data, onSuccess } = useMutation({
+    mutationFn: () => updateLike(event?._id),
+    onSuccess: () => {
+      // Refetch the event data to get the updated like count
+      queryClient.invalidateQueries(["event", event?._id]);
+    },
+  });
+  const [hashlike, setHashlike] = useState(true);
+  const handleLike = () => {
+    setIsLiked((prev) => !prev); // Toggle local like state
+    mutate(); // Trigger the mutation
+  };
+
   return (
     <div className="bg-[#1f1f1f] shadow-3xl rounded-lg overflow-hidden select-none">
       <div className="relative h-64 sm:h-80 md:h-96 lg:h-[50vh] xl:h-[60vh] w-full">
@@ -45,14 +64,17 @@ const Event = ({ event }) => {
 
               {/* Stats */}
               <div className="flex items-center gap-4 text-black\80 text-sm">
-                <div className="flex items-center space-x-1">
-                  <span className=" text-lg font-semibold">
-                    {formatCount(event.likes || 0)}
+                <div className="flex items-center gap-2">
+                  <span className=" flex gap-1 text-lg font-semibold">
+                    <BiSolidLike
+                      size={25}
+                      onClick={handleLike}
+                      className={`cursor-pointer transition-colors duration-200 ${
+                        isLiked && "text-blue-600"
+                      }`}
+                    />
+                    <span>{formatCount(data?.likes ?? event?.likes)}</span>
                   </span>
-                  <p className=" text-sm">
-                    <BiSolidLike size={25} />
-                  </p>
-                  <LikeButton eventId={event._id} />
                 </div>
                 <div className="flex items-center space-x-1">
                   <span className="text-lg font-semibold">
