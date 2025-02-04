@@ -1,31 +1,53 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { BiSolidLike } from "react-icons/bi";
-import { MdLight, MdModeComment } from "react-icons/md";
+import { MdModeComment } from "react-icons/md";
 import { formatTimestamp } from "../utils/time";
 import { formatCount } from "../utils/numberFormat";
 import { Link } from "react-router-dom";
-import Avatar from "./Avatar";
-
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { updateLike } from "../services/api";
-import { getRandomColor } from "../utils/color";
+import { useAuth } from "../hooks/useAuth";
 
 const Event = ({ event }) => {
   const queryClient = useQueryClient();
+  const { user } = useAuth();
+  console.log(event);
 
+  // Sync initial liked state from backend
   const [isLiked, setIsLiked] = useState(false);
+  const liked = event?.likes?.includes(user?._id);
+  const [likeCount, setLikeCount] = useState(0);
+  const count = event?.likes?.length;
+  useEffect(() => {
+    setIsLiked(liked);
+    setLikeCount(count);
+  }, [event]);
 
-  const { mutate, data, onSuccess } = useMutation({
+  const { mutate } = useMutation({
     mutationFn: () => updateLike(event?._id),
-    onSuccess: () => {
-      // Refetch the event data to get the updated like count
+    onMutate: async () => {
+      // Optimistically update UI before API response
+      setIsLiked((prev) => !prev);
+      setLikeCount((prev) => (isLiked ? prev - 1 : prev + 1));
+
+      // Cancel ongoing queries to avoid UI flickers
+      await queryClient.cancelQueries(["event", event?._id]);
+    },
+    onError: (error) => {
+      console.error("Like toggle failed:", error);
+
+      // Rollback on failure
+      setIsLiked((prev) => !prev);
+      setLikeCount((prev) => (isLiked ? prev + 1 : prev - 1));
+    },
+    onSettled: () => {
+      // Refetch event to ensure correct state from backend
       queryClient.invalidateQueries(["event", event?._id]);
     },
   });
-  const [hashlike, setHashlike] = useState(true);
+
   const handleLike = () => {
-    setIsLiked((prev) => !prev); // Toggle local like state
-    mutate(); // Trigger the mutation
+    mutate(); // Trigger the API request
   };
 
   return (
@@ -50,49 +72,50 @@ const Event = ({ event }) => {
             </span>
           ) : (
             <span className="bg-purple-500 rounded-full px-2 text-white">
-              free
+              Free
             </span>
           )}
           <span>{formatTimestamp(event?.createdAt) || "No date"}</span>
         </div>
         <div className="flex justify-between items-center mt-2 w-full text-white shadow-3xl">
-          <div className=" bg-zinc-600 rounded-lg p-4 w-full">
+          <div className="bg-zinc-600 rounded-lg p-4 w-full">
             <div className="flex items-center justify-between w-full">
               {/* User Info */}
               <div className="flex items-center gap-2">
                 <div className="w-8 h-8 rounded-full overflow-hidden">
                   <img
-                    src={event?.userId?.profile_image_url}
+                    src={event?.user?.profile_image_url}
                     alt="User"
                     className="w-full h-full object-cover"
                   />
                 </div>
                 <div className="text-white font-bold text-sm">
-                  {event?.userId?.userName}
+                  {event?.user?.userName}
                 </div>
               </div>
 
               {/* Stats */}
-              <div className="flex items-center gap-4 text-black\80 text-sm">
+              <div className="flex items-center gap-4 text-sm">
+                {/* Likes */}
                 <div className="flex items-center gap-2">
-                  <span className=" flex gap-1 text-lg font-semibold">
+                  <span>{formatCount(likeCount)}</span>
+                  <span className="flex gap-1 text-lg font-semibold">
                     <BiSolidLike
-                      size={25}
+                      size={20}
                       onClick={handleLike}
                       className={`cursor-pointer transition-colors duration-200 ${
-                        isLiked && "text-blue-600"
+                        isLiked ? "text-blue-600" : "text-gray-400"
                       }`}
                     />
-                    <span>{formatCount(data?.likes ?? event?.likes)}</span>
                   </span>
                 </div>
+
+                {/* Comments */}
                 <div className="flex items-center space-x-1">
-                  <span className="text-lg font-semibold">
+                  <span className="font-semibold">
                     {formatCount(event?.comments || 0)}
                   </span>
-                  <p className="font-bold">
-                    <MdModeComment size={25} />
-                  </p>
+                  <MdModeComment size={20} />
                 </div>
               </div>
             </div>
