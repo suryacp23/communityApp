@@ -20,9 +20,8 @@ export default function Dashboard() {
     <div className="w-full mx-auto">
       {/* Tab Headers */}
       <div
-        onClick={() => navigate("/")}
-        className="flex items-center gap-2 rounded-md absolute border-2 border-gray-500 hover:bg-gray-600 px-2 py-1 top-2 left-2 text-white cursor-pointer"
-      >
+        onClick={() => navigate("/events")}
+        className="flex items-center gap-2 rounded-md absolute border-2 border-gray-500 hover:bg-gray-600 px-2 py-1 top-2 left-2 text-white cursor-pointer">
         <LuCircleArrowLeft />
         <p>Back</p>
       </div>
@@ -37,15 +36,14 @@ export default function Dashboard() {
                   ? "text-blue-400 border-b-2 border-blue-400"
                   : "text-gray-400"
               }
-            `}
-          >
+            `}>
             {tab.name}
           </button>
         ))}
       </div>
 
       {/* Tab Content */}
-      <div className="p-4 text-gray-300">
+      <div className="p-4 text-gray-300 text-sm md:text-lg">
         {activeTab === "/tab=events" && <MyEvents />}
         {activeTab === "/tab=profile" && <Profile />}
         {activeTab === "/tab=groups" && <MyGroups />}

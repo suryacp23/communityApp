@@ -5,6 +5,7 @@ import { SignupData } from "../services/api.js";
 import { useAuth } from "../hooks/useAuth.jsx";
 import Spinner from "../components/Spinner.jsx";
 import PasswordInput from "../components/PasswordInput.jsx";
+import { toast } from "react-toastify";
 const Signup = () => {
   const navigate = useNavigate();
   const { setUser } = useAuth();
@@ -16,7 +17,8 @@ const Signup = () => {
     mutationFn: ({ userName, email, password }) =>
       SignupData({ userName, email, password }),
     onSuccess: (data) => {
-      console.log("Login successful:", data); // Now data is available
+      toast.success("Signup Successful");
+
       localStorage.setItem("token", JSON.stringify(data));
       setUser(data);
       setuserName("");
@@ -24,7 +26,7 @@ const Signup = () => {
       navigate("/events");
     },
     onError: (error) => {
-      console.error("Login failed:", error.message);
+      toast.error(error.response?.data?.error || error.message);
     },
   });
 
@@ -62,6 +64,7 @@ const Signup = () => {
             id="username"
             placeholder="UserName"
             value={userName}
+            maxLength={15}
             onChange={(e) => setuserName(e.target.value)}
             className="bg-slate-100  h-9 md:h-10 w-full text-xs md:text-base lg:text-xl rounded-md placeholder-slate-600 pl-4  "
           />

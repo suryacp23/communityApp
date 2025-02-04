@@ -42,19 +42,11 @@ export default function UserMenu() {
   return (
     <div className="relative inline-block">
       <button onClick={() => setIsOpen(!isOpen)} className="focus:outline-none">
-        {info.profile_image_url ? (
-          <img
-            src={info.profile_image_url}
-            alt=""
-            className="w-10 h-10 aspect-square rounded-full object-cover shadow-2xl shadow-slate-100"
-          />
-        ) : (
-          <Avatar
-            size={"md"}
-            name={info.userName}
-            className={getRandomColor(info.userName)}
-          />
-        )}
+        <Avatar
+          size={"md"}
+          name={info.userName}
+          imageUrl={info.profile_image_url}
+        />
       </button>
       {isOpen && (
         <div className="absolute right-0 mt-2 w-fit min-w-44 bg-black shadow-lg rounded-md border border-gray-200 z-50">
@@ -64,8 +56,7 @@ export default function UserMenu() {
             <hr className="my-2" />
             <button
               className="w-full text-left px-4 py-2 text-red-600 hover:bg-gray-100"
-              onClick={handleLogout}
-            >
+              onClick={handleLogout}>
               Sign Out
             </button>
           </div>

@@ -1,7 +1,7 @@
 import React from "react";
 import { getRandomColor } from "../utils/color"; // Adjust the path to your utility file
 
-const Avatar = ({ size, name, className = "" }) => {
+const Avatar = ({ size, name = "Guest", imageUrl, className = "" }) => {
   const getSizeClass = () => {
     switch (size) {
       case "sm":
@@ -9,20 +9,27 @@ const Avatar = ({ size, name, className = "" }) => {
       case "md":
         return "w-12 h-12 text-md";
       case "lg":
-        return "w-16 h-16 text-lg";
+        return "w-16 h-16 text-lg"
+      case "xl":
+        return "h-24 w-24 text-lg";
       default:
-        return "";
+        return "w-10 h-10 text-md"; // Default size
     }
   };
 
-  // Get a consistent color based on the name
-  const bgColor = getRandomColor(name);
+  // Ensure a valid name for color generation
+  const safeName = name || "Guest";
+  const bgColor = getRandomColor(safeName);
 
   return (
     <div
-      className={`flex items-center justify-center rounded-full ${getSizeClass()} ${className}`}
-      style={{ backgroundColor: bgColor }}>
-      {name ? name.charAt(0).toUpperCase() : "U"}
+      className={`flex items-center justify-center rounded-full  overflow-hidden ${getSizeClass()} ${className}`}
+      style={!imageUrl ? { backgroundColor: bgColor, color: "#fffff" } : {}}>
+      {imageUrl ? (
+        <img src={imageUrl} alt={name} className="w-full h-full object-cover" />
+      ) : (
+        <span className="font-bold ">{safeName.charAt(0).toUpperCase()}</span>
+      )}
     </div>
   );
 };

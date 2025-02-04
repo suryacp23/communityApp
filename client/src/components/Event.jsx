@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { updateLike } from "../services/api";
 import { useAuth } from "../hooks/useAuth";
+import Avatar from "./Avatar";
 
 const Event = ({ event }) => {
   const queryClient = useQueryClient();
@@ -63,7 +64,7 @@ const Event = ({ event }) => {
       </div>
       <div className="p-4">
         <h1 className="text-xl font-semibold text-white mb-2 truncate">
-          {event.title || "Untitled Event"}
+          {event?.title || "Untitled Event"}
         </h1>
         <div className="text-sm text-gray-400 flex items-center justify-between mb-4">
           {event?.paid ? (
@@ -83,10 +84,10 @@ const Event = ({ event }) => {
               {/* User Info */}
               <div className="flex items-center gap-2">
                 <div className="w-8 h-8 rounded-full overflow-hidden">
-                  <img
-                    src={event?.userId?.profile_image_url}
-                    alt="User"
-                    className="w-full h-full object-cover"
+                  <Avatar
+                    size="sm"
+                    imageUrl={event?.userId?.profile_image_url}
+                    name={event?.userId?.userName}
                   />
                 </div>
                 <div className="text-white font-bold text-sm">
