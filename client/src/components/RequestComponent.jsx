@@ -2,6 +2,7 @@ import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getGroupJoinRequests } from "../services/api";
 import TableRow from "./TableRow";
+import Spinner from "./Spinner";
 
 const RequestComponent = () => {
   const { isLoading, error, data } = useQuery({
@@ -9,7 +10,12 @@ const RequestComponent = () => {
     queryFn: getGroupJoinRequests,
   });
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading)
+    return (
+      <div className="h-screen w-screen flex justify-center items-center">
+        <Spinner />
+      </div>
+    );
   if (error) return <p>Error loading requests</p>;
   return (
     <div className="overflow-x-auto">

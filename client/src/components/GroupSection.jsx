@@ -11,11 +11,11 @@ const GroupSection = ({
     setModEmail(e.target.value);
   };
   return (
-    <div className="bg-zinc-800 rounded-lg">
-      <div className="border-b border-zinc-700 flex justify-between items-center p-2">
-        <h5 className="font-medium">{title}</h5>
+    <div className="bg-zinc-800 rounded-lg text-sm w-full md:text-lg">
+      <div className="border-b border-zinc-700 flex flex-col md:flex-row justify-between items-center p-2">
+        <h5 className="font-medium p-2 ">{title}</h5>
         {title === "Moderators" && (
-          <form onSubmit={handleClick} className="flex gap-2 w-2/3">
+          <form onSubmit={handleClick} className="flex gap-2 w-5/6 md:w-2/3">
             <input
               type="email"
               className="w-full p-2 rounded-lg text-black placeholder:text-zinc-800"
@@ -25,8 +25,7 @@ const GroupSection = ({
             />
             <button
               className="p-2 bg-green-500 rounded-full w-10 h-10"
-              disabled={loading}
-            >
+              disabled={loading}>
               {loading ? "..." : "+"}
             </button>
           </form>

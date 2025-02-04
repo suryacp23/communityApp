@@ -9,6 +9,7 @@ const GroupV1 = () => {
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
+ 
   return (
     <div className="flex p-2 w-full h-screen gap-2">
       <GroupSidebar

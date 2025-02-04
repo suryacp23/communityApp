@@ -12,6 +12,8 @@ import UpdateProfile from "./UpdateProfile.jsx";
 import { getPanelData, uploadImage } from "../services/api.js";
 import { formatTimestamp } from "../utils/time.js";
 import { BiSolidCloudUpload } from "react-icons/bi";
+import { getRandomColor } from "../utils/color.js";
+import Avatar from "./Avatar.jsx";
 const Profile = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { user, setUser } = useAuth();
@@ -47,25 +49,22 @@ const Profile = () => {
 
   // if (isLoading || isUploadRunning) return <Spinner />;
   if (isError) toast.error("Error fetching data");
+
+  const color = getRandomColor(user.userName);
+
   return (
-    <div className="p-5 bg-zinc-700 max-w-screen-lg mx-auto select-none">
+    <div className="p-5 bg-gray-700 max-w-screen-lg mx-auto select-none">
       <section className="  flex flex-col sm:flex-row gap-5 ">
-        <div className=" sm:w-[300px] h-[250px] rounded-md flex flex-col justify-around text-center relative p-4 bg-zinc-800">
+        <div className=" sm:w-[300px] h-[250px] rounded-md flex flex-col justify-around text-center relative p-4 bg-slate-800">
           <div
             title="upload"
             onClick={handleClick}
-            className={`flex relative cursor-pointer transition-opacity duration-300 group justify-center uppercase bg-zinc-600 user.userName
-						)}] items-center rounded-full w-24 h-24 border-2 mx-auto`}
-          >
-            {user.profile_image_url ? (
-              <img
-                src={user.profile_image_url}
-                alt=""
-                className="w-full h-full object-cover rounded-full"
-              />
-            ) : (
-              <p>{user.userName[0]}</p>
-            )}
+            className={`flex relative cursor-pointer transition-opacity duration-300 group justify-center uppercase  items-center rounded-full  border-2 mx-auto`}>
+            <Avatar
+              size={"xl"}
+              imageUrl={user?.profile_image_url}
+              name={user?.userName}
+            />
             {/* {isUploadRunning && (
 							<BiSolidCloudUpload className="w-full h-full object-cover rounded-full" />
 						)} */}
@@ -81,14 +80,13 @@ const Profile = () => {
             />
           </div>
           <div>
-            <p className="cursor-pointer">{user.userName} </p>
-            <p className="opacity-70">{user.email}</p>
+            <p className="cursor-pointer">{user?.userName} </p>
+            <p className="opacity-70">{user?.email}</p>
           </div>
           <div
             className="absolute top-2 right-2"
             onClick={() => setIsOpen(true)}
-            title="Edit"
-          >
+            title="Edit">
             <TbEdit className="cursor-pointer text-xl text-green-500" />
           </div>
         </div>
@@ -109,8 +107,7 @@ const Profile = () => {
               onClick={() => {
                 navigate(`/events/${event._id}`);
               }}
-              className=" mx-auto w-4/5 sm:w-[220px] h-[230px] p-2 cursor-pointer rounded-md bg-slate-500 flex flex-col"
-            >
+              className=" mx-auto w-4/5 sm:w-[220px] h-[230px] p-2 cursor-pointer rounded-md bg-slate-500 flex flex-col">
               <img
                 className="rounded-md w-4/5 sm:w-[200px] mx-auto h-[160px] object-cover"
                 src={event.imageUrl}

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import GroupSection from "./GroupSection";
+import { toast } from "react-toastify";
 const GroupDetails = ({ group }) => {
   const groupId = group._id;
   const [loading, setLoading] = useState(false);
@@ -49,6 +50,7 @@ const GroupDetails = ({ group }) => {
       setMembers(data.members);
       if (!response.ok) throw new Error(data.message);
     } catch (error) {
+      toast.error()
     } finally {
       setLoading(false);
     }

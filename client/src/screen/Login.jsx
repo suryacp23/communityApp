@@ -3,16 +3,17 @@ import { Link, useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import { logindata } from "../services/api.js";
 import { useAuth } from "../hooks/useAuth.jsx";
+import { toast } from "react-toastify";
 import Spinner from "../components/Spinner.jsx";
 import PasswordInput from "../components/PasswordInput.jsx";
 
 const Login = () => {
   const navigate = useNavigate();
   const { setUser } = useAuth();
-  const { mutate, isPending } = useMutation({
+  const { mutate, isPending, error, onSuccess } = useMutation({
     mutationFn: ({ userName, password }) => logindata({ userName, password }),
     onSuccess: (data) => {
-      console.log("Login successful:", data); // Now data is available
+      toast.success("Login Successful");
       localStorage.setItem("token", JSON.stringify(data));
       setUser(data);
       setuserName("");
@@ -20,14 +21,22 @@ const Login = () => {
       navigate("/events");
     },
     onError: (error) => {
-      console.error("Login failed:", error.message);
+      toast.error(error.response?.data?.error || error.message);
     },
   });
   const [userName, setuserName] = useState("");
   const [password, setPassword] = useState("");
   const handleSubmit = (e) => {
     e.preventDefault();
-    mutate({ userName, password });
+    mutate(
+      { userName, password },
+      {
+        onSuccess: (data) => {
+          console.log("Login successful:", data);
+        },
+      }
+    );
+
     setuserName("");
     setPassword("");
   };

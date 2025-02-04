@@ -10,6 +10,7 @@ import Attendancepage from "./screen/Attendancepage";
 import Dashboard from "./screen/Dashboard";
 import CreateEvents from "./screen/CreateEvents";
 import PaymentPage from "./screen/PaymentPage";
+import EditEvents from "./screen/EditEVents";
 
 const App = () => {
   return (
@@ -21,6 +22,7 @@ const App = () => {
           <Route path="/events/:eventId" element={<Event />} />
           <Route path="/groups" element={<Group />} />
           <Route path="/create-events" element={<CreateEvents />} />
+          <Route path="/updateEvent/:eventId" element={<EditEvents />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />

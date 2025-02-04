@@ -1,13 +1,22 @@
 import Event from "./Event";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { fetchBlogs } from "../services/api.js";
 import Spinner from "./Spinner.jsx";
+import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 
 const EventList = () => {
-  const { isLoading, error, isError, data } = useQuery({
+  const queryClient = useQueryClient();
+  const location = useLocation();
+
+  const { isLoading, error, isError, data, refetch } = useQuery({
     queryKey: ["events"],
     queryFn: fetchBlogs,
   });
+
+  useEffect(() => {
+    queryClient.invalidateQueries(["events"]); // Invalidate and refetch events after navigation
+  }, [location.pathname, queryClient]);
 
   if (isLoading || isError) {
     return (
