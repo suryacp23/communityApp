@@ -84,13 +84,13 @@ const Event = ({ event }) => {
               <div className="flex items-center gap-2">
                 <div className="w-8 h-8 rounded-full overflow-hidden">
                   <img
-                    src={event?.user?.profile_image_url}
+                    src={event?.userId?.profile_image_url}
                     alt="User"
                     className="w-full h-full object-cover"
                   />
                 </div>
                 <div className="text-white font-bold text-sm">
-                  {event?.user?.userName}
+                  {event?.userId?.userName}
                 </div>
               </div>
 

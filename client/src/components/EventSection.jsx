@@ -5,9 +5,11 @@ import EventOptions from "./EventOptions.jsx";
 import { MdOutlineArrowBackIosNew } from "react-icons/md";
 import { formatTimestamp } from "../utils/time.js";
 import RequestButton from "./RequestButton.jsx";
+import { useAuth } from "../hooks/useAuth.jsx";
 
 const EventSection = ({ event }) => {
   const navigate = useNavigate();
+  const { user } = useAuth();
   console.log(event);
   return (
     <div className=" mx-auto p-6 w-full bg-zinc-900 rounded-lg text-gray-100">
@@ -106,8 +108,12 @@ const EventSection = ({ event }) => {
       {/* Interaction Buttons */}
       <section className="my-6 flex justify-between items-center">
         <p className="text-lg text-gray-200">{event?.comments} Comments</p>
-        <button className="px-6 py-2 bg-zinc-600 text-white rounded-md hover:bg-gray-700">
-          Like ({event?.likes})
+        <button
+          className={`px-6 py-2 text-white rounded-md hover:bg-gray-700 ${
+            event?.likes?.includes(user._id) ? "bg-blue-500" : "bg-zinc-600"
+          }`}
+        >
+          Like ({event?.likes?.length})
         </button>
       </section>
     </div>

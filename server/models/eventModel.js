@@ -45,10 +45,7 @@ const eventSchema = mongoose.Schema(
       type: Number,
       default: 0,
     },
-    likes: {
-      type: Number,
-      default: 0,
-    },
+    likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     swags: {
       type: Boolean,
       default: false,

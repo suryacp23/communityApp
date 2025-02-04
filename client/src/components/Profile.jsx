@@ -123,7 +123,7 @@ const Profile = () => {
               <div className="flex justify-between items-center">
                 <div>
                   <AiFillLike className="inline mx-1 text-red-600" />
-                  {event.likes}
+                  {event?.likes?.length}
                 </div>
                 <p className=" text-sm text-black">
                   {formatTimestamp(event.createdAt)}

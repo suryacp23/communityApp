@@ -4,28 +4,30 @@ import Like from "../models/likeModel.js";
 export const toggleLike = async (req, res) => {
   try {
     const { eventId } = req.params;
-    const userId = req.user.id;
-
-    const event = await Event.findById(eventId);
-    if (!event) return res.status(404).json({ message: "Event not found" });
+    const userId = req.user._id;
 
     const existingLike = await Like.findOne({ userId, eventId });
 
     if (existingLike) {
-      await Like.findByIdAndDelete(existingLike._id);
-      event.likes = Math.max(0, event.likes - 1); 
+      await Like.deleteOne({ _id: existingLike._id });
+
+      await Event.findByIdAndUpdate(eventId, {
+        $pull: { likes: userId },
+      });
+
+      return res.status(200).json({ success: true, liked: false });
     } else {
       await Like.create({ userId, eventId });
-      event.likes += 1;
+
+      await Event.findByIdAndUpdate(eventId, {
+        $addToSet: { likes: userId },
+      });
+
+      return res.status(200).json({ success: true, liked: true });
     }
-
-    await event.save(); 
-
-    res
-      .status(200)
-      .json({ success: true, liked: !existingLike, likes: event.likes });
   } catch (error) {
-    res.status(500).json({ message: "Server error", error });
+    console.error("toggleLike error:", error.message);
+    res.status(500).json({ message: "Server error", error: error.message });
   }
 };
 
