@@ -10,7 +10,7 @@ import Attendancepage from "./screen/Attendancepage";
 import Dashboard from "./screen/Dashboard";
 import CreateEvents from "./screen/CreateEvents";
 import PaymentPage from "./screen/PaymentPage";
-import EditEvents from "./screen/EditEVents";
+import EditEvents from "./screen/EditEvents";
 
 const App = () => {
   return (

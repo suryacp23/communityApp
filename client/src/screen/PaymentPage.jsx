@@ -39,6 +39,8 @@ const PaymentPage = () => {
           !appliedEvents.groupIds.some((applied) => applied._id === group._id)
       );
       setDropDown(filteredGroups);
+      setSelectedEvent("");
+      setSelectedEventName("");
     }
   }, [data, appliedEvents]);
 
@@ -76,6 +78,8 @@ const PaymentPage = () => {
     const order = await response.json();
     if (order.error) {
       console.error("Order creation failed:", order.error);
+      setSelectedEvent("");
+      setSelectedEventName("");
       setPending("try again");
       return;
     }
@@ -109,10 +113,10 @@ const PaymentPage = () => {
         if (verifyResponse.status === 200) {
           alert("Payment successful!");
 
-          setSelectedEvent("");
-          setSelectedEventName("");
           // Refetch applied events after successful payment
           await refetchAppliedEvents();
+          setSelectedEvent("");
+          setSelectedEventName("");
 
           setPending("success");
         } else {
@@ -138,6 +142,7 @@ const PaymentPage = () => {
           <select
             onChange={handleChange}
             className="w-full p-2 rounded-md bg-white text-black"
+            value={selectedEvent}
           >
             <option value="" disabled>
               Select an Event

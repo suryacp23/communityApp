@@ -19,23 +19,21 @@ const EditEvents = () => {
 
   // Initialize state based on fetched data
   const [formData, setFormData] = useState({
-    eventName: "",
+    title: "",
     description: "",
     imageUrl: "",
     swags: false,
-    Referencement: false,
-    user: user?._id,
+    refreshments: false,
   });
 
   useEffect(() => {
     if (data?.event) {
       setFormData({
-        eventName: data.event.title || "",
+        title: data.event.title || "",
         description: data.event.description || "",
         imageUrl: data.event.imageUrl || "",
         swags: data.event.swags || false,
-        Referencement: data.event.Referencement || false,
-        user: user?._id,
+        refreshments: data.event.refreshments || false,
       });
     }
   }, [data, user]);
@@ -66,8 +64,13 @@ const EditEvents = () => {
     if (file) {
       updatedFormData.file = file;
     }
-
-    mutate(updatedFormData);
+    const data = new FormData();
+    data.append("title", formData.title);
+    data.append("description", formData.description);
+    data.append("file", file);
+    data.append("swags", formData.swags);
+    data.append("refreshments", formData.refreshments);
+    mutate(data);
     navigate("/events");
   };
 
@@ -88,10 +91,10 @@ const EditEvents = () => {
             {/* Event Name Input */}
             <input
               type="text"
-              name="eventName"
+              name="title"
               className="w-full px-3 py-2 lg:py-3 border border-[#333333] rounded-md focus:outline-none focus:ring-2 focus:ring-[#4a90e2] bg-[#222222] text-[#e0e0e0] placeholder-[#888888]"
               placeholder="Enter event name"
-              value={formData?.eventName}
+              value={formData?.title}
               onChange={handleChange}
             />
 
@@ -113,17 +116,17 @@ const EditEvents = () => {
             />
 
             <div className="flex flex-col gap-4 text-sm text-[#e0e0e0]">
-              <h2 className="text-lg font-semibold">Referencement And Swags</h2>
+              <h2 className="text-lg font-semibold">Refreshments And Swags</h2>
               <div className="p-3 border bg-[#222222]">
                 <div className="h-1/5 w-4/5 md:w-1/3 justify-between flex items-center p-1">
-                  <label htmlFor="Referencement" className="flex text-right">
-                    Referencement
+                  <label htmlFor="refreshments" className="flex text-right">
+                    Refreshments
                   </label>
                   <input
                     type="checkbox"
-                    id="Referencement"
-                    name="Referencement"
-                    checked={formData?.Referencement}
+                    id="refreshments"
+                    name="refreshments"
+                    checked={formData?.refreshments}
                     onChange={handleCheckboxChange}
                   />
                 </div>
@@ -145,7 +148,8 @@ const EditEvents = () => {
               <div className="flex flex-col gap-4">
                 <button
                   className="w-full bg-blue-500 text-white p-2 rounded-md"
-                  disabled={isLoading}>
+                  disabled={isLoading}
+                >
                   Submit ✅
                 </button>
               </div>

@@ -12,7 +12,6 @@ import Avatar from "./Avatar";
 const Event = ({ event }) => {
   const queryClient = useQueryClient();
   const { user } = useAuth();
-  console.log(event);
 
   // Sync initial liked state from backend
   const [isLiked, setIsLiked] = useState(false);

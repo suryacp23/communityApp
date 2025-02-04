@@ -96,12 +96,18 @@ export const updateEvent = async (req, res) => {
         error: "unautorized you are not able to edit the event",
       });
     }
+    console.log(event.fileId);
     if (req.file) {
-      if (event.fileId) {
-        const result = storage.deleteFile(
-          process.env.APPWRITE_BUCKET_ID,
-          event.fileId
-        );
+      if (req.file && event.fileId) {
+        try {
+          await storage.getFile(process.env.APPWRITE_BUCKET_ID, event.fileId);
+          await storage.deleteFile(
+            process.env.APPWRITE_BUCKET_ID,
+            event.fileId
+          );
+        } catch (error) {
+          console.warn("File not found, skipping delete.");
+        }
       }
       const r = await storage.createFile(
         process.env.APPWRITE_BUCKET_ID || "",
@@ -115,10 +121,10 @@ export const updateEvent = async (req, res) => {
     event.title = req.body.title || event.title;
     event.description = req.body.description || event.description;
     event.userId = req.user._id || event.user;
-    event.technical = req.body.technical;
-    event.nonTechnical = req.body.nonTechnical;
-    event.startTime = req.body.startTime;
-    event.endTime = req.body.endTime;
+    event.technical = req.body.technical || event.technical;
+    event.nonTechnical = req.body.nonTechnical || event.nonTechnical;
+    event.startTime = req.body.startTime || event.startTime;
+    event.endTime = req.body.endTime || event.endTime;
     event.swags = req.body.swags;
     event.refreshments = req.body.refreshments;
     const updatedevent = await event.save();

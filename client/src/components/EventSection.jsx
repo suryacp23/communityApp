@@ -10,7 +10,6 @@ import { useAuth } from "../hooks/useAuth.jsx";
 const EventSection = ({ event }) => {
   const navigate = useNavigate();
   const { user } = useAuth();
-  console.log(event);
   return (
     <div className=" mx-auto p-6 w-full bg-zinc-900 rounded-lg text-gray-100">
       {/* Header Section */}

@@ -14,7 +14,6 @@ const Event = () => {
     enabled: !!eventId,
   });
   const event = data?.event;
-  console.log(event);
 
   return (
     <div className="w-full min-h-screen p-2">
