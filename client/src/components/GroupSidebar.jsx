@@ -34,7 +34,7 @@ const GroupSidebar = ({
         <div className="flex items-center gap-2  top-2 left-2 text-white h-full justify-center">
           <MdOutlineArrowBackIosNew
             size={20}
-            onClick={() => navigate("/")}
+            onClick={() => navigate("/events")}
             className="cursor-pointer transition-all ease-in-out hover:scale-150  rounded-full"
           />
           <h2 className="text-xl font-bold">Events</h2>

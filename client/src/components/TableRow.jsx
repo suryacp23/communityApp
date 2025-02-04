@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { formatTimestamp } from "../utils/time";
 import { FaXmark } from "react-icons/fa6";
 import { TiTick } from "react-icons/ti";
+import { approve } from "../services/api";
 
 const TableRow = ({ data }) => {
   const requestId = data?._id;

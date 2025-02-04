@@ -93,16 +93,17 @@ const EventSection = ({ event }) => {
         <p className="text-gray-200">
           Refreshments: {event?.refreshments ? "Provided" : "Not Provided"}
         </p>
-        {event?.paid ? (
-          <Link
-            className={`p-2 bg-blue-500 w-fit rounded-lg text-center`}
-            to={`/payments/${event?._id}`}
-          >
-            Apply
-          </Link>
-        ) : (
-          <RequestButton />
-        )}
+        {event?.userId._id !== user._id &&
+          (event?.paid ? (
+            <Link
+              className="p-2 bg-blue-500 w-fit rounded-lg text-center"
+              to={`/payments/${event?._id}`}
+            >
+              Apply
+            </Link>
+          ) : (
+            <RequestButton />
+          ))}
       </section>
 
       {/* Interaction Buttons */}
