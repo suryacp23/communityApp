@@ -9,7 +9,13 @@ import { toast, ToastContainer } from "react-toastify";
 const RequestButton = () => {
   const { eventId } = useParams();
   const [groupId, setGroupId] = useState(null);
-  const { data, error, isError, isPending, isLoading } = useQuery({
+  const {
+    data,
+    error,
+    isError,
+    isPending: eventPending,
+    isLoading,
+  } = useQuery({
     queryKey: ["getGroupByEventId", eventId],
     queryFn: () => getGroupByEventId(eventId),
   });
@@ -17,7 +23,7 @@ const RequestButton = () => {
     console.log(e.target.value);
     setGroupId(e.target.value);
   };
-  const { mutate } = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: ({ groupId, eventId }) => request({ groupId, eventId }),
     onError: (error) => {
       toast.error(error?.response?.data?.message);
@@ -49,8 +55,8 @@ const RequestButton = () => {
           ))}
         </select>
         {isPending ? (
-          <div>
-            <Spinner />
+          <div className="p-2 w-12 rounded-lg bg-zinc-500">
+            <Spinner size="sm" />
           </div>
         ) : (
           <button

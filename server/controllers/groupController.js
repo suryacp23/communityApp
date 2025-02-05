@@ -31,30 +31,37 @@ export const createGroup = async (req, res) => {
 };
 
 export const addModerator = async (req, res) => {
-  const { groupId, userId } = req.body;
-
   try {
-    const group = await Group.findById(groupId);
+    const { groupId, userId } = req.body;
+
+    // Fetch group and user in parallel for efficiency
+    const [group, user] = await Promise.all([
+      Group.findById(groupId).lean(),
+      User.findOne({ email: userId }).lean(),
+    ]);
+
     if (!group) return res.status(404).json({ message: "Group not found" });
 
     if (!group.admin.equals(req.user._id)) {
       return res.status(403).json({ message: "Only admin can add moderators" });
     }
-    const user = await User.findOne({ email: userId });
-    if (!user) {
-      return res.status(404).json({ message: "user not found" });
-    }
+
+    if (!user) return res.status(404).json({ message: "User not found" });
+
     if (group.moderators.includes(user._id)) {
       return res.status(400).json({ message: "User is already a moderator" });
     }
 
-    group.moderators.push(user._id);
-    group.members.push(user._id);
-    await group.save();
+    // Add moderator & ensure they are a member using `$addToSet` to avoid duplicates
+    await Group.updateOne(
+      { _id: groupId },
+      { $addToSet: { moderators: user._id, members: user._id } }
+    );
 
-    res.status(200).json({ message: "Moderator added successfully" });
-  } catch (err) {
-    res.status(500).json({ message: "Error adding moderator", error: err });
+    return res.status(200).json({ message: "Moderator added successfully" });
+  } catch (error) {
+    console.error("Error adding moderator:", error);
+    return res.status(500).json({ message: "Server error", error });
   }
 };
 
@@ -153,7 +160,7 @@ export const getGroups = async (req, res) => {
     ]);
 
     if (!result.length) {
-      return res.status(404).json({ message: "No groups found" });
+      return res.status(200).json(result);
     }
 
     res.status(200).json(result);
@@ -164,64 +171,90 @@ export const getGroups = async (req, res) => {
 };
 
 export const approveRequest = async (req, res) => {
-  const { requestId, action } = req.body;
-
   try {
-    const joinRequest = await JoinRequest.findById(requestId).populate("group");
+    const { requestId, action } = req.body;
+
+    // Fetch join request and populate only required fields
+    const joinRequest = await JoinRequest.findById(requestId)
+      .populate("group", "members")
+      .lean();
+
     if (!joinRequest || joinRequest.status !== "pending") {
-      return res.status(400).json({ message: "Invalid request" });
+      return res
+        .status(400)
+        .json({ message: "Invalid or already processed request" });
     }
 
-    const group = joinRequest.group;
+    const groupId = joinRequest.group._id;
+    const userId = joinRequest.user;
+
+    const updateOperations = [
+      { updateOne: { filter: { _id: requestId }, update: { status: action } } },
+    ];
+
     if (action === "approve") {
-      joinRequest.status = "approved";
-      await joinRequest.save();
-
-      await Group.findByIdAndUpdate(group._id, {
-        $push: { members: joinRequest.user },
-      });
-      await User.findByIdAndUpdate(joinRequest.user, {
-        $push: { groups: group._id },
-      });
-    } else if (action === "reject") {
-      joinRequest.status = "rejected";
-      await joinRequest.save();
+      updateOperations.push(
+        {
+          updateOne: {
+            filter: { _id: groupId },
+            update: { $push: { members: userId } },
+          },
+        },
+        {
+          updateOne: {
+            filter: { _id: userId },
+            update: { $push: { groups: groupId } },
+          },
+        }
+      );
     }
 
-    res.status(200).json({ message: `Join request ${action}ed` });
-  } catch (err) {
-    res
-      .status(500)
-      .json({ message: "Error processing join request", error: err });
+    // Perform updates in parallel using bulkWrite
+    await Promise.all([
+      JoinRequest.bulkWrite(updateOperations),
+      Group.updateOne({ _id: groupId }, { $pull: { requests: userId } }), // Remove request from group's request list
+    ]);
+
+    return res
+      .status(200)
+      .json({ message: `Join request ${action}ed successfully` });
+  } catch (error) {
+    console.error("Approve Request Error:", error);
+    return res.status(500).json({ message: "Server error", error });
   }
 };
 
 export const joinRequest = async (req, res) => {
-  const { groupId } = req.body;
-  const userId = req.user._id;
-
   try {
-    const group = await Group.findById(groupId);
-    console.log(group);
+    const { groupId } = req.body;
+    const userId = req.user._id;
 
-    if (group.members.includes(userId) || group.requests.includes(userId)) {
-      return res.status(400).json({ message: "already request sent" });
-    } else {
-      group.requests.push(req.user._id);
-      await group.save();
-      await JoinRequest.create({
-        user: userId,
-        group: groupId,
-        admin: group.admin,
-      });
+    // Fetch only required fields to minimize data retrieval
+    const group = await Group.findById(groupId).select(
+      "members requests admin"
+    );
+
+    if (!group) {
+      return res.status(404).json({ message: "Group not found" });
     }
 
-    return res.status(200).json({
-      message: "successfully sent request",
-    });
+    if (group.members.includes(userId) || group.requests.includes(userId)) {
+      return res
+        .status(400)
+        .json({ message: "Request already sent or user already a member" });
+    }
+
+    // Push request and save in a single operation
+    group.requests.push(userId);
+    await Promise.all([
+      group.save(),
+      JoinRequest.create({ user: userId, group: groupId, admin: group.admin }),
+    ]);
+
+    return res.status(200).json({ message: "Request sent successfully" });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Server error" });
+    console.error("Join Request Error:", error);
+    return res.status(500).json({ message: "Server error" });
   }
 };
 
