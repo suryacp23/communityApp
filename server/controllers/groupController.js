@@ -1,6 +1,7 @@
 import Group from "../models/groupModel.js";
 import JoinRequest from "../models/requestModel.js";
 import User from "../models/userModel.js";
+import { io, onlineUsers } from "../socket/socket.js";
 
 export const createGroup = async (req, res) => {
   const { name, eventId, isHead } = req.body;
@@ -171,56 +172,36 @@ export const getGroups = async (req, res) => {
 };
 
 export const approveRequest = async (req, res) => {
+  const { requestId, action } = req.body;
+
   try {
-    const { requestId, action } = req.body;
-
-    // Fetch join request and populate only required fields
-    const joinRequest = await JoinRequest.findById(requestId)
-      .populate("group", "members")
-      .lean();
-
+    const joinRequest = await JoinRequest.findById(requestId).populate("group");
     if (!joinRequest || joinRequest.status !== "pending") {
-      return res
-        .status(400)
-        .json({ message: "Invalid or already processed request" });
+      return res.status(400).json({ message: "Invalid request" });
     }
 
-    const groupId = joinRequest.group._id;
-    const userId = joinRequest.user;
-
-    const updateOperations = [
-      { updateOne: { filter: { _id: requestId }, update: { status: action } } },
-    ];
+    const group = joinRequest.group;
+    joinRequest.status = action === "approve" ? "approved" : "rejected";
 
     if (action === "approve") {
-      updateOperations.push(
-        {
-          updateOne: {
-            filter: { _id: groupId },
-            update: { $push: { members: userId } },
-          },
-        },
-        {
-          updateOne: {
-            filter: { _id: userId },
-            update: { $push: { groups: groupId } },
-          },
-        }
-      );
+      await Promise.all([
+        joinRequest.save(),
+        Group.findByIdAndUpdate(group._id, {
+          $push: { members: joinRequest.user },
+        }),
+        User.findByIdAndUpdate(joinRequest.user, {
+          $push: { groups: group._id },
+        }),
+      ]);
+    } else {
+      await joinRequest.save();
     }
 
-    // Perform updates in parallel using bulkWrite
-    await Promise.all([
-      JoinRequest.bulkWrite(updateOperations),
-      Group.updateOne({ _id: groupId }, { $pull: { requests: userId } }), // Remove request from group's request list
-    ]);
-
-    return res
-      .status(200)
-      .json({ message: `Join request ${action}ed successfully` });
-  } catch (error) {
-    console.error("Approve Request Error:", error);
-    return res.status(500).json({ message: "Server error", error });
+    res.status(200).json({ message: `Join request ${action}ed` });
+  } catch (err) {
+    res
+      .status(500)
+      .json({ message: "Error processing join request", error: err });
   }
 };
 
@@ -250,6 +231,12 @@ export const joinRequest = async (req, res) => {
       group.save(),
       JoinRequest.create({ user: userId, group: groupId, admin: group.admin }),
     ]);
+    const adminId = group.admin.toString(); // Get admin's ID
+    const adminSocketId = onlineUsers[adminId]; // Find admin's socket ID
+
+    if (adminSocketId) {
+      io.to(adminSocketId).emit("new_request", { groupId, userId });
+    }
 
     return res.status(200).json({ message: "Request sent successfully" });
   } catch (error) {

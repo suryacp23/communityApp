@@ -1,14 +1,30 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getGroupJoinRequests } from "../services/api";
 import TableRow from "./TableRow";
 import Spinner from "./Spinner";
+import { useSocketContext } from "../context/socketContext";
+import { useAuth } from "../hooks/useAuth";
 
 const RequestComponent = () => {
-  const { isPending, error, data } = useQuery({
+  const { socket } = useSocketContext();
+  const { user } = useAuth();
+  const { isPending, error, data, refetch } = useQuery({
     queryKey: ["requests"],
     queryFn: getGroupJoinRequests,
   });
+  useEffect(() => {
+    socket.emit("register_admin", user._id);
+
+    socket.on("new_request", (newRequest) => {
+      console.log("New request received:", newRequest);
+      refetch();
+    });
+
+    return () => {
+      socket.off("new_request");
+    };
+  }, []);
 
   if (error) return <p>Error loading requests</p>;
   return (
