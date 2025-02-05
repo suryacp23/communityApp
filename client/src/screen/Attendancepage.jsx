@@ -1,11 +1,11 @@
 import React, { useRef, useEffect, useState } from "react";
-import { useParams, useSearchParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { Html5Qrcode } from "html5-qrcode";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { checkAttendance, getAttendances } from "../services/api";
 
 const Attendancepage = () => {
-	const { eventId } = useParams();
+	const { eventId, title } = useParams();
 	const queryClient = useQueryClient();
 	const { data, isLoading, isFetching, isError } = useQuery({
 		queryKey: ["attendance"],
@@ -14,7 +14,11 @@ const Attendancepage = () => {
 	const present =
 		data?.attendances?.filter((el) => el.isAttended === true).length || 0;
 
-	const { mutate, data: scannedUser } = useMutation({
+	const {
+		mutate,
+		data: scannedUser,
+		isPending,
+	} = useMutation({
 		mutationKey: ["check-attendance"],
 		mutationFn: checkAttendance,
 		onSuccess: (scannedUser) => {
@@ -50,13 +54,14 @@ const Attendancepage = () => {
 						try {
 							const [decodedEvent, applicationId] =
 								decodedText.split("==");
-							mutate({
-								eventId,
-								decodedText: {
-									eventId: decodedEvent,
-									applicationId,
-								},
-							});
+							if (!isPending)
+								mutate({
+									eventId,
+									decodedText: {
+										eventId: decodedEvent,
+										applicationId,
+									},
+								});
 						} catch (error) {
 							throw error;
 						}
@@ -87,32 +92,45 @@ const Attendancepage = () => {
 	useEffect(() => {
 		html5QrCode.current = new Html5Qrcode("reader");
 	}, []);
+	const navigate = useNavigate();
+	console.log(present);
 
 	return (
-		<div className="text-white font-mono max-w-screen-2xl h-screen o">
+		<div className="text-white font-roboto  max-w-screen-2xl h-screen o">
 			<header className="text-center py-3 text-pink-300 ">
-				<h1 className="font-bold text-lg bg-gray-800 w-fit mx-auto py-2 px-5 rounded-full">
-					Event Title: Google codemonger
+				<h1 className="font-bold sm:text-xl md:text-2xl bg-gray-800 w-fit mx-auto py-2 px-5 rounded-md">
+					{title}
 				</h1>
 			</header>
-			<main className="md:p-3">
+			<main className="md:p-3 ">
 				<div>
+					<button
+						className=" bg-gray-400 hover:bg-gray-500 text-lg p-1 px-2 rounded-md"
+						onClick={() => {
+							navigate(-1);
+						}}
+					>
+						Back
+					</button>
 					<h2 className=" text-lg py-2">Applicants information:-</h2>
 					<div className="flex gap-5 w-fit bg-primary px-3 py-2">
 						<p>Total: {data?.attendances.length}</p>
 						<p className="text-green-300">Present: {present}</p>
 						<p className="text-red-300">
-							Absent:{data?.attendances?.length - present}
+							Absent:
+							{data?.attendances?.length - present
+								? data?.attendances?.length - present
+								: 0}
 						</p>
 					</div>
 				</div>
-				<div className="flex flex-col  sm:flex-row justify-between h-[570px]">
+				<div className="flex flex-col font-mono  sm:flex-row justify-between h-[570px]">
 					<section className="w-full sm:w-2/3 sm:border-r-2 border-gray-400 mt-3 pr-2 overflow-auto attendance-scrollbar">
 						<table className="w-full  text-center bg-gray-900">
 							<thead className="sticky top-0 bg-gray-900 z-10">
 								<tr className=" bg-gray-900">
 									<th className="p-1.5 border-r-2 border-gray-500">
-										S no
+										S.no
 									</th>
 									<th className="p-1.5 border-r-2 border-gray-500">
 										Applicant's Name
@@ -166,7 +184,7 @@ const Attendancepage = () => {
 							</tbody>
 						</table>
 					</section>
-					<section className="flex flex-col gap-4 items-center justify-center">
+					<section className="flex flex-col gap-4 items-center justify-center h-fit">
 						<div
 							id="reader"
 							className=" w-[300px] h-[300px] border-2 border-gray-700 "
@@ -195,21 +213,19 @@ const Attendancepage = () => {
 								Stop scanning
 							</button>
 						</div>
-						{scannedUser && (
-							<div className="  self-start border-2 w-full p-3">
-								<h3 className="text-lg font-bold text-green-600 mb-3">
-									Scanner results:
-								</h3>
-								<div className="pl-3 ">
-									<p>Name: {scannedUser?.data.userName}</p>
-									<p>E-mail: {scannedUser?.data.email}</p>
-									<p>
-										Registered to:{" "}
-										{scannedUser?.data.userName}
-									</p>
-								</div>
+
+						<div className="  self-start border-2 w-full p-3">
+							<h3 className="text-lg font-bold text-green-600 mb-3">
+								Scanner results:
+							</h3>
+							<div className="pl-3 ">
+								<p>Name: {scannedUser?.data?.userName}</p>
+								<p>E-mail: {scannedUser?.data?.email}</p>
+								<p>
+									Registered to: {scannedUser?.data?.userName}
+								</p>
 							</div>
-						)}
+						</div>
 					</section>
 				</div>
 			</main>
