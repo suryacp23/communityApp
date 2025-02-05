@@ -6,6 +6,7 @@ import { MdOutlineArrowBackIosNew } from "react-icons/md";
 import { formatTimestamp } from "../utils/time.js";
 import RequestButton from "./RequestButton.jsx";
 import { useAuth } from "../hooks/useAuth.jsx";
+import Avatar from "./Avatar.jsx";
 
 const EventSection = ({ event }) => {
   const navigate = useNavigate();
@@ -16,7 +17,7 @@ const EventSection = ({ event }) => {
       <header className="text-center relative">
         <MdOutlineArrowBackIosNew
           size={20}
-          onClick={() => navigate("/")}
+          onClick={() => navigate("/events")}
           className="cursor-pointer transition-all ease-in-out hover:scale-150  rounded-full absolute sm:left-4 top-4"
         />
         <h1 className="text-4xl font-bold mb-4">{event?.title}</h1>
@@ -40,12 +41,13 @@ const EventSection = ({ event }) => {
 
       {/* Organizer Info */}
       <section className="my-6 flex items-center justify-between">
-        <div className="flex">
-          <img
-            src={event?.userId?.profile_image_url}
-            alt={event?.userId?.userName}
-            className="w-12 h-12 rounded-full mr-4"
+        <div className="flex gap-2">
+          <Avatar
+            size="md"
+            name={event?.userId?.userName}
+            imageUrl={event?.userId?.profile_image_url}
           />
+
           <div>
             <h3 className="text-xl font-semibold">{event?.userId?.userName}</h3>
             <p className="text-gray-200">{event?.userId?.email}</p>
@@ -96,8 +98,7 @@ const EventSection = ({ event }) => {
           (event?.paid ? (
             <Link
               className="p-2 bg-blue-500 w-fit rounded-lg text-center"
-              to={`/payments/${event?._id}`}
-            >
+              to={`/payments/${event?._id}`}>
               Apply
             </Link>
           ) : (
@@ -111,8 +112,7 @@ const EventSection = ({ event }) => {
         <button
           className={`px-6 py-2 text-white rounded-md hover:bg-gray-700 ${
             event?.likes?.includes(user._id) ? "bg-blue-500" : "bg-zinc-600"
-          }`}
-        >
+          }`}>
           Like ({event?.likes?.length})
         </button>
       </section>

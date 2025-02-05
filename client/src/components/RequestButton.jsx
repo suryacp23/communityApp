@@ -43,8 +43,7 @@ const RequestButton = () => {
         <select
           onChange={handleChange}
           className=" p-2 rounded-md bg-white text-black"
-          defaultValue={""}
-        >
+          defaultValue={""}>
           <option value="" disabled>
             Select an Event
           </option>
@@ -61,8 +60,7 @@ const RequestButton = () => {
         ) : (
           <button
             type="submit"
-            className="p-2 bg-blue-500 text-white rounded-lg"
-          >
+            className="p-2 bg-blue-500 text-white rounded-lg">
             join request
           </button>
         )}

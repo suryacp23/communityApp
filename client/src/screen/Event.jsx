@@ -17,6 +17,7 @@ const Event = () => {
 
   const event = data?.event;
 
+  
   return (
     <div className="w-full min-h-screen p-2">
       {isLoading ? (

@@ -8,6 +8,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { updateLike } from "../services/api";
 import { useAuth } from "../hooks/useAuth";
 import Avatar from "./Avatar";
+import { FaHeart } from "react-icons/fa";
 
 const Event = ({ event }) => {
   const queryClient = useQueryClient();
@@ -100,11 +101,11 @@ const Event = ({ event }) => {
                 <div className="flex items-center gap-2">
                   <span>{formatCount(likeCount)}</span>
                   <span className="flex gap-1 text-lg font-semibold">
-                    <BiSolidLike
+                    <FaHeart
                       size={20}
                       onClick={handleLike}
                       className={`cursor-pointer transition-colors duration-200 ${
-                        isLiked ? "text-blue-600" : "text-gray-400"
+                        isLiked ? "text-red-500" : "text-zinc-100"
                       }`}
                     />
                   </span>
