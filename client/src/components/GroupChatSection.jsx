@@ -7,6 +7,7 @@ import { fetchChat, getgroupInfo } from "../services/api";
 import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "../hooks/useAuth";
 import { formatTimestamp } from "../utils/time";
+import Spinner from "../components/Spinner";
 import { FaBars } from "react-icons/fa";
 
 const GroupChatSection = ({ selectedGroup, toggleSidebar }) => {
@@ -20,7 +21,7 @@ const GroupChatSection = ({ selectedGroup, toggleSidebar }) => {
   const scrollRef = useRef(null);
 
   // Fetch Group Info
-  const { data: groupInfo } = useQuery({
+  const { data: groupInfo, isPending } = useQuery({
     queryKey: ["getgroups", groupid],
     queryFn: () => getgroupInfo(groupid),
     enabled: !!groupid, // Only fetch if groupid exists
@@ -75,10 +76,16 @@ const GroupChatSection = ({ selectedGroup, toggleSidebar }) => {
 
   return (
     <div className="lg:w-2/3 w-full bg-zinc-900 text-white h-full overflow-y-auto rounded-lg block">
+      {isPending ? (
+        <div className="h-full w-full flex justify-center items-center">
+          <Spinner />
+        </div>
+      ) : (
+        ""
+      )}
       <div
         className="h-[8.33%] w-full flex items-center p-2 gap-2
-       shadow-lg text-white bg-zinc-700 rounded-t-lg"
-      >
+       shadow-lg text-white bg-zinc-700 rounded-t-lg">
         {/* Hamburger Menu */}
         <div className="lg:hidden p-4">
           <button onClick={toggleSidebar} className="text-white">
@@ -103,8 +110,7 @@ const GroupChatSection = ({ selectedGroup, toggleSidebar }) => {
               ref={scrollRef}
               className={`flex items-end ${
                 isSender ? "flex-row-reverse" : "flex-row"
-              } w-full`}
-            >
+              } w-full`}>
               {/* Avatar */}
               <div className={`${isSender ? "ml-3" : "mr-3"}`}>
                 <Avatar
@@ -120,18 +126,15 @@ const GroupChatSection = ({ selectedGroup, toggleSidebar }) => {
                   isSender
                     ? "justify-end bg-gray-800"
                     : "justify-start bg-gray-700"
-                } flex-col text-white rounded-xl max-w-[60%] shadow-md`}
-              >
+                } flex-col text-white rounded-xl max-w-[60%] shadow-md`}>
                 {/* Sender Info */}
                 <p
                   className={`text-xs ${
                     isSender ? "text-right" : "text-left"
-                  } mb-1`}
-                >
+                  } mb-1`}>
                   <span
                     className=""
-                    style={{ color: getRandomColor(chat?.senderId?.userName) }}
-                  >
+                    style={{ color: getRandomColor(chat?.senderId?.userName) }}>
                     {chat?.senderId?.userName}
                   </span>
 
@@ -140,8 +143,7 @@ const GroupChatSection = ({ selectedGroup, toggleSidebar }) => {
                       groupInfo?.admin?._id === chat.senderId._id
                         ? "inline-block"
                         : "hidden"
-                    } bg-green-500 text-xs text-black px-2 ml-2 rounded-full`}
-                  >
+                    } bg-green-500 text-xs text-black px-2 ml-2 rounded-full`}>
                     admin
                   </span>
                 </p>
@@ -153,8 +155,7 @@ const GroupChatSection = ({ selectedGroup, toggleSidebar }) => {
                 <p
                   className={`text-xs font-mono ${
                     isSender ? "text-left" : "text-right"
-                  } mt-2 text-gray-400`}
-                >
+                  } mt-2 text-gray-400`}>
                   {formatTimestamp(chat.createdAt)}
                 </p>
               </div>
@@ -165,8 +166,7 @@ const GroupChatSection = ({ selectedGroup, toggleSidebar }) => {
       <form
         onSubmit={handleSend}
         className="w-full h-[8.33%] px-4 py-2 bg-zinc-700 flex items-center justify-between rounded-b-lg
-         border-t border-gray-600 overflow-hidden"
-      >
+         border-t border-gray-600 overflow-hidden">
         <input
           type="text"
           value={input}
@@ -176,8 +176,7 @@ const GroupChatSection = ({ selectedGroup, toggleSidebar }) => {
         />
         <button
           type="submit"
-          className="bg-purple-600 h-full w-[10%] flex items-center justify-center hover:bg-purple-800 text-white p-2 rounded-r-lg shadow-md transition-transform transform hover:scale-110"
-        >
+          className="bg-purple-600 h-full w-[10%] flex items-center justify-center hover:bg-purple-800 text-white p-2 rounded-r-lg shadow-md transition-transform transform hover:scale-110">
           <VscSend size={20} />
         </button>
       </form>

@@ -5,20 +5,19 @@ import TableRow from "./TableRow";
 import Spinner from "./Spinner";
 
 const RequestComponent = () => {
-  const { isLoading, error, data } = useQuery({
+  const { isPending, error, data } = useQuery({
     queryKey: ["requests"],
     queryFn: getGroupJoinRequests,
   });
 
-  if (isLoading)
-    return (
-      <div className="h-screen w-screen flex justify-center items-center">
-        <Spinner />
-      </div>
-    );
   if (error) return <p>Error loading requests</p>;
   return (
     <div className="overflow-x-auto">
+      {isPending && (
+        <div className="flex justify-center items-center h-screen w-screen">
+          <Spinner />
+        </div>
+      )}
       <table className="min-w-full border border-zinc-800 text-zinc-200">
         <thead className="bg-zinc-900">
           <tr>

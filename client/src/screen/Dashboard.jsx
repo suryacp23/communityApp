@@ -43,7 +43,7 @@ export default function Dashboard() {
       </div>
 
       {/* Tab Content */}
-      <div className="p-4 text-gray-300 text-sm md:text-lg">
+      <div className="p-4 text-gray-300 text-sm md:text-lg select-none">
         {activeTab === "/tab=events" && <MyEvents />}
         {activeTab === "/tab=profile" && <Profile />}
         {activeTab === "/tab=groups" && <MyGroups />}

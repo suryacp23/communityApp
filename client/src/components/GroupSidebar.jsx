@@ -4,6 +4,7 @@ import { getgroups } from "../services/api";
 import { FaChevronDown, FaChevronRight } from "react-icons/fa";
 import { MdOutlineArrowBackIosNew } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
+import Spinner from "./Spinner";
 
 const GroupSidebar = ({
   setSelectedGroup,
@@ -28,8 +29,15 @@ const GroupSidebar = ({
     <div
       className={`lg:w-1/3 w-full bg-zinc-900 z-10 text-white p-4 h-full overflow-y-auto rounded-lg fixed top-0 left-0 transition-transform transform ${
         isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-      } lg:translate-x-0 lg:relative lg:block`}
-    >
+      } lg:translate-x-0 lg:relative lg:block`}>
+      {isPending ? (
+        <div className="h-full w-full flex justify-center items-center">
+          <Spinner size="md" />
+        </div>
+      ) : (
+        ""
+      )}
+
       <div className="w-full flex items-center justify-between p-4">
         <div className="flex items-center gap-2  top-2 left-2 text-white h-full justify-center">
           <MdOutlineArrowBackIosNew
@@ -53,8 +61,7 @@ const GroupSidebar = ({
             className={`cursor-pointer flex items-center rounded-lg p-2 hover:bg-gray-600 ${
               selectedEvent === event._id ? "bg-purple-700" : "bg-zinc-600"
             }`}
-            onClick={() => toggleEvent(event._id)}
-          >
+            onClick={() => toggleEvent(event._id)}>
             <span className="mr-2">
               {openEvent === event._id ? <FaChevronDown /> : <FaChevronRight />}
             </span>
@@ -76,8 +83,7 @@ const GroupSidebar = ({
                     setSelectedGroup(group?._id);
                     setSelectedEvent(event?._id);
                     toggleSidebar();
-                  }}
-                >
+                  }}>
                   {group.isHead ? (
                     <p className="flex gap-2">
                       <span>{group?.name}</span>
