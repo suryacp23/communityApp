@@ -11,8 +11,7 @@ const Attendancepage = () => {
 		queryKey: ["attendance"],
 		queryFn: () => getAttendances(eventId),
 	});
-	const present =
-		data?.attendances?.filter((el) => el.isAttended === true).length || 0;
+	const present = data?.attendances?.filter((el) => el.isAttended === true).length || 0;
 
 	const {
 		mutate,
@@ -52,8 +51,7 @@ const Attendancepage = () => {
 					config,
 					(decodedText, decodedResult) => {
 						try {
-							const [decodedEvent, applicationId] =
-								decodedText.split("==");
+							const [decodedEvent, applicationId] = decodedText.split("==");
 							if (!isPending)
 								mutate({
 									eventId,
@@ -118,66 +116,42 @@ const Attendancepage = () => {
 						<p className="text-green-300">Present: {present}</p>
 						<p className="text-red-300">
 							Absent:
-							{data?.attendances?.length - present
-								? data?.attendances?.length - present
-								: 0}
+							{data?.attendances?.length - present ? data?.attendances?.length - present : 0}
 						</p>
 					</div>
 				</div>
 				<div className="flex flex-col font-mono  sm:flex-row justify-between h-[570px]">
-					<section className="w-full sm:w-2/3 sm:border-r-2 border-gray-400 mt-3 pr-2 overflow-auto attendance-scrollbar">
+					<section className="w-full sm:w-2/3 min-h-40  sm:border-r-2 border-gray-400 mt-3 pr-2 overflow-auto attendance-scrollbar">
 						<table className="w-full  text-center bg-gray-900">
 							<thead className="sticky top-0 bg-gray-900 z-10">
 								<tr className=" bg-gray-900">
-									<th className="p-1.5 border-r-2 border-gray-500">
-										S.no
-									</th>
-									<th className="p-1.5 border-r-2 border-gray-500">
-										Applicant's Name
-									</th>
-									<th className="p-1.5 border-r-2 border-gray-500">
-										Email
-									</th>
-									<th className="p-1.5 border-r-2 border-gray-500">
-										Registered events
-									</th>
+									<th className="p-1.5 border-r-2 border-gray-500">S.no</th>
+									<th className="p-1.5 border-r-2 border-gray-500">Applicant's Name</th>
+									<th className="p-1.5 border-r-2 border-gray-500">Email</th>
+									<th className="p-1.5 border-r-2 border-gray-500">Registered events</th>
 									<th>Status</th>
 								</tr>
 							</thead>
 							<tbody className="text-sm font-mono font-bold]  ">
 								{data?.attendances?.map((applicant, i) => (
 									<tr
-										className={`${
-											i % 2 === 1
-												? "bg-gray-500"
-												: " bg-gray-600"
-										}  `}
+										className={`${i % 2 === 1 ? "bg-gray-500" : " bg-gray-600"}  `}
 										key={i}
 									>
 										<td>{i + 1}</td>
-										<td className=" p-2">
-											{applicant.userName}
-										</td>
+										<td className=" p-2">{applicant.userName}</td>
 										<td>{applicant.email}</td>
 										<td className="">
-											{applicant.appliedTo.map(
-												(group) => (
-													<span key={group}>
-														{group + " "}
-													</span>
-												)
-											)}
+											{applicant.appliedTo.map((group) => (
+												<span key={group}>{group + " "}</span>
+											))}
 										</td>
 										<td
 											className={`${
-												applicant.isAttended
-													? "text-green-500"
-													: "text-red-500"
+												applicant.isAttended ? "text-green-500" : "text-red-500"
 											}`}
 										>
-											{applicant.isAttended
-												? "Present"
-												: "Absent"}
+											{applicant.isAttended ? "Present" : "Absent"}
 										</td>
 									</tr>
 								))}
@@ -185,10 +159,7 @@ const Attendancepage = () => {
 						</table>
 					</section>
 					<section className="flex flex-col gap-4 items-center justify-center h-fit">
-						<div
-							id="reader"
-							className=" w-[300px] h-[300px] border-2 border-gray-700 "
-						></div>
+						<div id="reader" className=" w-[300px] h-[300px] border-2 border-gray-700 "></div>
 
 						{/* <button
 							className="p-2  rounded-md bg-blue-500 hover:bg-blue-300 transition duration-150 text-white hover:text-black"
@@ -215,15 +186,11 @@ const Attendancepage = () => {
 						</div>
 
 						<div className="  self-start border-2 w-full p-3">
-							<h3 className="text-lg font-bold text-green-600 mb-3">
-								Scanner results:
-							</h3>
+							<h3 className="text-lg font-bold text-green-600 mb-3">Scanner results:</h3>
 							<div className="pl-3 ">
 								<p>Name: {scannedUser?.data?.userName}</p>
 								<p>E-mail: {scannedUser?.data?.email}</p>
-								<p>
-									Registered to: {scannedUser?.data?.userName}
-								</p>
+								<p>Registered to: {scannedUser?.data?.userName}</p>
 							</div>
 						</div>
 					</section>

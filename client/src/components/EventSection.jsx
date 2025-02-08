@@ -40,7 +40,7 @@ const EventSection = ({ event }) => {
 			</section>
 
 			{/* Organizer Info */}
-			<section className="my-6 flex items-center justify-between">
+			<section className="my-6 flex-wrap gap-2 flex items-center justify-between">
 				<div className="flex gap-2">
 					<Avatar
 						size="md"
@@ -49,23 +49,18 @@ const EventSection = ({ event }) => {
 					/>
 
 					<div>
-						<h3 className="text-xl font-semibold">
-							{event?.userId?.userName}
-						</h3>
+						<h3 className="text-xl font-semibold">{event?.userId?.userName}</h3>
 						<p className="text-gray-200">{event?.userId?.email}</p>
 					</div>
+					<div className="">
+						<h1>{formatTimestamp(event?.createdAt)}</h1>
+					</div>
 				</div>
-				<div className="">
-					<h1>{formatTimestamp(event?.createdAt)}</h1>
-				</div>
+
 				{user?._id === event?.userId?._id && (
 					<div
 						className="bg-blue-500 p-2 w-fit rounded-md hover:bg-blue-600 transition cursor-pointer"
-						onClick={() =>
-							navigate(
-								`/events/${event._id}/attendance/${event.title}`
-							)
-						}
+						onClick={() => navigate(`/events/${event._id}/attendance/${event.title}`)}
 					>
 						Proceed to Attendance
 					</div>
@@ -77,21 +72,19 @@ const EventSection = ({ event }) => {
 				<div className="mb-4">
 					<h4 className="text-xl font-semibold">Technical Events:</h4>
 					<ul className="list-disc pl-5">
-						{event?.technical.map((skill) => (
-							<li key={skill} className="text-gray-200">
-								{skill}
+						{event?.technical.map((technicalEvent, index) => (
+							<li key={index} className="text-gray-200">
+								{technicalEvent?.name || technicalEvent}
 							</li>
 						))}
 					</ul>
 				</div>
 				<div>
-					<h4 className="text-xl font-semibold">
-						Non-Technical Events:
-					</h4>
+					<h4 className="text-xl font-semibold">Non-Technical Events:</h4>
 					<ul className="list-disc pl-5">
-						{event?.nonTechnical.map((skill) => (
-							<li key={skill} className="text-gray-200">
-								{skill}
+						{event?.nonTechnical.map((nonTechnicalEvent, index) => (
+							<li key={index} className="text-gray-200">
+								{nonTechnicalEvent?.name || nonTechnicalEvent}
 							</li>
 						))}
 					</ul>
@@ -102,16 +95,11 @@ const EventSection = ({ event }) => {
 			<section className="my-6 bg-zinc-600 p-4 rounded-lg flex gap-2 flex-col">
 				<p className="text-lg font-semibold">Price: ₹{event?.amount}</p>
 				<p className="text-gray-200">
-					{event?.paid
-						? "This is a paid event"
-						: "This event is free"}
+					{event?.paid ? "This is a paid event" : "This event is free"}
 				</p>
+				<p className="text-gray-200">Swags: {event?.swags ? "Provided" : "Not Provided"}</p>
 				<p className="text-gray-200">
-					Swags: {event?.swags ? "Provided" : "Not Provided"}
-				</p>
-				<p className="text-gray-200">
-					Refreshments:{" "}
-					{event?.refreshments ? "Provided" : "Not Provided"}
+					Refreshments: {event?.refreshments ? "Provided" : "Not Provided"}
 				</p>
 				{event?.userId._id !== user._id &&
 					(event?.paid ? (
@@ -128,14 +116,10 @@ const EventSection = ({ event }) => {
 
 			{/* Interaction Buttons */}
 			<section className="my-6 flex justify-between items-center">
-				<p className="text-lg text-gray-200">
-					{event?.comments} Comments
-				</p>
+				<p className="text-lg text-gray-200">{event?.comments} Comments</p>
 				<button
 					className={`px-6 py-2 text-white rounded-md hover:bg-gray-700 ${
-						event?.likes?.includes(user._id)
-							? "bg-blue-500"
-							: "bg-zinc-600"
+						event?.likes?.includes(user._id) ? "bg-blue-500" : "bg-zinc-600"
 					}`}
 				>
 					Like ({event?.likes?.length})

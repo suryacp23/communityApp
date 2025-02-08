@@ -43,22 +43,24 @@ export const createEvent = async (req, res) => {
 		logger.info(newEvent);
 		const technicalGroups = technical.map((data) => {
 			return {
-				name: data,
+				name: data.name,
 				description: body.description,
 				eventId: newEvent._id,
 				admin: body.user,
 				members: [req.user._id],
 				isHead: false,
+				limit: data.limit,
 			};
 		});
 		const nonTechnicalGroups = nonTechnical.map((data) => {
 			return {
-				name: data,
+				name: data.name,
 				description: body.description,
 				eventId: newEvent._id,
 				admin: body.user,
 				members: [req.user._id],
 				isHead: false,
+				limit: data.limit,
 			};
 		});
 		const headGroup = {
@@ -68,6 +70,7 @@ export const createEvent = async (req, res) => {
 			admin: body.user,
 			members: [req.user._id],
 			isHead: true,
+			limit: 15,
 		};
 		logger.info("technicalGroups: ", technicalGroups);
 		logger.info("nonTechnicalGroups: ", nonTechnicalGroups);
@@ -168,7 +171,9 @@ export const deleteEvent = async (req, res) => {
 export const getEvents = async (req, res) => {
 	try {
 		const { userId } = req.query;
-		const event = await Event.find(userId ? { userId } : {}).populate("userId", ["-password"]);
+		const event = await Event.find(userId ? { userId } : {})
+			.populate("userId", ["-password"])
+			.sort({ createdAt: -1 });
 
 		if (event == null) {
 			return res.status(200).json({ message: " No event Found" });

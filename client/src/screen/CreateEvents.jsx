@@ -38,6 +38,8 @@ const CreateEvents = () => {
 		amount: 0,
 		technicalInput: "",
 		nonTechnicalInput: "",
+		technicalLimitInput: "",
+		nonTechnicalLimitInput: "",
 		user: user._id,
 	});
 
@@ -46,7 +48,6 @@ const CreateEvents = () => {
 			...prevState,
 			[name]: value,
 		}));
-		// console.log(formData.startTime.split(" "));
 	};
 	const handleChangefoods = (name, value) => {
 		setFormData((prev) => ({
@@ -72,10 +73,7 @@ const CreateEvents = () => {
 			toast.info("Please fill all the details", { autoClose: 1500 });
 			return;
 		}
-		if (
-			formData.technical.length === 0 &&
-			formData.nonTechnical.length === 0
-		) {
+		if (formData.technical.length === 0 && formData.nonTechnical.length === 0) {
 			toast.info("There should be atleast 1 Sub-Event!", {
 				autoClose: 2000,
 			});
@@ -99,10 +97,7 @@ const CreateEvents = () => {
 		data.append("amount", formData.amount);
 		data.append("swags", formData.swags);
 		data.append("technicalEvents", JSON.stringify(formData.technical));
-		data.append(
-			"nonTechnicalEvents",
-			JSON.stringify(formData.nonTechnical)
-		);
+		data.append("nonTechnicalEvents", JSON.stringify(formData.nonTechnical));
 		for (var pair of data.entries()) {
 			console.log(pair[0] + ", " + pair[1]);
 		}
@@ -113,7 +108,7 @@ const CreateEvents = () => {
 		onSuccess: (data) => {
 			console.log(data);
 			toast.success(data?.message);
-			// navigate("/events");
+			navigate("/events");
 		},
 		onError: (error) => toast.error(error.message),
 	});
@@ -125,14 +120,15 @@ const CreateEvents = () => {
 	};
 
 	// Add event to the respective field (technical or nonTechnical)
-	const addEvent = (field, event) => {
+	const addEvent = (field, event, limit) => {
 		if (event && event.trim()) {
 			setFormData((prevState) => {
 				if (prevState[field].length < 5) {
 					return {
 						...prevState,
-						[field]: [...prevState[field], event],
-						[`${field}Input`]: "", // Clear the input after adding
+						[field]: [...prevState[field], { name: event, limit: limit || 0 }],
+						[`${field}Input`]: "",
+						[`${field}LimitInput`]: "", // Clear the input after adding
 					};
 				} else {
 					alert("You can only add a maximum of 5 events.");
@@ -148,9 +144,7 @@ const CreateEvents = () => {
 	// Delete an event from the respective field
 	const deleteEvent = (field, index) => {
 		setFormData((prevState) => {
-			const updatedEvents = prevState[field].filter(
-				(_, idx) => idx !== index
-			);
+			const updatedEvents = prevState[field].filter((_, idx) => idx !== index);
 			return { ...prevState, [field]: updatedEvents };
 		});
 	};
@@ -179,16 +173,11 @@ const CreateEvents = () => {
 					{steps.map((stepItem, index) => {
 						const Icon = stepItem.icon;
 						return (
-							<div
-								key={index}
-								className="relative flex flex-col items-center w-full"
-							>
+							<div key={index} className="relative flex flex-col items-center w-full">
 								{index > 0 && (
 									<div
 										className={`absolute top-4 -left-1/2 h-1 transition-all duration-500 ${
-											step > index
-												? "bg-green-500"
-												: "bg-gray-300"
+											step > index ? "bg-green-500" : "bg-gray-300"
 										}`}
 										style={{ width: "100%" }}
 									/>
@@ -204,9 +193,7 @@ const CreateEvents = () => {
 								>
 									{step > index + 1 ? <FaCheck /> : <Icon />}
 								</div>
-								<span className="text-sm sm:block hidden">
-									{stepItem.label}
-								</span>
+								<span className="text-sm sm:block hidden">{stepItem.label}</span>
 							</div>
 						);
 					})}
@@ -223,51 +210,31 @@ const CreateEvents = () => {
 
 							{/* Event Name Input */}
 							<div className="flex flex-col gap-1 sm:gap-2">
-								{formData.eventName && (
-									<label
-										htmlFor=""
-										className="pl-1 font-semibold"
-									>
-										Event title
+								<div className="input-group">
+									<input
+										type="text"
+										className="w-full px-3 py-2 lg:py-3 border border-[#333333] rounded-md hover:border-[#7e7d7d] outline-none focus:border-[#4a90e2]  bg-transparent text-[#e0e0e0] placeholder-[#888888] duration-100"
+										value={formData.eventName}
+										required
+										onChange={(e) => handleChange("eventName", e.target.value)}
+									/>
+									<label htmlFor="" className="bg-transparent">
+										Event name
 									</label>
-								)}
-								<input
-									type="text"
-									className="w-full px-3 py-2 lg:py-3 border border-[#333333] rounded-md hover:border-[#7e7d7d] outline-none focus:border-[#4a90e2]  bg-[#222222] text-[#e0e0e0] placeholder-[#888888] duration-100"
-									placeholder="Event name"
-									value={formData.eventName}
-									required
-									onChange={(e) =>
-										handleChange(
-											"eventName",
-											e.target.value
-										)
-									}
-								/>
+								</div>
 							</div>
 
 							{/* Description Textarea */}
 							<div className="flex flex-col gap-1 sm:gap-2">
-								{formData.description && (
-									<label
-										htmlFor=""
-										className="pl-1 font-semibold"
-									>
-										Description
-									</label>
-								)}
-								<textarea
-									className="w-full px-3 py-2 border border-[#333333] hover:border-[#7e7d7d] rounded-md outline-none  focus:border-[#4a90e2] bg-[#222222] text-[#e0e0e0] placeholder-[#888888] min-h-[80px] max-h-[80px]"
-									placeholder="Description"
-									value={formData.description}
-									required
-									onChange={(e) =>
-										handleChange(
-											"description",
-											e.target.value
-										)
-									}
-								/>
+								<div className="input-group">
+									<textarea
+										className="w-full px-3 py-2 border border-[#333333] hover:border-[#7e7d7d] rounded-md outline-none  focus:border-[#4a90e2] bg-[#222222] text-[#e0e0e0] placeholder-[#888888]  max-h-[80px]"
+										value={formData.description}
+										required
+										onChange={(e) => handleChange("description", e.target.value)}
+									/>
+									<label htmlFor="">Description</label>
+								</div>
 							</div>
 
 							{/* Image Upload */}
@@ -280,22 +247,12 @@ const CreateEvents = () => {
 								onChange={handleFileChange}
 							/>
 							<div className="flex flex-col gap-1 sm:gap-2">
-								{formData.description && (
-									<label
-										htmlFor=""
-										className="pl-1 font-semibold"
-									>
-										Event Date
-									</label>
-								)}
 								<DatePicker
 									selected={formData.eventDate}
 									required
 									placeholderText="Event date"
 									className="px-3 py-2 lg:py-3 w-full z-20 bg-[#222222] hover:border-[#7e7d7d] text-[#e0e0e0] rounded-md cursor-pointer border border-[#333333] outline-none  focus:border-[#4a90e2]"
-									onChange={(date) =>
-										handleChange("eventDate", date)
-									}
+									onChange={(date) => handleChange("eventDate", date)}
 								/>
 							</div>
 
@@ -361,123 +318,152 @@ const CreateEvents = () => {
 							</h2>
 
 							<div className="flex-grow flex flex-col gap-4">
-								{/* Technical Events */}
-								<h3 className="text-lg font-semibold">
-									Technical events
-								</h3>
-								<div className=" w-full p-0.5 flex flex-col ">
+								<h3 className="text-lg font-semibold">Technical events</h3>
+								<div className=" w-full p-0.5 flex flex-col">
 									<div className=" w-full flex  gap-2 justify-between items-center">
+										{/* technical event name */}
 										<input
 											type="text"
-											placeholder="Enter technical events"
+											placeholder="Enter event name"
 											value={formData.technicalInput}
 											maxLength={20}
-											onChange={(e) =>
-												updateInput(
-													"technicalInput",
-													e.target.value
-												)
-											}
-											className="p-2 md:px-5 text-[14px] h-10 border border-[#333333] hover:border-[#7e7d7d] w-5/6 rounded-md focus:outline-none  focus:border-[#4a90e2] bg-[#222222] text-[#e0e0e0] placeholder-[#888888]"
+											onChange={(e) => updateInput("technicalInput", e.target.value)}
+											className="p-2 md:px-5 w-[80%] text-[14px] h-10 border border-[#333333] hover:border-[#7e7d7d]  rounded-md focus:outline-none  focus:border-[#4a90e2] bg-[#222222] text-[#e0e0e0] placeholder-[#888888]"
 										/>
+										{/* technical member limit */}
+
+										<div className="input-group w-20">
+											<input
+												type="number"
+												className="p-2 md:px-5 text-[14px] w-full h-10 border border-[#333333] hover:border-[#7e7d7d]  rounded-md focus:outline-none   focus:border-[#4a90e2] bg-[#222222] text-[#e0e0e0] placeholder-[#888888]"
+												value={formData.technicalLimitInput}
+												onChange={(e) =>
+													setFormData({
+														...formData,
+														technicalLimitInput:
+															e.target.value === "" ? "" : parseInt(e.target.value),
+													})
+												}
+												min={1}
+												required
+											/>
+											<label htmlFor="">Limit</label>
+										</div>
+
 										<button
 											type="button"
-											className="bg-[#333333]  text-lg hover:bg-[#4a4a4a] text-[#e0e0e0] h-10 w-10 lg:h-12 lg:w-12 rounded-md transition duration-300"
+											className="bg-[#333333]  text-lg hover:bg-[#4a4a4a] text-[#e0e0e0] h-10 w-12 lg:h-12 lg:w-12 rounded-md transition duration-300"
 											onClick={() =>
 												addEvent(
 													"technical",
-													formData.technicalInput
+													formData.technicalInput,
+													formData.technicalLimitInput
 												)
 											}
 										>
 											+
 										</button>
 									</div>
-									<div className="  w-full flex flex-wrap mt-3 gap-2">
-										{formData.technical.map(
-											(event, index) => (
-												<div
-													key={index}
-													className="flex bg-zinc-500 gap-2 border outline-none border-gray-600 pl-3 pr-2 py-1 rounded-md"
-												>
-													<span className="  text-[#f0f0f0] text-[14px]  gap-1  flex justify-between items-center">
-														{event}
-													</span>
-													<button
-														type="button"
-														className="text-black opacity-85 hover:text-white duration-100 text-xs  hover:opacity-100"
-														onClick={() =>
-															deleteEvent(
-																"technical",
-																index
-															)
-														}
-													>
-														X
-													</button>
+									<div className=" grid grid-cols-1 md:grid-cols-2 gap-2 mt-3">
+										{formData.technical.map((event, index) => (
+											<div
+												key={index}
+												className="flex bg-zinc-500 gap-2 border outline-none border-gray-600 pl-3 pr-2 py-1 rounded-md"
+											>
+												<div className="flex justify-between flex-grow text-[#f0f0f0] text-[14px]">
+													<p>
+														<span className="text-black font-semibold">Name: </span>{" "}
+														{event.name}
+													</p>
+													<p>
+														<span className="text-black font-semibold">Limit: </span>{" "}
+														{event.limit}
+													</p>
 												</div>
-											)
-										)}
+												<button
+													type="button"
+													className="text-black ml-auto opacity-85 hover:text-white duration-100 text-xs  hover:opacity-100"
+													onClick={() => deleteEvent("technical", index)}
+												>
+													X
+												</button>
+											</div>
+										))}
 									</div>
 								</div>
 
 								{/* Non-Technical Events */}
-								<div className=" w-full flex flex-col gap-3">
-									<h3 className="text-lg font-semibold">
-										Non-technical events
-									</h3>
-									<div className="w-full p-0.5 md:w-full flex justify-between gap-2 items-center">
+								<div className=" w-full flex flex-col gap-3 border-t-2 border-white border-opacity-25 pt-2">
+									<h3 className="text-lg font-semibold">Non-technical events</h3>
+									<div className=" w-full flex  gap-2 justify-between items-center">
+										{/* nonTechnical event name */}
 										<input
 											type="text"
-											placeholder="Enter non-technical events"
+											placeholder="Enter event name"
 											value={formData.nonTechnicalInput}
 											maxLength={20}
-											onChange={(e) =>
-												updateInput(
-													"nonTechnicalInput",
-													e.target.value
-												)
-											}
-											className="p-2 text-[14px] md:px-5 h-10 lg:h-12 border border-[#333333] hover:border-[#7e7d7d] w-5/6 rounded-md outline-none focus:border-[#4a90e2] bg-[#222222] text-[#e0e0e0] placeholder-[#888888]"
+											onChange={(e) => updateInput("nonTechnicalInput", e.target.value)}
+											className="p-2 md:px-5 w-[80%] text-[14px] h-10 border border-[#333333] hover:border-[#7e7d7d]  rounded-md focus:outline-none  focus:border-[#4a90e2] bg-[#222222] text-[#e0e0e0] placeholder-[#888888]"
 										/>
+										{/* nonTechnical member limit */}
+
+										<div className="input-group w-20">
+											<input
+												type="number"
+												className="p-2 md:px-5 text-[14px] w-full h-10 border border-[#333333] hover:border-[#7e7d7d]  rounded-md focus:outline-none   focus:border-[#4a90e2] bg-[#222222] text-[#e0e0e0] placeholder-[#888888]"
+												value={formData.nonTechnicalLimitInput}
+												onChange={(e) =>
+													setFormData({
+														...formData,
+														nonTechnicalLimitInput:
+															e.target.value === "" ? "" : parseInt(e.target.value),
+													})
+												}
+												min={1}
+												required
+											/>
+											<label htmlFor="">Limit</label>
+										</div>
+
 										<button
 											type="button"
-											className="bg-[#333333] hover:bg-[#4a4a4a] text-[#e0e0e0] text-lg h-10 w-10   md:w-10  lg:h-12 lg:w-12 rounded-md transition duration-300"
+											className="bg-[#333333]  text-lg hover:bg-[#4a4a4a] text-[#e0e0e0] h-10 w-12 lg:h-12 lg:w-12 rounded-md transition duration-300"
 											onClick={() =>
 												addEvent(
 													"nonTechnical",
-													formData.nonTechnicalInput
+													formData.nonTechnicalInput,
+													formData.nonTechnicalLimitInput
 												)
 											}
 										>
 											+
 										</button>
 									</div>
-									<div className=" flex flex-wrap gap-2">
-										{formData.nonTechnical.map(
-											(event, index) => (
-												<div
-													key={index}
-													className="flex bg-zinc-500 gap-2 border outline-none border-gray-600 pl-3 pr-2 py-1 rounded-md"
-												>
-													<span className="  text-[#f0f0f0] text-[14px]  gap-1  flex justify-between items-center">
-														{event}
-													</span>
-													<button
-														type="button"
-														className="text-black opacity-85 hover:text-white duration-100 text-xs  hover:opacity-100"
-														onClick={() =>
-															deleteEvent(
-																"nonTechnical",
-																index
-															)
-														}
-													>
-														X
-													</button>
+									<div className=" grid grid-cols-1 md:grid-cols-2 gap-2">
+										{formData.nonTechnical.map((event, index) => (
+											<div
+												key={index}
+												className="w-full flex bg-zinc-500 gap-2 border outline-none border-gray-600 pl-3 pr-2 py-1 rounded-md"
+											>
+												<div className="flex justify-between flex-grow text-[#f0f0f0] text-[14px]">
+													<p>
+														<span className="text-black font-semibold">Name: </span>{" "}
+														{event.name}
+													</p>
+													<p>
+														<span className="text-black font-semibold">Limit: </span>{" "}
+														{event.limit}
+													</p>
 												</div>
-											)
-										)}
+												<button
+													type="button"
+													className="text-black ml-auto opacity-85 hover:text-white duration-100 text-xs  hover:opacity-100"
+													onClick={() => deleteEvent("nonTechnical", index)}
+												>
+													X
+												</button>
+											</div>
+										))}
 									</div>
 								</div>
 							</div>
@@ -502,9 +488,7 @@ const CreateEvents = () => {
 
 					{step === 3 && (
 						<div className="flex h-full flex-col gap-4  text-sm text-[#e0e0e0] ">
-							<h2 className="text-lg font-semibold">
-								Refereshments And Swags
-							</h2>
+							<h2 className="text-lg font-semibold">Refereshments And Swags</h2>
 							<div className="  bg-[#2b2b2b] flex flex-col gap-4 sm:text-lg  rounded-md p-4">
 								<label className="relative inline-flex items-center cursor-pointer">
 									<input
@@ -512,17 +496,10 @@ const CreateEvents = () => {
 										className="sr-only peer"
 										id="refreshment"
 										checked={formData.refreshment}
-										onChange={(e) =>
-											handleChangefoods(
-												"refreshments",
-												e.target.value
-											)
-										}
+										onChange={(e) => handleChangefoods("refreshments", e.target.value)}
 									/>
 									<div className="w-11 h-6 bg-gray-300 rounded-full peer peer-checked:bg-blue-600 after:absolute after:top-1 after:left-1 after:bg-white after:border after:border-gray-300 after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:after:translate-x-5"></div>
-									<span className="ml-3 text-sm font-medium text-white">
-										Refreshments
-									</span>
+									<span className="ml-3 text-sm font-medium text-white">Refreshments</span>
 								</label>
 
 								<label className="relative inline-flex items-center cursor-pointer">
@@ -531,17 +508,10 @@ const CreateEvents = () => {
 										className="sr-only peer"
 										id="Swags"
 										checked={formData.swags}
-										onChange={(e) =>
-											handleChangefoods(
-												"swags",
-												e.target.value
-											)
-										}
+										onChange={(e) => handleChangefoods("swags", e.target.value)}
 									/>
 									<div className="w-11 h-6 bg-gray-300 rounded-full peer peer-checked:bg-blue-600 after:absolute after:top-1 after:left-1 after:bg-white after:border after:border-gray-300 after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:after:translate-x-5"></div>
-									<span className="ml-3 text-sm font-medium text-white">
-										Swags
-									</span>
+									<span className="ml-3 text-sm font-medium text-white">Swags</span>
 								</label>
 							</div>
 							<h2 className="text-lg font-semibold">Payment</h2>
@@ -552,17 +522,10 @@ const CreateEvents = () => {
 										className="sr-only peer"
 										id="paid"
 										checked={formData.paid}
-										onChange={(e) =>
-											handleChangefoods(
-												"paid",
-												e.target.value
-											)
-										}
+										onChange={(e) => handleChangefoods("paid", e.target.value)}
 									/>
 									<div className="w-11 h-6 bg-gray-300 rounded-full peer peer-checked:bg-blue-600 after:absolute after:top-1 after:left-1 after:bg-white after:border after:border-gray-300 after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:after:translate-x-5"></div>
-									<span className="ml-3 text-sm font-medium text-white">
-										Paid
-									</span>
+									<span className="ml-3 text-sm font-medium text-white">Paid</span>
 								</label>
 
 								{formData?.paid && (
@@ -580,12 +543,7 @@ const CreateEvents = () => {
 											required
 											min={1}
 											max={5000}
-											onChange={(e) =>
-												handleChangefoods(
-													"amount",
-													e.target.value
-												)
-											}
+											onChange={(e) => handleChangefoods("amount", e.target.value)}
 										/>
 									</div>
 								)}
@@ -603,11 +561,7 @@ const CreateEvents = () => {
 									className={`w-full  h-10 font-semibold text-[16px] bg-blue-600 hover:bg-blue-500 transition duration-200 text-white p-2 rounded-md`}
 									disabled={isPending}
 								>
-									{!isPending ? (
-										"Create ✅"
-									) : (
-										<Spinner size="sm" />
-									)}
+									{!isPending ? "Create ✅" : <Spinner size="sm" />}
 								</button>
 							</div>
 						</div>

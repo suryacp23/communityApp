@@ -1,9 +1,8 @@
 import Application from "../models/applicationModel.js";
 import mongoose from "mongoose";
 import { redisClient } from "../redis/redis.js";
-import { attendanceQueue } from "../queues/attendanceQueue.js";
-import logger from '../utils/logger.js'
-
+import { addAttendanceToQueue } from "../queues/attendanceQueue.js";
+import logger from "../utils/logger.js";
 export const getAttendance = async (req, res) => {
 	try {
 		const { eventId } = req.params;
@@ -58,13 +57,13 @@ export const getAttendance = async (req, res) => {
 				},
 			},
 		]);
-		logger.info(attendances);
+		// logger.info(attendances);
 		const redisData = attendances.reduce((acc, item) => {
 			const { _id, ...remainingData } = item;
 			acc[_id] = JSON.stringify(remainingData);
 			return acc;
 		}, {});
-		logger.info(redisData);
+		// logger.info(redisData);
 		setAllEventInRedis(eventId, redisData);
 		res.status(200).json({
 			attendances: attendances,
@@ -90,9 +89,7 @@ export const updateAttendance = async (req, res) => {
 			return res.status(400).json({ message: "Invalid data" });
 		}
 		if (eventId !== ongoingEventId) {
-			return res
-				.status(404)
-				.json({ message: "User not registered to this event" });
+			return res.status(404).json({ message: "User not registered to this event" });
 		}
 
 		// Get data from Redis for the event
@@ -100,9 +97,7 @@ export const updateAttendance = async (req, res) => {
 		const userData = await redisClient.hGet(key, applicationId);
 
 		if (!userData) {
-			return res
-				.status(404)
-				.json({ message: "User not found for this event" });
+			return res.status(404).json({ message: "User not found for this event" });
 		}
 
 		// Parse user data and update `isAttended`
@@ -111,7 +106,8 @@ export const updateAttendance = async (req, res) => {
 
 		// Save the updated data back to Redis
 		await redisClient.hSet(key, applicationId, JSON.stringify(updatedData));
-		attendanceQueue.add({ applicationId }); //add an async task to the queue
+		// attendanceQueue.add({ applicationId }); //add an async task to the queue
+		addAttendanceToQueue(applicationId);
 		// Respond with updated data
 		return res.status(200).json({
 			message: "Attendance updated successfully",
@@ -136,22 +132,18 @@ export const closeAttendance = async (req, res) => {
 		const attendanceData = await redisClient.hGetAll(key);
 
 		if (!attendanceData) {
-			return res
-				.status(404)
-				.json({ message: "No data found for this event" });
+			return res.status(404).json({ message: "No data found for this event" });
 		}
 		logger.info(attendanceData);
 		// Parse Redis data and save to MongoDB
-		const updates = Object.entries(attendanceData).map(
-			async ([userId, userData]) => {
-				const parsedData = JSON.parse(userData);
-				return Application.findByIdAndUpdate(
-					userId,
-					{ isAttended: parsedData.isAttended },
-					{ new: true }
-				);
-			}
-		);
+		const updates = Object.entries(attendanceData).map(async ([userId, userData]) => {
+			const parsedData = JSON.parse(userData);
+			return Application.findByIdAndUpdate(
+				userId,
+				{ isAttended: parsedData.isAttended },
+				{ new: true }
+			);
+		});
 
 		await Promise.all(updates);
 
@@ -194,16 +186,14 @@ async function getAllEventFromRedis(eventId) {
 		const attendanceHash = await redisClient.hGetAll(redisKey);
 
 		// Parse JSON strings into objects
-		const attendanceData = Object.entries(attendanceHash).map(
-			([id, value]) => {
-				const parsedValue = JSON.parse(value);
-				return {
-					id, // ID as the key
-					userName: parsedValue.userName,
-					isAttended: parsedValue.isAttended,
-				};
-			}
-		);
+		const attendanceData = Object.entries(attendanceHash).map(([id, value]) => {
+			const parsedValue = JSON.parse(value);
+			return {
+				id, // ID as the key
+				userName: parsedValue.userName,
+				isAttended: parsedValue.isAttended,
+			};
+		});
 
 		logger.info(`Attendance data for event ${eventId}:`, attendanceData);
 		return attendanceData;

@@ -6,34 +6,34 @@ import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
 const EventList = () => {
-  const queryClient = useQueryClient();
-  const location = useLocation();
+	const queryClient = useQueryClient();
+	const location = useLocation();
 
-  const { isLoading, error, isError, data, refetch } = useQuery({
-    queryKey: ["events"],
-    queryFn: fetchBlogs,
-  });
+	const { isLoading, error, isError, data, refetch } = useQuery({
+		queryKey: ["events"],
+		queryFn: fetchBlogs,
+	});
 
-  useEffect(() => {
-    queryClient.invalidateQueries(["events"]); // Invalidate and refetch events after navigation
-  }, [location.pathname, queryClient]);
+	useEffect(() => {
+		queryClient.invalidateQueries(["events"]); // Invalidate and refetch events after navigation
+	}, [location.pathname, queryClient]);
 
-  if (isLoading || isError) {
-    return (
-      <div className="h-screen flex justify-center items-center backdrop-blur-3xl">
-        <Spinner />
-      </div>
-    );
-  }
+	if (isLoading || isError) {
+		return (
+			<div className="h-screen flex justify-center items-center backdrop-blur-3xl">
+				<Spinner />
+			</div>
+		);
+	}
 
-  const events = data?.events || [];
-  return (
-    <div className="w-full h-auto p-2 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-2">
-      {events?.map((event) => (
-        <Event event={event} key={event?._id} />
-      ))}
-    </div>
-  );
+	const events = data?.events || [];
+	return (
+		<div className="w-full h-auto p-2 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-2">
+			{events?.map((event) => (
+				<Event event={event} key={event?._id} toDisplay={true} />
+			))}
+		</div>
+	);
 };
 
 export default EventList;

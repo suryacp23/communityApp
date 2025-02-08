@@ -1,10 +1,9 @@
 import PQueue from "p-queue";
 import { sendEmailWithQRCode } from "../utils/mail.js";
 
-const emailQueue = new PQueue({ concurrency: 2 });
+const queue = new PQueue({ concurrency: 5 });
 
 export const addEmailToQueue = async (attendanceId) => {
-	emailQueue.add(() => sendEmailWithQRCode(attendanceId));
-
+	queue.add(() => sendEmailWithQRCode(attendanceId));
 	console.log(`Email job added to queue for: ${attendanceId}`);
 };
