@@ -54,28 +54,28 @@ const GroupSidebar = ({
           </button>
         </div>
       </div>
-      {data.length === 0 && (
+      {data?.length === 0 && (
         <div className=" h-1/2 flex justify-center items-end">
           <h1>join some event and get started</h1>
         </div>
       )}
       {data?.map((event) => (
-        <div key={event._id} className="mb-2">
+        <div key={event?._id} className="mb-2">
           {/* Event Name (Folder) */}
           <div
             className={`cursor-pointer flex items-center rounded-lg p-2 hover:bg-gray-600 ${
-              selectedEvent === event._id ? "bg-purple-700" : "bg-zinc-600"
+              selectedEvent === event?._id ? "bg-purple-700" : "bg-zinc-600"
             }`}
-            onClick={() => toggleEvent(event._id)}
+            onClick={() => toggleEvent(event?._id)}
           >
             <span className="mr-2">
-              {openEvent === event._id ? <FaChevronDown /> : <FaChevronRight />}
+              {openEvent === event?._id ? <FaChevronDown /> : <FaChevronRight />}
             </span>
-            {event.eventDetails.title}
+            {event?.eventDetails?.title}
           </div>
 
           {/* Groups under Event */}
-          {openEvent === event._id && (
+          {openEvent === event?._id && (
             <div className="ml-6 mt-2 flex flex-col gap-1 ease-out">
               {event?.groups?.map((group) => (
                 <div
@@ -91,7 +91,7 @@ const GroupSidebar = ({
                     toggleSidebar();
                   }}
                 >
-                  {group.isHead ? (
+                  {group?.isHead ? (
                     <p className="flex gap-2">
                       <span>{group?.name}</span>
                       <span className="bg-yellow-300 px-2 text-black rounded-full">

@@ -27,7 +27,7 @@ const CommentList = ({ eventId }) => {
         </p>
       ) : (
         comments.map((comment) => (
-          <Comment key={comment._id} comment={comment} />
+          <Comment key={comment?._id} comment={comment} />
         ))
       )}
     </div>

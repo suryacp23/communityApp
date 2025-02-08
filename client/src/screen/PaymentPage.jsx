@@ -103,10 +103,10 @@ const PaymentPage = () => {
           },
           body: JSON.stringify({
             groupId: selectedEvent,
-            eventId: params.eventId,
-            razorpay_order_id: response.razorpay_order_id,
-            razorpay_payment_id: response.razorpay_payment_id,
-            razorpay_signature: response.razorpay_signature,
+            eventId: params?.eventId,
+            razorpay_order_id: response?.razorpay_order_id,
+            razorpay_payment_id: response?.razorpay_payment_id,
+            razorpay_signature: response?.razorpay_signature,
           }),
           credentials: "include",
         });
@@ -123,7 +123,7 @@ const PaymentPage = () => {
 
           setPending("success");
         } else {
-          alert("Payment verification failed: " + verifyResult.message);
+          alert("Payment verification failed: " + verifyResult?.message);
         }
       },
       theme: {
@@ -145,7 +145,7 @@ const PaymentPage = () => {
       />
 
       <div className=" first-line:w-5/6 md:w-1/2 flex flex-col justify-around items-center bg-zinc-900 p-4 rounded-lg">
-        {dropDown.length === 0 ? (
+        {dropDown?.length === 0 ? (
           <h1 className="text-white">
             You have applied for all sub-events in this event
           </h1>
@@ -157,9 +157,9 @@ const PaymentPage = () => {
             <option value="" disabled>
               Select an Event
             </option>
-            {dropDown.map((event, index) => (
-              <option key={index} value={event._id}>
-                {event.name}
+            {dropDown?.map((event, index) => (
+              <option key={index} value={event?._id}>
+                {event?.name}
               </option>
             ))}
           </select>
@@ -190,7 +190,7 @@ const PaymentPage = () => {
             appliedEvents?.groupIds?.map((event) => {
               return (
                 <li className="flex gap-2 justify-between bg-zinc-700 p-2 rounded-lg">
-                  <h1>{event.name}</h1>
+                  <h1>{event?.name}</h1>
                   <TiTick color="green" size={20} />
                 </li>
               );

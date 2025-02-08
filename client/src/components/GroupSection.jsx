@@ -33,10 +33,10 @@ const GroupSection = ({
       </div>
       <div className="px-4">
         <ol className="list-decimal p-2">
-          {users.length > 0 ? (
-            users.map((user, index) => (
+          {users?.length > 0 ? (
+            users?.map((user, index) => (
               <li key={index} className="p-2">
-                {user.userName} ({user.email})
+                {user?.userName} ({user?.email})
               </li>
             ))
           ) : (

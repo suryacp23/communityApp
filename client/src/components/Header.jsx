@@ -69,20 +69,20 @@ const Header = () => {
         <ul className="flex justify-center items-center gap-16 max-lg:hidden relative">
           {navLinks.map((item) => (
             <li
-              key={item.label}
+              key={item?.label}
               onMouseEnter={() => setHovered(item.href)}
               onMouseLeave={() => setHovered(null)}
               className="relative"
             >
-              <Link to={item.href} className={` text-lg text-white capitalize`}>
-                {item.label}
+              <Link to={item?.href} className={` text-lg text-white capitalize`}>
+                {item?.label}
               </Link>
               <span
                 className={`absolute left-0 bottom-[-8px] h-[5px] rounded-full bg-purple-500 transition-all duration-300 ${
-                  location.pathname === item.href || hovered === item.href
+                  location?.pathname === item?.href || hovered === item?.href
                     ? "w-full"
                     : "w-0"
-                } ${location.pathname === item.href ? "bg-white" : ""}`}
+                } ${location?.pathname === item?.href ? "bg-white" : ""}`}
               ></span>
             </li>
           ))}
@@ -129,17 +129,17 @@ const Header = () => {
         </button>
         <ul className="flex flex-col items-center justify-evenly h-full gap-6">
           {navLinks.map((item) => (
-            <li key={item.label} className="text-lg w-full">
+            <li key={item?.label} className="text-lg w-full">
               <Link
-                to={item.href}
+                to={item?.href}
                 className={`capitalize hover:text-purple-500 ${
-                  location.pathname === item.href
+                  location?.pathname === item?.href
                     ? "text-purple-500 font-bold"
                     : ""
                 }`}
                 onClick={() => setMenuOpen(false)} // Close menu on link click
               >
-                {item.label}
+                {item?.label}
               </Link>
             </li>
           ))}

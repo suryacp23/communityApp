@@ -25,7 +25,7 @@ const Signup = () => {
       navigate("/events");
     },
     onError: (error) => {
-      toast.error(error.response?.data?.error || error.message);
+      toast.error(error.response?.data?.error || error?.message);
     },
   });
 

@@ -107,7 +107,7 @@ const GroupChatSection = ({ selectedGroup, toggleSidebar }) => {
           </div>
         )}
         {conversation?.map((chat) => {
-          const isSender = user._id === chat.senderId._id;
+          const isSender = user?._id === chat?.senderId?._id;
           return (
             <li
               key={chat?._id}
@@ -119,8 +119,8 @@ const GroupChatSection = ({ selectedGroup, toggleSidebar }) => {
               <div className={`${isSender ? "ml-3" : "mr-3"}`}>
                 <Avatar
                   size="sm"
-                  name={chat.senderId.userName}
-                  bgColor={getRandomColor(chat.senderId.userName)}
+                  name={chat?.senderId?.userName}
+                  bgColor={getRandomColor(chat?.senderId?.userName)}
                 />
               </div>
 
@@ -143,7 +143,7 @@ const GroupChatSection = ({ selectedGroup, toggleSidebar }) => {
                   </span>
                   <span
                     className={`${
-                      groupInfo?.data?.admin?._id === chat.senderId._id
+                      groupInfo?.data?.admin?._id === chat?.senderId?._id
                         ? "inline-block"
                         : "hidden"
                     } bg-yellow-200 text-xs text-black px-2 ml-2 rounded-full`}>
@@ -159,7 +159,7 @@ const GroupChatSection = ({ selectedGroup, toggleSidebar }) => {
                   className={`text-xs font-mono ${
                     isSender ? "text-left" : "text-right"
                   } mt-2 text-gray-400`}>
-                  {formatTimestamp(chat.createdAt)}
+                  {formatTimestamp(chat?.createdAt)}
                 </p>
               </div>
             </li>

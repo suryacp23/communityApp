@@ -74,8 +74,8 @@ const Attendancepage = () => {
 	};
 
 	const stopScanner = () => {
-		if (html5QrCode.current) {
-			html5QrCode.current
+		if (html5QrCode?.current) {
+			html5QrCode?.current
 				.stop()
 				.then(() => {
 					console.log("QR code scanner stopped...");
@@ -112,7 +112,7 @@ const Attendancepage = () => {
 					</button>
 					<h2 className=" text-lg py-2">Applicants information:-</h2>
 					<div className="flex gap-5 w-fit bg-primary px-3 py-2">
-						<p>Total: {data?.attendances.length}</p>
+						<p>Total: {data?.attendances?.length}</p>
 						<p className="text-green-300">Present: {present}</p>
 						<p className="text-red-300">
 							Absent:
@@ -139,19 +139,29 @@ const Attendancepage = () => {
 										key={i}
 									>
 										<td>{i + 1}</td>
-										<td className=" p-2">{applicant.userName}</td>
-										<td>{applicant.email}</td>
+										<td className=" p-2">
+											{applicant?.userName}
+										</td>
+										<td>{applicant?.email}</td>
 										<td className="">
-											{applicant.appliedTo.map((group) => (
-												<span key={group}>{group + " "}</span>
-											))}
+											{applicant?.appliedTo.map(
+												(group) => (
+													<span key={group}>
+														{group + " "}
+													</span>
+												)
+											)}
 										</td>
 										<td
 											className={`${
-												applicant.isAttended ? "text-green-500" : "text-red-500"
+												applicant?.isAttended
+													? "text-green-500"
+													: "text-red-500"
 											}`}
 										>
-											{applicant.isAttended ? "Present" : "Absent"}
+											{applicant?.isAttended
+												? "Present"
+												: "Absent"}
 										</td>
 									</tr>
 								))}

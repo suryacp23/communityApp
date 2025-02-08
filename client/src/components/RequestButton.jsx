@@ -48,8 +48,8 @@ const RequestButton = () => {
             Select an Event
           </option>
           {data?.map((event, index) => (
-            <option key={index} value={event._id}>
-              {event.name}
+            <option key={index} value={event?._id}>
+              {event?.name}
             </option>
           ))}
         </select>

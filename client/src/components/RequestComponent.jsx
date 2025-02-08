@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import React, { useState } from "react";
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getGroupJoinRequests } from "../services/api";
 import TableRow from "./TableRow";
@@ -76,7 +76,7 @@ const RequestComponent = () => {
         <tbody>
           {sortBy === "all"
             ? data?.map((item) => <TableRow key={item?._id} data={item} />)
-            : filteredData.map((item) => (
+            : filteredData?.map((item) => (
                 <TableRow key={item?._id} data={item} />
               ))}
         </tbody>
