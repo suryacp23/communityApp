@@ -27,7 +27,7 @@ const GroupDetails = ({ group }) => {
       });
 
       const data = await response.json();
-      if (!response.ok) throw new Error(data.message);
+      if (!response.ok) throw new Error(data?.message);
     } catch (error) {
     } finally {
       setModEmail("");
@@ -45,10 +45,10 @@ const GroupDetails = ({ group }) => {
 
       const data = await response.json();
       console.log(data);
-      setMods(data.moderators);
-      setAdmin(data.admin);
-      setMembers(data.members);
-      if (!response.ok) throw new Error(data.message);
+      setMods(data?.moderators);
+      setAdmin(data?.admin);
+      setMembers(data?.members);
+      if (!response.ok) throw new Error(data?.message);
     } catch (error) {
       toast.error()
     } finally {
@@ -59,8 +59,8 @@ const GroupDetails = ({ group }) => {
     <div className="mt-4 space-y-4">
       <GroupSection
         title="Admin"
-        users={[group.admin]}
-        groupId={group._id}
+        users={[group?.admin]}
+        groupId={group?._id}
         modEmail={modEmail}
         setModEmail={setModEmail}
         handleClick={handleClick}
@@ -69,7 +69,7 @@ const GroupDetails = ({ group }) => {
       <GroupSection
         title="Moderators"
         users={mods}
-        groupId={group._id}
+        groupId={group?._id}
         handleClick={handleClick}
         modEmail={modEmail}
         setModEmail={setModEmail}
@@ -81,7 +81,7 @@ const GroupDetails = ({ group }) => {
         users={members}
         modEmail={modEmail}
         setModEmail={setModEmail}
-        groupId={group._id}
+        groupId={group?._id}
         handleClick={handleClick}
         loading={loading}
       />

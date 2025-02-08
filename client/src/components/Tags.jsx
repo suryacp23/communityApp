@@ -7,7 +7,7 @@ const Tags = ({ title, tags, color = "gray" }) => {
     <div className="mb-4">
       <p className="font-semibold mb-2">{title}:</p>
       <div className="flex flex-wrap gap-2">
-        {tags.map((tag, index) => (
+        {tags?.map((tag, index) => (
           <span
             key={index}
             className={`px-3 py-1 rounded-full text-sm ${colorClass}`}

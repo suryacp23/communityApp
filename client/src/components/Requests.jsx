@@ -39,10 +39,10 @@ const Requests = () => {
               className=" odd:bg-gray-900 even:bg-slate-800 border-b  border-gray-700"
             >
               <td className="px-6 py-4 2xl:px-9 2xl:py-6 ">
-                {request.user.userName}
+                {request?.user?.userName}
               </td>
-              <td className="px-6 py-4">{request.group.name}</td>
-              <td className="px-6 py-4">{request.status}</td>
+              <td className="px-6 py-4">{request?.group?.name}</td>
+              <td className="px-6 py-4">{request?.status}</td>
               <td className=" flex justify-around px-6 py-4">
                 <button className="text-green-500" onClick={() => {}}>
                   Approve

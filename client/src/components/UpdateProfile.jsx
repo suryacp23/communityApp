@@ -17,13 +17,13 @@ const UpdateProfile = ({ user, close }) => {
 	});
 	const handleUpdate = (e) => {
 		e.preventDefault();
-		if (Profile.password.trim() !== Profile.confirmPassword.trim()) {
+		if (Profile?.password.trim() !== Profile.confirmPassword.trim()) {
 			toast.error("Password mismatch!");
 			return;
 		}
 		mutate(Profile, {
 			onSuccess: (data) => {
-				toast.success(data.message);
+				toast.success(data?.message);
 				close();
 			},
 			onError: (error) => console.error("Update failed:", error),
@@ -55,7 +55,7 @@ const UpdateProfile = ({ user, close }) => {
 							type="text"
 							name="userName"
 							className="bg-gray-700 font-serif p-1 border-2 text-sm border-gray-600 rounded-md"
-							value={Profile.userName}
+							value={Profile?.userName}
 							onChange={handleChange}
 						/>
 					</div>
@@ -66,7 +66,7 @@ const UpdateProfile = ({ user, close }) => {
 							type="text"
 							name="email"
 							className="bg-gray-700 font-serif  p-1 border-2 text-sm border-gray-600 rounded-md"
-							value={Profile.email}
+							value={Profile?.email}
 							onChange={handleChange}
 						/>
 					</div>
@@ -77,7 +77,7 @@ const UpdateProfile = ({ user, close }) => {
 							type="text"
 							name="password"
 							className="bg-gray-700 font-serif  p-1 border-2 text-sm border-gray-600 rounded-md"
-							value={Profile.password}
+							value={Profile?.password}
 							onChange={handleChange}
 						/>
 					</div>
@@ -90,7 +90,7 @@ const UpdateProfile = ({ user, close }) => {
 							type="text"
 							name="confirmPassword"
 							className="bg-gray-700 font-serif  p-1 border-2 text-sm border-gray-600 rounded-md"
-							value={Profile.confirmPassword}
+							value={Profile?.confirmPassword}
 							onChange={handleChange}
 						/>
 					</div>

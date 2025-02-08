@@ -36,7 +36,7 @@ const CommentForm = ({ eventId }) => {
     if (!commentText.trim()) return;
     mutate({
       comment: commentText,
-      user: user._id,
+      user: user?._id,
       event: eventId,
     });
   };

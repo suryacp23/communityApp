@@ -23,8 +23,8 @@ const MyGroups = () => {
 
   return (
     <div className="md:p-6 space-y-6">
-      {data.length > 0 ? (
-        data.map((event) => <EventCard key={event._id} event={event} />)
+      {data?.length > 0 ? (
+        data?.map((event) => <EventCard key={event?._id} event={event} />)
       ) : (
         <p>No groups available.</p>
       )}

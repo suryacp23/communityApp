@@ -29,11 +29,11 @@ const EditEvents = () => {
   useEffect(() => {
     if (data?.event) {
       setFormData({
-        title: data.event.title || "",
-        description: data.event.description || "",
-        imageUrl: data.event.imageUrl || "",
-        swags: data.event.swags || false,
-        refreshments: data.event.refreshments || false,
+        title: data?.event?.title || "",
+        description: data?.event?.description || "",
+        imageUrl: data?.event?.imageUrl || "",
+        swags: data?.event?.swags || false,
+        refreshments: data?.event?.refreshments || false,
       });
     }
   }, [data, user]);

@@ -11,8 +11,8 @@ const GroupCard = ({ group, eventId }) => {
         onClick={toggleGroup}>
         <div>
           <h4 className="text-lg font-medium md:flex gap-1">
-            {group.name}
-            {group.isHead && (
+            {group?.name}
+            {group?.isHead && (
               <div className=" px-1 md:px-2 py-1 bg-yellow-100 flex flex-col md:flex-row text-yellow-800 text-center rounded-full text-sm">
                 Head Group
               </div>

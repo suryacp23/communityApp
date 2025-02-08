@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { BiSolidLike } from "react-icons/bi";
 import { MdModeComment } from "react-icons/md";
 import { formatTimestamp } from "../utils/time";
 import { formatCount } from "../utils/numberFormat";
