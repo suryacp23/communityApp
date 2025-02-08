@@ -64,70 +64,75 @@ const Profile = () => {
 					>
 						<Avatar size={"xl"} imageUrl={user?.profile_image_url} name={user?.userName} />
 
-            <div className="absolute inset-0 cursor-pointer bg-black bg-opacity-50 flex items-center justify-center rounded-full opacity-0 group-hover:opacity-100 ">
-              <TiCameraOutline className="text-white w-8 h-8" />
-            </div>
-            <input
-              type="file"
-              ref={fileRef}
-              onChange={handleProfileImageUpload}
-              className="hidden "
-            />
-          </div>
-          <div>
-            <p className="cursor-pointer">{user?.userName} </p>
-            <p className="opacity-70">{user?.email}</p>
-          </div>
-          <div
-            className="absolute top-2 right-2"
-            onClick={() => setIsOpen(true)}
-            title="Edit">
-            <TbEdit className="cursor-pointer text-xl text-green-500" />
-          </div>
-        </div>
-        <div className=" border-2 sm:w-[80%] pl-2 sm:pl-5 pt-2 sm:pt-3 rounded-md">
-          <h3>Events</h3>
-          <div className=" font-mono">
-            <p>Events Created: {data?.eventsCreated} </p>
-            <p>Events participated: {data?.eventsParticipated}</p>
-          </div>
-        </div>
-      </section>
-      <section className=" rounded-md mt-3 p-2 space-y-5 bg-zinc-800 ">
-        <h3 className="font-mono font-bold">Most liked events</h3>
-        <div className="flex flex-col gap-7 sm:flex-row justify-around pb-5 font-mono">
-          {data?.most_liked_events.slice(0, 3).map((event) => (
-            <div
-              key={event?._id}
-              onClick={() => {
-                navigate(`/events/${event?._id}`);
-              }}
-              className=" mx-auto w-4/5 sm:w-[220px] h-[230px] p-2 cursor-pointer rounded-md bg-slate-500 flex flex-col">
-              <img
-                className="rounded-md w-4/5 sm:w-[200px] mx-auto h-[160px] object-cover"
-                src={event?.imageUrl}
-                alt={event?.title}
-              />
-              <p className="text-[12px]] p-1 line-clamp-1">
-                <IoIosRocket className="inline text-blue-700 mr-1" />
-                {event?.title}
-              </p>
-              <div className="flex justify-between items-center">
-                <div>
-                  <AiFillLike className="inline mx-1 text-red-600" />
-                  {event?.likes?.length}
-                </div>
-                <p className=" text-sm text-black">
-                  {formatTimestamp(event?.createdAt)}
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-      {isOpen && <UpdateProfile user={user} close={() => setIsOpen(false)} />}
-    </div>
-  );
+						<div className="absolute inset-0 cursor-pointer bg-black bg-opacity-50 flex items-center justify-center rounded-full opacity-0 group-hover:opacity-100 ">
+							<TiCameraOutline className="text-white w-8 h-8" />
+						</div>
+						<input
+							type="file"
+							ref={fileRef}
+							onChange={handleProfileImageUpload}
+							className="hidden "
+						/>
+					</div>
+					<div>
+						<p className="cursor-pointer">{user?.userName} </p>
+						<p className="opacity-70">{user?.email}</p>
+					</div>
+					<div className="absolute top-2 right-2" onClick={() => setIsOpen(true)} title="Edit">
+						<TbEdit className="cursor-pointer text-xl text-green-500" />
+					</div>
+				</div>
+				<div className=" sm:w-[80%] bg-slate-800  p-2  rounded-md">
+					<div className="text-[16px] border-b-2  border-white border-opacity-40 pb-3">
+						<p>
+							<span className="text-gray-400">Events Created: </span>
+							{data?.eventsCreated}{" "}
+						</p>
+						<p>
+							<span className="text-gray-400">Events participated: </span>
+							{data?.eventsParticipated}
+						</p>
+					</div>
+					<div className=" rounded-md  pt-3 space-y-5 ">
+						<h3 className=" font-semibold text-center">Most liked events</h3>
+						<div className="flex flex-col gap-2 flex-wrap sm:flex-row justify-around pb-5 font-mono">
+							{data?.most_liked_events.slice(0, 3).map((event, index) => (
+								<div
+									key={index}
+									onClick={() => {
+										navigate(`/events/${event._id}`);
+									}}
+									className="w-full sm:w-[250px] p-2 cursor-pointer rounded-md bg-slate-500 flex items-center gap-4"
+								>
+									<img
+										className="rounded-full w-10 h-10  object-cover"
+										src={event.imageUrl}
+										alt={event.title}
+									/>
+									<p className="text-[12px]] p-1 line-clamp-1">
+										<IoIosRocket className="inline text-blue-700 mr-1" />
+										{event.title}
+									</p>
+									<div className="w-[20px] h-[20px] ml-auto bg-green-500 rounded-full grid place-content-center">
+										<div>{index + 1}</div>
+									</div>
+								</div>
+							))}
+						</div>
+					</div>
+				</div>
+			</section>
+			<section className="bg-slate-800 mt-2 rounded-md">
+				<h2 className="p-2 font-bold text-lg text-center">My Events</h2>
+				<div className="grid gap-3 sm:grid-cols-2 p-4">
+					{eventData?.events?.map((el) => (
+						<Event event={el} toDisplay={false} />
+					))}
+				</div>
+			</section>
+			{isOpen && <UpdateProfile user={user} close={() => setIsOpen(false)} />}
+		</div>
+	);
 };
 
 export default Profile;

@@ -14,9 +14,9 @@ const EventList = () => {
 		queryFn: fetchBlogs,
 	});
 
-  useEffect(() => {
-    queryClient.invalidateQueries(["events"]); // Invalidate and refetch events after navigation
-  }, [location?.pathname, queryClient]);
+	useEffect(() => {
+		queryClient.invalidateQueries(["events"]); // Invalidate and refetch events after navigation
+	}, [location?.pathname, queryClient]);
 
 	if (isLoading || isError) {
 		return (
