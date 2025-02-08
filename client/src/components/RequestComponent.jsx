@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getGroupJoinRequests } from "../services/api";
 import TableRow from "./TableRow";
@@ -26,7 +27,17 @@ const RequestComponent = () => {
     };
   }, []);
 
+  const [sortBy, setSortBy] = useState(data?.status || "all");
+
+  const handleChange = (e) => {
+    setSortBy(e.target.value);
+  };
+
+  // Filter the data based on the selected status
+  const filteredData = data?.filter((item) => item?.status === sortBy) || [];
+
   if (error) return <p>Error loading requests</p>;
+
   return (
     <div className="overflow-x-auto">
       {isPending && (
@@ -34,6 +45,22 @@ const RequestComponent = () => {
           <Spinner />
         </div>
       )}
+      <div className="flex items-center p-2 gap-2">
+        <label htmlFor="sortBy" className="text-slate-100">
+          Sort By:
+        </label>
+        <select
+          id="sortBy"
+          name="sortBy"
+          className="text-slate-100 bg-zinc-600 px-3 py-1 rounded border border-zinc-400 cursor-pointer "
+          onChange={handleChange}>
+          <option value="all">All</option>
+          <option value="approved">Approved</option>
+          <option value="rejected">Rejected</option>
+          <option value="pending">Pending</option>
+        </select>
+      </div>
+
       <table className="min-w-full border border-zinc-800 text-zinc-200">
         <thead className="bg-zinc-900">
           <tr>
@@ -47,16 +74,11 @@ const RequestComponent = () => {
         </thead>
 
         <tbody>
-          {data?.length === 0 && (
-            <tr>
-              <td className="text-center" colSpan={6} height={50}>
-                no requests found
-              </td>
-            </tr>
-          )}
-          {data?.map((row) => (
-            <TableRow key={row._id} data={row} />
-          ))}
+          {sortBy === "all"
+            ? data?.map((item) => <TableRow key={item?._id} data={item} />)
+            : filteredData.map((item) => (
+                <TableRow key={item?._id} data={item} />
+              ))}
         </tbody>
       </table>
     </div>

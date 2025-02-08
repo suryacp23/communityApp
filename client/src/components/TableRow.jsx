@@ -9,8 +9,10 @@ import { toast } from "react-toastify";
 const TableRow = ({ data }) => {
   const requestId = data?._id;
   const queryClient = useQueryClient();
+ 
+
   const [localStatus, setLocalStatus] = useState(data?.status);
-  const [loadingAction, setLoadingAction] = useState(null); // "approve" or "reject"
+  const [loadingAction, setLoadingAction] = useState(null); 
 
   const { mutate } = useMutation({
     mutationFn: ({ requestId, action }) => approve({ requestId, action }),
@@ -38,7 +40,7 @@ const TableRow = ({ data }) => {
   });
 
   return (
-    <tr className="border-b hover:bg-zinc-500 hover:text-black text-white">
+    <tr className="border-b hover:bg-zinc-500 hover:text-black text-white text-center">
       <td className="px-4 py-2">{data?.user?.userName}</td>
       <td className="px-4 py-2">{data?.user?.email}</td>
       <td className="px-4 py-2">{data?.group?.name}</td>
@@ -50,8 +52,7 @@ const TableRow = ({ data }) => {
             <button
               className="w-8 h-8 bg-black rounded-full flex justify-center items-center disabled:opacity-50"
               onClick={() => mutate({ requestId, action: "approve" })}
-              disabled={loadingAction === "approve"}
-            >
+              disabled={loadingAction === "approve"}>
               {loadingAction === "approve" ? (
                 <span className="animate-spin w-4 h-4 border-2 border-white border-t-transparent rounded-full"></span>
               ) : (
@@ -61,8 +62,7 @@ const TableRow = ({ data }) => {
             <button
               className="w-8 h-8 bg-black rounded-full flex justify-center items-center disabled:opacity-50"
               onClick={() => mutate({ requestId, action: "reject" })}
-              disabled={loadingAction === "reject"}
-            >
+              disabled={loadingAction === "reject"}>
               {loadingAction === "reject" ? (
                 <span className="animate-spin w-4 h-4 border-2 border-white border-t-transparent rounded-full"></span>
               ) : (

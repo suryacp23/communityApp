@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   Fetchevent,
   getAppliedEvents,
@@ -8,6 +8,7 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import { loadRazorpayScript } from "../utils/razorpay.js";
 import { TiTick } from "react-icons/ti";
+import { MdOutlineArrowBackIosNew } from "react-icons/md";
 
 const PaymentPage = () => {
   const params = useParams();
@@ -15,6 +16,8 @@ const PaymentPage = () => {
   const [selectedEventName, setSelectedEventName] = useState("");
   const [pending, setPending] = useState("idle");
   const [dropDown, setDropDown] = useState([]);
+
+  const navigate = useNavigate();
 
   const { data: eventDetails } = useQuery({
     queryKey: ["eventId", params.eventId],
@@ -134,16 +137,23 @@ const PaymentPage = () => {
   };
 
   return (
-    <div className="flex flex-col gap-5 justify-center items-center min-h-screen p-4 sm:p-8 text-sm md:text-base lg:text-lg">
-      <div className="w-1/2 flex flex-col justify-around items-center bg-zinc-900 p-4 rounded-lg">
+    <div className="flex flex-col gap-5 justify-center items-center min-h-screen rounded-fullp-4 sm:p-8 relative text-sm md:text-base lg:text-lg">
+      <MdOutlineArrowBackIosNew
+        size={20}
+        onClick={() => navigate("/events")}
+        className="cursor-pointer transition-all text-gray-400 ease-in-out hover:scale-150  rounded-full absolute left-4 top-4"
+      />
+
+      <div className=" first-line:w-5/6 md:w-1/2 flex flex-col justify-around items-center bg-zinc-900 p-4 rounded-lg">
         {dropDown.length === 0 ? (
-          <h1>You have applied for all sub-events in this event</h1>
+          <h1 className="text-white">
+            You have applied for all sub-events in this event
+          </h1>
         ) : (
           <select
             onChange={handleChange}
             className="w-full p-2 rounded-md bg-white text-black"
-            value={selectedEvent}
-          >
+            value={selectedEvent}>
             <option value="" disabled>
               Select an Event
             </option>
@@ -168,15 +178,14 @@ const PaymentPage = () => {
           ) : (
             <button
               className="p-2 bg-blue-700 text-white rounded-lg w-full"
-              onClick={handlePayment}
-            >
+              onClick={handlePayment}>
               Pay ₹{eventDetails?.event?.amount}
             </button>
           )}
         </div>
       </div>
       <div className="w-full flex justify-center items-center">
-        <ul className="w-1/2 flex flex-col  rounded-lg gap-2 p-2 text-white bg-gray-400">
+        <ul className="w-5/6 md:w-1/2 flex flex-col  rounded-lg gap-2 p-2 text-white bg-gray-400">
           {appliedEvents?.groupIds &&
             appliedEvents?.groupIds?.map((event) => {
               return (

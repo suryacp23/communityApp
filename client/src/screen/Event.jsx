@@ -17,11 +17,10 @@ const Event = () => {
 
   const event = data?.event;
 
-  
   return (
     <div className="w-full min-h-screen p-2">
       {isLoading ? (
-        <div className="flex justify-center w-full items-center min-h-screen">
+        <div className="flex justify-center w-full items-center  min-h-screen  backdrop-blur-2xl ">
           <Spinner />
         </div>
       ) : (

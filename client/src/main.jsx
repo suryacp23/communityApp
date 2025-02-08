@@ -15,7 +15,7 @@ createRoot(document.getElementById("root")).render(
 			<AuthProvider>
 				<SocketContextProvider>
 					<App />
-					<ReactQueryDevtools initialIsOpen={false} />
+					{/* <ReactQueryDevtools initialIsOpen={false} /> */}
 					<ToastContainer />
 				</SocketContextProvider>
 			</AuthProvider>

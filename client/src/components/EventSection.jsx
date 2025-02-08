@@ -12,7 +12,7 @@ const EventSection = ({ event }) => {
   const navigate = useNavigate();
   const { user } = useAuth();
   return (
-    <div className=" mx-auto p-6 w-full bg-zinc-900 rounded-lg text-gray-100">
+    <div className=" mx-auto p-3 md:p-6 w-full bg-zinc-900 rounded-lg text-sm text-gray-100">
       {/* Header Section */}
       <header className="text-center relative">
         <MdOutlineArrowBackIosNew
@@ -20,8 +20,8 @@ const EventSection = ({ event }) => {
           onClick={() => navigate("/events")}
           className="cursor-pointer transition-all ease-in-out hover:scale-150  rounded-full absolute sm:left-4 top-4"
         />
-        <h1 className="text-4xl font-bold mb-4">{event?.title}</h1>
-        <p className="text-lg text-gray-300">{`${event?.eventDate} ${event?.startTime} - ${event?.endTime}`}</p>
+        <h1 className="text-2xl md:text-4xl font-bold mb-4">{event?.title}</h1>
+        <p className="text-sm md:text-lg text-gray-300">{`${event?.eventDate} ${event?.startTime} - ${event?.endTime}`}</p>
         <EventOptions event={event} />
       </header>
 
@@ -30,27 +30,31 @@ const EventSection = ({ event }) => {
         <img
           src={event?.imageUrl}
           alt={event?.title}
-          className="w-5/6 object-cover rounded-lg shadow-md aspect-video"
+          className="w-full md:w-5/6 object-cover rounded-lg shadow-md aspect-video"
         />
       </section>
 
       {/* Event Description */}
       <section className="my-6">
-        <p className="text-lg text-gray-200">{event?.description}</p>
+        <p className="text-sm md:text-lg text-gray-200">{event?.description}</p>
       </section>
 
       {/* Organizer Info */}
-      <section className="my-6 flex items-center justify-between">
+      <section className="my-6 flex flex-col md:flex-row items-start md:items-center gap-2 justify-between">
         <div className="flex gap-2">
           <Avatar
-            size="md"
+            size="sm"
             name={event?.userId?.userName}
             imageUrl={event?.userId?.profile_image_url}
           />
 
-          <div>
-            <h3 className="text-xl font-semibold">{event?.userId?.userName}</h3>
-            <p className="text-gray-200">{event?.userId?.email}</p>
+          <div className="">
+            <div>
+              <h3 className="text-base md:text-xl font-semibold">
+                {event?.userId?.userName}
+              </h3>
+              <p className="text-gray-200">{event?.userId?.email}</p>
+            </div>
           </div>
         </div>
         <div className="">
