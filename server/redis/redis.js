@@ -1,13 +1,30 @@
 import Redis from "redis";
 import logger from "../utils/logger.js";
 
+// Redis URL from environment variable (Render provides this)
+const redisUrl = process.env.REDIS_URL || "redis://localhost:6379";
+
+// Create Redis client with proper configuration
 export const redisClient = Redis.createClient({
-  host: "localhost",
-  port: 6379,
+  url: redisUrl,
+  socket: redisUrl.startsWith("rediss://")
+    ? {
+        tls: true,
+        rejectUnauthorized: false, // Required for self-signed certificates
+      }
+    : {},
 });
-redisClient.on("error", (err) => console.error("Redis Client Error:", err));
+
+// Handle Redis errors
+redisClient.on("error", (err) => logger.error("Redis Client Error:", err));
+
+// Async function to connect Redis
 export const connectRedis = async () => {
-  redisClient.connect().then(() => {
-    logger.info("redis connected");
-  });
+  try {
+    await redisClient.connect();
+    logger.info("✅ Redis connected successfully");
+  } catch (error) {
+    logger.error("❌ Failed to connect to Redis:", error);
+    process.exit(1); // Exit the process if Redis fails to connect
+  }
 };
