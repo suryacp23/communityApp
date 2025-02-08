@@ -36,7 +36,8 @@ const GroupChatSection = ({ selectedGroup, toggleSidebar }) => {
       setConversation(data); // Update conversation when chat data is fetched
     },
   });
-  console.log(conversationData?.data);
+  console.log(groupInfo);
+  // console.log(conversationData?.data);
   useEffect(() => {
     setConversation(conversationData?.data);
   }, [conversationData]);
@@ -87,14 +88,17 @@ const GroupChatSection = ({ selectedGroup, toggleSidebar }) => {
         className="h-[8.33%] w-full flex items-center p-2 gap-2
        shadow-lg text-white bg-zinc-700 rounded-t-lg">
         {/* Hamburger Menu */}
-        <div className="lg:hidden p-4">
+        <div className="lg:hidden p-2">
           <button onClick={toggleSidebar} className="text-white">
             <FaBars />
           </button>
         </div>
-        <h1 className="text-lg font-bold truncate ">
-          {groupInfo?.data?.name || "Group Name"}
-        </h1>
+        <div className="flex items-center gap-2">
+          <Avatar size={"sm"} name={groupInfo?.data?.name} />
+          <h1 className="text-lg font-bold truncate ">
+            {groupInfo?.data?.name || "Group Name"}
+          </h1>
+        </div>
       </div>
       <ul className="flex flex-col gap-3 mx-4 p-4 h-5/6 overflow-y-auto scroll-smooth rounded-lg shadow-inner">
         {conversation?.length === 0 && (
@@ -129,22 +133,21 @@ const GroupChatSection = ({ selectedGroup, toggleSidebar }) => {
                 } flex-col text-white rounded-xl max-w-[60%] shadow-md`}>
                 {/* Sender Info */}
                 <p
-                  className={`text-xs ${
-                    isSender ? "text-right" : "text-left"
+                  className={`text-xs justify-between flex ${
+                    isSender ? "text-right " : "text-left "
                   } mb-1`}>
                   <span
                     className=""
                     style={{ color: getRandomColor(chat?.senderId?.userName) }}>
                     {chat?.senderId?.userName}
                   </span>
-
                   <span
                     className={`${
-                      groupInfo?.admin?._id === chat.senderId._id
+                      groupInfo?.data?.admin?._id === chat.senderId._id
                         ? "inline-block"
                         : "hidden"
-                    } bg-green-500 text-xs text-black px-2 ml-2 rounded-full`}>
-                    admin
+                    } bg-yellow-200 text-xs text-black px-2 ml-2 rounded-full`}>
+                    Host
                   </span>
                 </p>
                 {/* Message */}
@@ -172,11 +175,11 @@ const GroupChatSection = ({ selectedGroup, toggleSidebar }) => {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder="Type a message..."
-          className="h-full w-[90%] text-slate-200 bg-zinc-800 p-2 rounded-l-lg border border-zinc-600 focus:outline-none focus:ring-2 focus:ring-purple-500"
+          className="h-full w-5/6 md:w-[90%] text-slate-200 bg-zinc-800 p-2 rounded-lg border border-zinc-600 focus:outline-none focus:ring-2 focus:ring-purple-500"
         />
         <button
           type="submit"
-          className="bg-purple-600 h-full w-[10%] flex items-center justify-center hover:bg-purple-800 text-white p-2 rounded-r-lg shadow-md transition-transform transform hover:scale-110">
+          className="bg-purple-600 rounded-full flex items-center justify-center hover:bg-purple-800 text-white p-2  shadow-md transition-transform transform hover:scale-110">
           <VscSend size={20} />
         </button>
       </form>
