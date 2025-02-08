@@ -2,11 +2,12 @@ import Application from "../models/applicationModel.js";
 import mongoose from "mongoose";
 import { redisClient } from "../redis/redis.js";
 import { attendanceQueue } from "../queues/attendanceQueue.js";
+import logger from '../utils/logger.js'
 
 export const getAttendance = async (req, res) => {
 	try {
 		const { eventId } = req.params;
-		console.log(eventId);
+		logger.info(eventId);
 		const attendances = await Application.aggregate([
 			//join collections
 			// Lookup (populate) the `eventId` field from the `events` collection
@@ -57,20 +58,20 @@ export const getAttendance = async (req, res) => {
 				},
 			},
 		]);
-		console.log(attendances);
+		logger.info(attendances);
 		const redisData = attendances.reduce((acc, item) => {
 			const { _id, ...remainingData } = item;
 			acc[_id] = JSON.stringify(remainingData);
 			return acc;
 		}, {});
-		console.log(redisData);
+		logger.info(redisData);
 		setAllEventInRedis(eventId, redisData);
 		res.status(200).json({
 			attendances: attendances,
 			message: "Fetched data successfully",
 		});
 	} catch (error) {
-		console.log(error);
+		logger.info(error);
 		return res.status(500).json({
 			message: "Failed to fetch attendance data",
 			error: error.message,
@@ -118,7 +119,7 @@ export const updateAttendance = async (req, res) => {
 			success: true,
 		});
 	} catch (error) {
-		console.error(error);
+		logger.error(error);
 		res.status(500).json({ message: "Server error", error: error.message });
 	}
 };
@@ -139,7 +140,7 @@ export const closeAttendance = async (req, res) => {
 				.status(404)
 				.json({ message: "No data found for this event" });
 		}
-		console.log(attendanceData);
+		logger.info(attendanceData);
 		// Parse Redis data and save to MongoDB
 		const updates = Object.entries(attendanceData).map(
 			async ([userId, userData]) => {
@@ -161,7 +162,7 @@ export const closeAttendance = async (req, res) => {
 			message: "Attendance data saved to MongoDB and cleared from Redis.",
 		});
 	} catch (error) {
-		console.error(error);
+		logger.error(error);
 		res.status(500).json({ message: "Server error", error: error.message });
 	}
 };
@@ -173,15 +174,15 @@ async function setAllEventInRedis(eventId, attendanceData) {
 		// Save each item to the Redis hash
 		for (const [id, value] of Object.entries(attendanceData)) {
 			const result = await redisClient.hSet(redisKey, id, value); // Use `hSet` to store key-value in hash
-			console.log(`HSET Result: ${result}`); //result = 0 --> data is updated
+			logger.info(`HSET Result: ${result}`); //result = 0 --> data is updated
 		}
 
 		//Redis hash expiration time: 2 hours in sec.
 		await redisClient.expire(redisKey, 2 * 60 * 60);
 
-		console.log(`Attendance data for event ${eventId} saved to Redis.`);
+		logger.info(`Attendance data for event ${eventId} saved to Redis.`);
 	} catch (error) {
-		console.error("Error saving event data to Redis:", error.message);
+		logger.error("Error saving event data to Redis:", error.message);
 	}
 }
 
@@ -204,9 +205,9 @@ async function getAllEventFromRedis(eventId) {
 			}
 		);
 
-		console.log(`Attendance data for event ${eventId}:`, attendanceData);
+		logger.info(`Attendance data for event ${eventId}:`, attendanceData);
 		return attendanceData;
 	} catch (error) {
-		console.error("Error retrieving event data from Redis:", error.message);
+		logger.error("Error retrieving event data from Redis:", error.message);
 	}
 }

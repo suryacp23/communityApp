@@ -3,6 +3,7 @@ import User from "../models/userModel.js";
 import generateToken from "../utils/generateToken.js";
 import Event from "../models/eventModel.js";
 import Group from "../models/groupModel.js";
+import logger from '../utils/logger.js'
 
 export const signUp = async (req, res) => {
   const { userName, email, password } = req.body;
@@ -36,7 +37,7 @@ export const signUp = async (req, res) => {
       return res.status(400).json({ error: error.message });
     }
   } catch (error) {
-    console.log("Signup controller error" + error.message);
+    logger.error("Signup controller error" + error.message);
     return res.status(500).json({ error: error.message });
   }
 };
@@ -62,7 +63,7 @@ export const login = async (req, res) => {
       return res.status(401).json({ error: "Invalid username or password" });
     }
   } catch (error) {
-    console.log("Login controller error" + error.message);
+    logger.error("Login controller error" + error.message);
     return res.status(500).json({ error: error.message });
   }
 };
@@ -75,7 +76,7 @@ export const logout = async (req, res) => {
     });
     res.status(200).json({ message: "Logged out successfully" });
   } catch (error) {
-    console.log("Logout controller error" + error.message);
+    logger.error("Logout controller error" + error.message);
     res.status(500).json({ error: error.message });
   }
 };
@@ -93,7 +94,7 @@ export const checkRoles = async (req, res) => {
 
     res.status(200).json({ message: "success", host, moderator });
   } catch (error) {
-    console.log("checkRoles" + error.message);
+    logger.error("checkRoles" + error.message);
     res.status(500).json({ error: error.message });
   }
 };

@@ -1,12 +1,13 @@
 import mongoose from "mongoose";
+import logger from "./logger.js";
 const connectDB = () => {
 	mongoose
 		.connect(process.env.MONGO_DB_URI)
 		.then(() => {
-			console.log("Database connected");
+			logger.info("Database connected");
 		})
 		.catch((err) => {
-			console.log(err);
+			logger.error(err);
 		});
 };
 

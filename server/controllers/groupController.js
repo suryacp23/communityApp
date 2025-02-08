@@ -1,7 +1,9 @@
+
 import Group from "../models/groupModel.js";
 import JoinRequest from "../models/requestModel.js";
 import User from "../models/userModel.js";
 import { io, onlineUsers } from "../socket/socket.js";
+import logger from '../utils/logger.js'
 
 export const createGroup = async (req, res) => {
   const { name, eventId, isHead } = req.body;
@@ -27,6 +29,7 @@ export const createGroup = async (req, res) => {
       group: newGroup,
     });
   } catch (err) {
+    logger.error("create group error",err)
     res.status(500).json({ message: "Error creating group", error: err });
   }
 };
@@ -70,7 +73,7 @@ export const addModerator = async (req, res) => {
 
     return res.status(200).json({ message: "Moderator added successfully" });
   } catch (error) {
-    console.error("Error adding moderator:", error);
+    logger.error("Error adding moderator:", error);
     return res.status(500).json({ message: "Server error", error });
   }
 };
@@ -86,7 +89,7 @@ export const getGroupInfo = async (req, res) => {
     }
     res.status(200).json(group);
   } catch (error) {
-    console.log("getGroupInfo controller error" + error.message);
+    logger.error("getGroupInfo controller error" + error.message);
     res.status(400).json({ error: error.message });
   }
 };
@@ -175,7 +178,7 @@ export const getGroups = async (req, res) => {
 
     res.status(200).json(result);
   } catch (error) {
-    console.error("Error fetching grouped data:", error);
+    logger.error("Error fetching grouped data:", error);
     res.status(500).json({ message: "Internal server error" });
   }
 };
@@ -249,7 +252,7 @@ export const joinRequest = async (req, res) => {
 
     return res.status(200).json({ message: "Request sent successfully" });
   } catch (error) {
-    console.error("Join Request Error:", error);
+    logger.error("Join Request Error:", error);
     return res.status(500).json({ message: "Server error" });
   }
 };
@@ -264,7 +267,7 @@ export const getGroupJoinRequests = async (req, res) => {
 
     res.status(200).json(requests);
   } catch (err) {
-    console.log(err);
+    logger.error("get group join request",err);
     res
       .status(500)
       .json({ message: "Error fetching join requests", error: err });
@@ -288,7 +291,7 @@ export const getGroupByEventId = async (req, res) => {
 
     res.status(200).json(filteredGroups);
   } catch (error) {
-    console.log("getGroupByEventId controller error: " + error.message);
+    logger.error("getGroupByEventId controller error: " + error.message);
     res.status(400).json({ error: error.message });
   }
 };

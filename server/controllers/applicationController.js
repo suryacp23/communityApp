@@ -1,6 +1,7 @@
 import Application from "../models/applicationModel.js";
 import mutler from "multer";
 import Group from "../models/groupModel.js";
+import logger from '../utils/logger.js'
 const upload = mutler();
 export const createApplication = async (req, res) => {
 	upload.none()(req, res, async (err) => {
@@ -8,14 +9,14 @@ export const createApplication = async (req, res) => {
 			return res.status(400).json({ error: "Invalid form-data" });
 		}
 		try {
-			console.log(req.body);
+			logger.info(req.body);
 			const { userId, eventId, appliedTo } = req.body;
 			const appliedToArr = JSON.parse(appliedTo);
 			const groups = await Group.find({
 				eventId,
 				name: { $in: appliedToArr },
 			}).select("_id");
-			console.log(groups);
+			logger.info(groups);
 			if (!groups || groups.length === 0) {
 				return res.status(404).json({ messsage: "Event not found" });
 			}
@@ -44,7 +45,7 @@ export const createApplication = async (req, res) => {
 				message: "Applied successfully",
 			});
 		} catch (error) {
-			console.log("Application controller error" + error.message);
+			logger.error("Application controller error" + error.message);
 			return res.status(500).json({ error: error.message });
 		}
 	});

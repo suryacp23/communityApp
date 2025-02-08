@@ -1,5 +1,6 @@
 import Event from "../models/eventModel.js";
 import Like from "../models/likeModel.js";
+import logger from '../utils/logger.js'
 
 export const toggleLike = async (req, res) => {
   try {
@@ -26,7 +27,7 @@ export const toggleLike = async (req, res) => {
       return res.status(200).json({ success: true, liked: true });
     }
   } catch (error) {
-    console.error("toggleLike error:", error.message);
+    logger.error("toggleLike error:", error.message);
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
@@ -44,6 +45,7 @@ export const getLikeCount = async (req, res) => {
 
     res.status(200).json({ likes: event.likes, liked });
   } catch (error) {
+    logger.error("get like counts", error);
     res.status(500).json({ message: "Server error", error });
   }
 };

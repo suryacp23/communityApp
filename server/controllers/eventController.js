@@ -1,6 +1,7 @@
 import { InputFile } from "node-appwrite/file";
 import Event from "../models/eventModel.js";
 import Group from "../models/groupModel.js";
+import logger from '../utils/logger.js'
 import { Client, ID, Storage } from "node-appwrite";
 const client = new Client()
   .setEndpoint("https://cloud.appwrite.io/v1")
@@ -12,7 +13,7 @@ const storage = new Storage(client);
 export const createEvent = async (req, res) => {
   try {
     const body = req.body;
-    console.log(body);
+    logger.info(body);
     const technical = JSON.parse(body.technicalEvents);
     const nonTechnical = JSON.parse(body.nonTechnicalEvents);
 
@@ -39,7 +40,7 @@ export const createEvent = async (req, res) => {
       paid: body.paid,
     });
     const newEvent = await event.save();
-    console.log(newEvent);
+    logger.info(newEvent);
     const technicalGroups = technical.map((data) => {
       return {
         name: data,
@@ -68,8 +69,8 @@ export const createEvent = async (req, res) => {
       members: [req.user._id],
       isHead: true,
     };
-    console.log("technicalGroups: ", technicalGroups);
-    console.log("nonTechnicalGroups: ", nonTechnicalGroups);
+    logger.info("technicalGroups: ", technicalGroups);
+    logger.info("nonTechnicalGroups: ", nonTechnicalGroups);
     Promise.all([
       Group.insertMany(technicalGroups),
       Group.insertMany(nonTechnicalGroups),
@@ -80,7 +81,7 @@ export const createEvent = async (req, res) => {
 
     res.status(201).json({ message: "event created", data: newEvent });
   } catch (error) {
-    console.log("Create event controller error" + error);
+    logger.error("Create event controller error" + error);
     return res.status(400).json({ error: error.message });
   }
 };
@@ -96,7 +97,7 @@ export const updateEvent = async (req, res) => {
         error: "unautorized you are not able to edit the event",
       });
     }
-    console.log(event.fileId);
+    logger.info(event.fileId);
     if (req.file) {
       if (req.file && event.fileId) {
         try {
@@ -133,16 +134,16 @@ export const updateEvent = async (req, res) => {
       message: "Event updated successfully",
     });
   } catch (error) {
-    console.log("update event controller error" + error.message);
+    logger.error("update event controller error" + error.message);
     res.status(400).json({ error: error.message });
   }
 };
 export const deleteEvent = async (req, res) => {
   try {
-    console.log(req.user);
-    console.log(req.params.id);
+    logger.info(req.user);
+    logger.info(req.params.id);
     const event = await Event.findById(req.params.id).populate("userId");
-    console.log(event);
+    logger.info(event);
     if (event == null) {
       return res.status(404).json({ message: "Event not found!" });
     }
@@ -154,9 +155,9 @@ export const deleteEvent = async (req, res) => {
     }
     const result = storage
       .deleteFile(process.env.APPWRITE_BUCKET_ID, event.fileId)
-      .then((data) => console.log(data));
+      .then((data) => logger.info(data));
 
-    console.log(event._id);
+    logger.info(event._id);
     await Promise.all([
       event.deleteOne(),
       Group.deleteMany({ eventId: event._id }),
@@ -166,7 +167,7 @@ export const deleteEvent = async (req, res) => {
 
     res.status(200).json({ message: "Event deleted successfully" });
   } catch (error) {
-    console.log("delete event controller error" + error);
+    logger.error("delete event controller error" + error);
     res.status(400).json({ error: error.message });
   }
 };
@@ -183,7 +184,7 @@ export const getEvents = async (req, res) => {
     }
     res.json({ events: event });
   } catch (error) {
-    console.log("getEvents  controller error" + error.message);
+    logger.error("getEvents  controller error" + error.message);
     res.status(400).json({ error: error.message });
   }
 };
@@ -200,7 +201,7 @@ export const getEventById = async (req, res) => {
 
     res.json({ event: event });
   } catch (error) {
-    console.log("getEventById  controller error" + error.message);
+    logger.error("getEventById  controller error" + error.message);
     res.status(400).json({ error: error.message });
   }
 };

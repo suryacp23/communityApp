@@ -3,7 +3,7 @@ import crypto from "crypto";
 import dotenv from "dotenv";
 import Payment from "../models/paymentModel.js";
 import Group from "../models/groupModel.js";
-import { error } from "console";
+import logger from '../utils/logger.js'
 dotenv.config();
 
 const razorpayInstance = new Razorpay({
@@ -19,10 +19,10 @@ export const createOrder = async (req, res) => {
       receipt: "receipt#1",
       payment_capture: 1,
     };
-    console.log("hit");
     const order = await razorpayInstance.orders.create(options);
     res.status(200).json(order);
   } catch (error) {
+    logger.error("order creating",error)
     res.status(500).json({ error: error.message });
   }
 };
@@ -36,6 +36,7 @@ export const capturePayment = async (req, res) => {
     );
     res.status(200).json(response);
   } catch (error) {
+    logger.error("capture payment",error)
     res.status(500).json({ error: error.message });
   }
 };
@@ -71,6 +72,7 @@ export const verifyPayment = async (req, res) => {
       res.status(200).json({ message: "Payment verified successfully" });
     }
   } catch (error) {
+    logger.error("verify payment",error)
     res.status(400).json({ message: "Payment verification failed", error });
   }
 };
@@ -89,6 +91,6 @@ export const verifyEventApplied = async (req, res) => {
     const groupIds = events.map((event) => event.groupId);
     res.status(200).json({ groupIds });
   } catch (error) {
-    console.log(error);
+    logger.error(error);
   }
 };
