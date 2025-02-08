@@ -14,15 +14,15 @@ const RequestComponent = () => {
     queryFn: getGroupJoinRequests,
   });
   useEffect(() => {
-    socket.emit("register_admin", user._id);
+    socket?.emit("register_admin", user._id);
 
-    socket.on("new_request", (newRequest) => {
+    socket?.on("new_request", (newRequest) => {
       console.log("New request received:", newRequest);
       refetch();
     });
 
     return () => {
-      socket.off("new_request");
+      socket?.off("new_request");
     };
   }, []);
 
@@ -45,7 +45,15 @@ const RequestComponent = () => {
             <th className="px-4 py-2">Action</th>
           </tr>
         </thead>
+
         <tbody>
+          {data?.length === 0 && (
+            <tr>
+              <td className="text-center" colSpan={6} height={50}>
+                no requests found
+              </td>
+            </tr>
+          )}
           {data?.map((row) => (
             <TableRow key={row._id} data={row} />
           ))}

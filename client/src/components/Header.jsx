@@ -1,21 +1,40 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import UserMenu from "./AvatarMenu";
-import { useMutation } from "@tanstack/react-query";
-import { signout } from "../services/api";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { fetchRoles, signout } from "../services/api";
 
 const Header = () => {
   const location = useLocation();
   const [hovered, setHovered] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const { user } = useAuth();
+  const [role, setRole] = useState("member");
+
+  const { data } = useQuery({
+    queryKey: ["role", user?.id],
+    queryFn: fetchRoles,
+    enabled: !!user,
+  });
+
+  useEffect(() => {
+    if (data) {
+      setRole(data);
+    }
+  }, [data]);
+
   const navLinks = [
     { label: "Events", href: "/events" },
     { label: "Groups", href: "/groups" },
     { label: "Create Events", href: "/create-events" },
-    { label: "Dashboard", href: "/dashboard" },
   ];
+
+  if (role?.host) {
+    navLinks.push({ label: "Dashboard", href: "/dashboard" });
+  } else if (role?.moderator) {
+    navLinks.push({ label: "Request", href: "/request" });
+  }
   const navigate = useNavigate();
 
   const { mutate, isPending } = useMutation({

@@ -11,6 +11,8 @@ import Dashboard from "./screen/Dashboard";
 import CreateEvents from "./screen/CreateEvents";
 import PaymentPage from "./screen/PaymentPage";
 import EditEvents from "./screen/EditEvents";
+import RequestComponent from "./components/RequestComponent";
+import Request from "./screen/Request";
 
 const App = () => {
   return (
@@ -24,6 +26,7 @@ const App = () => {
           <Route path="/create-events" element={<CreateEvents />} />
           <Route path="/updateEvent/:eventId" element={<EditEvents />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/request" element={<Request />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route

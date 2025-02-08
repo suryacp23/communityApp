@@ -127,3 +127,5 @@ export const updateEvent = (formData, eventId) =>
     .put(`/api/events/${eventId}`, formData, { withCredentials: true })
     .then((res) => res.data);
 
+export const fetchRoles = () =>
+  axios.get("/api/auth/check-role").then((res) => res.data);

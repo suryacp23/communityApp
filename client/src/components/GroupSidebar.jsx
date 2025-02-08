@@ -29,7 +29,8 @@ const GroupSidebar = ({
     <div
       className={`lg:w-1/3 w-full bg-zinc-900 z-10 text-white p-4 h-full overflow-y-auto rounded-lg fixed top-0 left-0 transition-transform transform ${
         isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-      } lg:translate-x-0 lg:relative lg:block`}>
+      } lg:translate-x-0 lg:relative lg:block`}
+    >
       {isPending ? (
         <div className="h-full w-full flex justify-center items-center">
           <Spinner size="md" />
@@ -53,7 +54,11 @@ const GroupSidebar = ({
           </button>
         </div>
       </div>
-
+      {data.length === 0 && (
+        <div className=" h-1/2 flex justify-center items-end">
+          <h1>join some event and get started</h1>
+        </div>
+      )}
       {data?.map((event) => (
         <div key={event._id} className="mb-2">
           {/* Event Name (Folder) */}
@@ -61,7 +66,8 @@ const GroupSidebar = ({
             className={`cursor-pointer flex items-center rounded-lg p-2 hover:bg-gray-600 ${
               selectedEvent === event._id ? "bg-purple-700" : "bg-zinc-600"
             }`}
-            onClick={() => toggleEvent(event._id)}>
+            onClick={() => toggleEvent(event._id)}
+          >
             <span className="mr-2">
               {openEvent === event._id ? <FaChevronDown /> : <FaChevronRight />}
             </span>
@@ -83,7 +89,8 @@ const GroupSidebar = ({
                     setSelectedGroup(group?._id);
                     setSelectedEvent(event?._id);
                     toggleSidebar();
-                  }}>
+                  }}
+                >
                   {group.isHead ? (
                     <p className="flex gap-2">
                       <span>{group?.name}</span>

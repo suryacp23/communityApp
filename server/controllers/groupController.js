@@ -52,12 +52,21 @@ export const addModerator = async (req, res) => {
     if (group.moderators.includes(user._id)) {
       return res.status(400).json({ message: "User is already a moderator" });
     }
+    const headGroup = await Group.findOne({
+      eventId: group.eventId,
+      isHead: true,
+    });
 
-    // Add moderator & ensure they are a member using `$addToSet` to avoid duplicates
-    await Group.updateOne(
-      { _id: groupId },
-      { $addToSet: { moderators: user._id, members: user._id } }
-    );
+    await Promise.all([
+      Group.updateOne(
+        { _id: groupId },
+        { $addToSet: { moderators: user._id, members: user._id } }
+      ),
+      Group.updateOne(
+        { _id: headGroup._id },
+        { $addToSet: { members: user._id } }
+      ),
+    ]);
 
     return res.status(200).json({ message: "Moderator added successfully" });
   } catch (error) {
