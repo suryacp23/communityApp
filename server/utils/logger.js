@@ -5,11 +5,15 @@ import fs from "fs";
 
 const { combine, timestamp, printf } = format;
 
+const logDir =
+	process.env.NODE_ENV === "production" ? "/tmp/logs" : path.join(process.cwd(), "logs");
+
 // Ensure the logs directory exists
-const logDir = path.join(process.cwd(), "logs");
+// const logDir = path.join(process.cwd(), "logs");
 if (!fs.existsSync(logDir)) {
 	fs.mkdirSync(logDir);
 }
+// const logFilePath = path.join(logDir, "server.log");
 
 const consoleFormat = printf(({ level, message, timestamp }) => {
 	// Regex Patterns
