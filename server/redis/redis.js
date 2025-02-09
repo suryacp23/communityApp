@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 export const redisClient = Redis.createClient({
-	url: process.env.REDIS_URL,
+	url: process.env.NODE_ENV === "production" ? process.env.REDIS_URL : "redis://localhost:6379",
 });
 // Redis URL from environment variable (Internal Redis URL on Render)
 /* const redisUrl = "localhost";
