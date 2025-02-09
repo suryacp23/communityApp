@@ -170,15 +170,26 @@ export const deleteEvent = async (req, res) => {
 };
 export const getEvents = async (req, res) => {
 	try {
-		const { userId } = req.query;
-		const event = await Event.find(userId ? { userId } : {})
-			.populate("userId", ["-password"])
-			.sort({ createdAt: -1 });
-
-		if (event == null) {
+		const page = parseInt(req.query.page) || 1;
+		const limit = parseInt(req.query.limit) || 10;
+		const skip = (page - 1) * limit;
+		const userId = req.query.userId;
+		const events = await Event.find(userId ? { userId } : {})
+			.populate("userId", "-password")
+			.sort({ createdAt: -1 })
+			.skip(skip)
+			.limit(limit);
+		const totalEvents = await Event.countDocuments();
+		if (events == null || totalEvents === 0) {
 			return res.status(200).json({ message: " No event Found" });
 		}
-		res.json({ events: event });
+		res.json({
+			events,
+			success: true,
+			page,
+			totalEvents,
+			totalPages: Math.ceil(totalEvents / limit),
+		});
 	} catch (error) {
 		logger.error("getEvents  controller error" + error.message);
 		res.status(400).json({ error: error.message });
