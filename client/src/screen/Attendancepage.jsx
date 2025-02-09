@@ -45,7 +45,7 @@ const Attendancepage = () => {
 	const startScanner = () => {
 		if (html5QrCode.current) {
 			try {
-				console.log("Starting QR code scanner...");
+				
 				html5QrCode.current.start(
 					{ facingMode: "user" },
 					config,

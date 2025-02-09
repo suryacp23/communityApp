@@ -21,9 +21,7 @@ const CommentForm = ({ eventId }) => {
       queryClient.invalidateQueries(["comments", eventId]);
       setCommentText("");
     },
-    onError: (error) => {
-      console.error("Error adding comment:", error);
-    },
+   
   });
 
   // Handle Comment Submission

@@ -34,7 +34,7 @@ const Profile = () => {
 		},
 	});
 	const navigate = useNavigate();
-	console.log(eventData);
+
 	const handleProfileImageUpload = (e) => {
 		e.preventDefault();
 		const file = e.target.files[0];

@@ -23,9 +23,7 @@ export default function UserMenu() {
       localStorage.removeItem("user");
       navigate("/login");
     },
-    onError: (error) => {
-      console.error("Logout failed:", error);
-    },
+   
   });
   const handleLogout = () => {
     mutate(null, {
@@ -33,9 +31,7 @@ export default function UserMenu() {
         localStorage.removeItem("token");
         navigate("/login");
       },
-      onError: (error) => {
-        console.error("Logout failed:", error);
-      },
+      
     });
   };
 

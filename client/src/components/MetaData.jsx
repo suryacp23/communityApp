@@ -45,6 +45,7 @@ const Metadata = ({ event }) => {
           {event?.membersCount}
         </p>
       </div>
+      
     </div>
   );
 };

@@ -11,7 +11,7 @@ import Spinner from "../components/Spinner";
 import { FaBars } from "react-icons/fa";
 
 const GroupChatSection = ({ selectedGroup, toggleSidebar }) => {
-  console.log(selectedGroup);
+  
   const [conversation, setConversation] = useState([]);
   const [input, setInput] = useState("");
   const { socket } = useSocketContext();
@@ -21,14 +21,14 @@ const GroupChatSection = ({ selectedGroup, toggleSidebar }) => {
   const scrollRef = useRef(null);
 
   // Fetch Group Info
-  const { data: groupInfo, isPending } = useQuery({
+  const { data: groupInfo, } = useQuery({
     queryKey: ["getgroups", groupid],
     queryFn: () => getgroupInfo(groupid),
     enabled: !!groupid, // Only fetch if groupid exists
   });
-  console.log(groupInfo?.data);
+ 
   // Fetch Chat Messages
-  const { data: conversationData } = useQuery({
+  const { data: conversationData,isPending } = useQuery({
     queryKey: ["fetchChat", groupid],
     queryFn: () => fetchChat(groupid),
     enabled: !!groupid, // Only fetch if groupid exists
@@ -36,8 +36,7 @@ const GroupChatSection = ({ selectedGroup, toggleSidebar }) => {
       setConversation(data); // Update conversation when chat data is fetched
     },
   });
-  console.log(groupInfo);
-  // console.log(conversationData?.data);
+
   useEffect(() => {
     setConversation(conversationData?.data);
   }, [conversationData]);
@@ -180,6 +179,7 @@ const GroupChatSection = ({ selectedGroup, toggleSidebar }) => {
         <button
           type="submit"
           className="bg-purple-600 rounded-full flex items-center justify-center hover:bg-purple-800 text-white p-2  shadow-md transition-transform transform hover:scale-110">
+
           <VscSend size={20} />
         </button>
       </form>
