@@ -8,7 +8,7 @@ export default defineConfig({
 		proxy: {
 			// Proxy requests starting with '/api' to your backend server
 			"/api": {
-				target: "http://localhost:5000", // Your backend server URL
+				target: "https://community-app-git-backend-sri-haripriyans-projects.vercel.app/", // Your backend server URL
 				changeOrigin: true,
 				rewrite: (path) => path.replace(/^\/api/, ""), // Remove `/api` prefix when forwarding to the backend
 			},
