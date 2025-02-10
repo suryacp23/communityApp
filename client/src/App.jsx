@@ -22,7 +22,7 @@ const App = () => {
 					<Route path="/" element={<GetStarted />} />
 					<Route path="/events" element={<Events />} />
 					<Route path="/events/:eventId" element={<Event />} />
-					<Route path="/groups" element={<Group />} />
+					<Route path="/chats" element={<Group />} />
 					<Route path="/create-events" element={<CreateEvents />} />
 					<Route path="/updateEvent/:eventId" element={<EditEvents />} />
 					<Route path="/dashboard" element={<Dashboard />} />

@@ -44,7 +44,7 @@ const GroupDetails = ({ group }) => {
       });
 
       const data = await response.json();
-      console.log(data);
+
       setMods(data?.moderators);
       setAdmin(data?.admin);
       setMembers(data?.members);

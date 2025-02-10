@@ -45,7 +45,7 @@ const Attendancepage = () => {
 	const startScanner = () => {
 		if (html5QrCode.current) {
 			try {
-				console.log("Starting QR code scanner...");
+				
 				html5QrCode.current.start(
 					{ facingMode: "user" },
 					config,
@@ -139,19 +139,29 @@ const Attendancepage = () => {
 										key={i}
 									>
 										<td>{i + 1}</td>
-										<td className=" p-2">{applicant?.userName}</td>
+										<td className=" p-2">
+											{applicant?.userName}
+										</td>
 										<td>{applicant?.email}</td>
 										<td className="">
-											{applicant?.appliedTo.map((group) => (
-												<span key={group}>{group + " "}</span>
-											))}
+											{applicant?.appliedTo.map(
+												(group) => (
+													<span key={group}>
+														{group + " "}
+													</span>
+												)
+											)}
 										</td>
 										<td
 											className={`${
-												applicant?.isAttended ? "text-green-500" : "text-red-500"
+												applicant?.isAttended
+													? "text-green-500"
+													: "text-red-500"
 											}`}
 										>
-											{applicant?.isAttended ? "Present" : "Absent"}
+											{applicant?.isAttended
+												? "Present"
+												: "Absent"}
 										</td>
 									</tr>
 								))}

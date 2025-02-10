@@ -30,12 +30,7 @@ const Login = () => {
     e.preventDefault();
     mutate(
       { userName, password },
-      {
-        onSuccess: (data) => {
-          console.log("Login successful:", data);
-        },
-      }
-    );
+         );
 
     setuserName("");
     setPassword("");

@@ -57,7 +57,7 @@ const CreateEvents = () => {
 	};
 
 	const handleSubmit = (e) => {
-		console.log(formData);
+		
 		e.preventDefault();
 		if (!file) {
 			toast.info("Please upload the event poster!", { autoClose: 1500 });
@@ -99,14 +99,14 @@ const CreateEvents = () => {
 		data.append("technicalEvents", JSON.stringify(formData.technical));
 		data.append("nonTechnicalEvents", JSON.stringify(formData.nonTechnical));
 		for (var pair of data.entries()) {
-			console.log(pair[0] + ", " + pair[1]);
+			
 		}
 		mutate(data);
 	};
 	const { mutate, isPending } = useMutation({
 		mutationFn: (formData) => createEvent(formData),
 		onSuccess: (data) => {
-			console.log(data);
+		
 			toast.success(data?.message);
 			navigate("/events");
 		},
@@ -153,7 +153,8 @@ const CreateEvents = () => {
 	};
 	const nextStep = () => {
 		if (step < steps.length) setStep((prev) => prev + 1);
-		console.log(formData);
+		
+		
 	};
 	const BackButton = () => {
 		return (
@@ -193,7 +194,7 @@ const CreateEvents = () => {
 								>
 									{step > index + 1 ? <FaCheck /> : <Icon />}
 								</div>
-								<span className="text-sm sm:block hidden">{stepItem.label}</span>
+								<span className="text-sm sm:block hidden">{stepItem?.label}</span>
 							</div>
 						);
 					})}
@@ -214,7 +215,7 @@ const CreateEvents = () => {
 									<input
 										type="text"
 										className="w-full px-3 py-2 lg:py-3 border border-[#333333] rounded-md hover:border-[#7e7d7d] outline-none focus:border-[#4a90e2]  bg-transparent text-[#e0e0e0] placeholder-[#888888] duration-100"
-										value={formData.eventName}
+										value={formData?.eventName}
 										required
 										onChange={(e) => handleChange("eventName", e.target.value)}
 									/>
@@ -229,7 +230,7 @@ const CreateEvents = () => {
 								<div className="input-group">
 									<textarea
 										className="w-full px-3 py-2 border border-[#333333] hover:border-[#7e7d7d] rounded-md outline-none  focus:border-[#4a90e2] bg-[#222222] text-[#e0e0e0] placeholder-[#888888]  max-h-[80px]"
-										value={formData.description}
+										value={formData?.description}
 										required
 										onChange={(e) => handleChange("description", e.target.value)}
 									/>
@@ -248,7 +249,7 @@ const CreateEvents = () => {
 							/>
 							<div className="flex flex-col gap-1 sm:gap-2">
 								<DatePicker
-									selected={formData.eventDate}
+									selected={formData?.eventDate}
 									required
 									placeholderText="Event date"
 									className="px-3 py-2 lg:py-3 w-full z-20 bg-[#222222] hover:border-[#7e7d7d] text-[#e0e0e0] rounded-md cursor-pointer border border-[#333333] outline-none  focus:border-[#4a90e2]"
@@ -272,9 +273,9 @@ const CreateEvents = () => {
 										required
 										timeFormat="HH:mm "
 										dateFormat="HH:mm "
-										selected={formData.startTime}
+										selected={formData?.startTime}
 										onChange={(time) => {
-											console.log(time);
+										
 											handleChange("startTime", time);
 										}}
 									/>
@@ -291,9 +292,8 @@ const CreateEvents = () => {
 										required
 										timeFormat="HH:mm "
 										dateFormat="HH:mm "
-										selected={formData.endTime}
+										selected={formData?.endTime}
 										onChange={(time) => {
-											console.log(time);
 											handleChange("endTime", time);
 										}}
 									/>
@@ -325,7 +325,7 @@ const CreateEvents = () => {
 										<input
 											type="text"
 											placeholder="Enter event name"
-											value={formData.technicalInput}
+											value={formData?.technicalInput}
 											maxLength={20}
 											onChange={(e) => updateInput("technicalInput", e.target.value)}
 											className="p-2 md:px-5 w-[80%] text-[14px] h-10 border border-[#333333] hover:border-[#7e7d7d]  rounded-md focus:outline-none  focus:border-[#4a90e2] bg-[#222222] text-[#e0e0e0] placeholder-[#888888]"
@@ -336,7 +336,7 @@ const CreateEvents = () => {
 											<input
 												type="number"
 												className="p-2 md:px-5 text-[14px] w-full h-10 border border-[#333333] hover:border-[#7e7d7d]  rounded-md focus:outline-none   focus:border-[#4a90e2] bg-[#222222] text-[#e0e0e0] placeholder-[#888888]"
-												value={formData.technicalLimitInput}
+												value={formData?.technicalLimitInput}
 												onChange={(e) =>
 													setFormData({
 														...formData,
@@ -356,8 +356,8 @@ const CreateEvents = () => {
 											onClick={() =>
 												addEvent(
 													"technical",
-													formData.technicalInput,
-													formData.technicalLimitInput
+													formData?.technicalInput,
+													formData?.technicalLimitInput
 												)
 											}
 										>
@@ -365,7 +365,7 @@ const CreateEvents = () => {
 										</button>
 									</div>
 									<div className=" grid grid-cols-1 md:grid-cols-2 gap-2 mt-3">
-										{formData.technical.map((event, index) => (
+										{formData?.technical.map((event, index) => (
 											<div
 												key={index}
 												className="flex bg-zinc-500 gap-2 border outline-none border-gray-600 pl-3 pr-2 py-1 rounded-md"
@@ -373,11 +373,11 @@ const CreateEvents = () => {
 												<div className="flex justify-between flex-grow text-[#f0f0f0] text-[14px]">
 													<p>
 														<span className="text-black font-semibold">Name: </span>{" "}
-														{event.name}
+														{event?.name}
 													</p>
 													<p>
 														<span className="text-black font-semibold">Limit: </span>{" "}
-														{event.limit}
+														{event?.limit}
 													</p>
 												</div>
 												<button
@@ -400,7 +400,7 @@ const CreateEvents = () => {
 										<input
 											type="text"
 											placeholder="Enter event name"
-											value={formData.nonTechnicalInput}
+											value={formData?.nonTechnicalInput}
 											maxLength={20}
 											onChange={(e) => updateInput("nonTechnicalInput", e.target.value)}
 											className="p-2 md:px-5 w-[80%] text-[14px] h-10 border border-[#333333] hover:border-[#7e7d7d]  rounded-md focus:outline-none  focus:border-[#4a90e2] bg-[#222222] text-[#e0e0e0] placeholder-[#888888]"
@@ -411,7 +411,7 @@ const CreateEvents = () => {
 											<input
 												type="number"
 												className="p-2 md:px-5 text-[14px] w-full h-10 border border-[#333333] hover:border-[#7e7d7d]  rounded-md focus:outline-none   focus:border-[#4a90e2] bg-[#222222] text-[#e0e0e0] placeholder-[#888888]"
-												value={formData.nonTechnicalLimitInput}
+												value={formData?.nonTechnicalLimitInput}
 												onChange={(e) =>
 													setFormData({
 														...formData,
@@ -431,8 +431,8 @@ const CreateEvents = () => {
 											onClick={() =>
 												addEvent(
 													"nonTechnical",
-													formData.nonTechnicalInput,
-													formData.nonTechnicalLimitInput
+													formData?.nonTechnicalInput,
+													formData?.nonTechnicalLimitInput
 												)
 											}
 										>
@@ -448,11 +448,11 @@ const CreateEvents = () => {
 												<div className="flex justify-between flex-grow text-[#f0f0f0] text-[14px]">
 													<p>
 														<span className="text-black font-semibold">Name: </span>{" "}
-														{event.name}
+														{event?.name}
 													</p>
 													<p>
 														<span className="text-black font-semibold">Limit: </span>{" "}
-														{event.limit}
+														{event?.limit}
 													</p>
 												</div>
 												<button
@@ -495,7 +495,7 @@ const CreateEvents = () => {
 										type="checkbox"
 										className="sr-only peer"
 										id="refreshment"
-										checked={formData.refreshment}
+										checked={formData?.refreshments}
 										onChange={(e) => handleChangefoods("refreshments", e.target.value)}
 									/>
 									<div className="w-11 h-6 bg-gray-300 rounded-full peer peer-checked:bg-blue-600 after:absolute after:top-1 after:left-1 after:bg-white after:border after:border-gray-300 after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:after:translate-x-5"></div>
@@ -507,7 +507,7 @@ const CreateEvents = () => {
 										type="checkbox"
 										className="sr-only peer"
 										id="Swags"
-										checked={formData.swags}
+										checked={formData?.swags}
 										onChange={(e) => handleChangefoods("swags", e.target.value)}
 									/>
 									<div className="w-11 h-6 bg-gray-300 rounded-full peer peer-checked:bg-blue-600 after:absolute after:top-1 after:left-1 after:bg-white after:border after:border-gray-300 after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:after:translate-x-5"></div>
@@ -521,7 +521,7 @@ const CreateEvents = () => {
 										type="checkbox"
 										className="sr-only peer"
 										id="paid"
-										checked={formData.paid}
+										checked={formData?.paid}
 										onChange={(e) => handleChangefoods("paid", e.target.value)}
 									/>
 									<div className="w-11 h-6 bg-gray-300 rounded-full peer peer-checked:bg-blue-600 after:absolute after:top-1 after:left-1 after:bg-white after:border after:border-gray-300 after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:after:translate-x-5"></div>
@@ -537,7 +537,7 @@ const CreateEvents = () => {
 											type="number"
 											name="amount"
 											id="amount"
-											value={formData.amount}
+											value={formData?.amount}
 											className=" w-1/2 sm:w-1/3 p-2  border border-[#333333] rounded-md outline-none focus:ring-1 focus:ring-[#4a90e2] bg-[#222222] text-[#e0e0e0] placeholder-[#888888] "
 											placeholder="Enter the amount"
 											required

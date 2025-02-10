@@ -20,8 +20,7 @@ const RequestButton = () => {
     queryFn: () => getGroupByEventId(eventId),
   });
   const handleChange = (e) => {
-    console.log(e.target.value);
-    setGroupId(e.target.value);
+        setGroupId(e.target.value);
   };
   const { mutate, isPending } = useMutation({
     mutationFn: ({ groupId, eventId }) => request({ groupId, eventId }),
@@ -30,8 +29,7 @@ const RequestButton = () => {
     },
     onSuccess: (data) => {
       toast(data?.data?.message);
-      console.log(data);
-    },
+          },
   });
   const handleSubmit = (e) => {
     e.preventDefault();

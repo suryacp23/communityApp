@@ -13,9 +13,9 @@ const Requests = () => {
     queryKey: ["requests", groupId],
     queryFn: () => getGroupJoinRequests(groupId),
     enabled: !!groupId,
-    onError: (error) => console.error("Error fetching requests:", error),
+   
   });
-  console.log(requests);
+  
 
   return (
     <div className="relative h-[88vh] overflow-y-scroll">

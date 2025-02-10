@@ -26,7 +26,7 @@ const Header = () => {
 
   const navLinks = [
     { label: "Events", href: "/events" },
-    { label: "Groups", href: "/groups" },
+    { label: "Chats", href: "/chats" },
     { label: "Create Events", href: "/create-events" },
   ];
 
@@ -43,9 +43,7 @@ const Header = () => {
       localStorage.removeItem("user");
       navigate("/login");
     },
-    onError: (error) => {
-      console.error("Logout failed:", error);
-    },
+  
   });
   const handleLogout = () => {
     mutate(null, {
@@ -53,11 +51,9 @@ const Header = () => {
         localStorage.removeItem("token");
         navigate("/login");
       },
-      onError: (error) => {
-        console.error("Logout failed:", error);
-      },
-    });
+      });
   };
+  
 
   return (
     <header className="p-5 z-10 max-w-[1440px] mx-auto text-lavender_bush">
@@ -72,9 +68,10 @@ const Header = () => {
               key={item?.label}
               onMouseEnter={() => setHovered(item.href)}
               onMouseLeave={() => setHovered(null)}
-              className="relative"
-            >
-              <Link to={item?.href} className={` text-lg text-white capitalize`}>
+              className="relative">
+              <Link
+                to={item?.href}
+                className={` text-lg text-white capitalize`}>
                 {item?.label}
               </Link>
               <span
@@ -82,8 +79,9 @@ const Header = () => {
                   location?.pathname === item?.href || hovered === item?.href
                     ? "w-full"
                     : "w-0"
-                } ${location?.pathname === item?.href ? "bg-white" : ""}`}
-              ></span>
+                } ${
+                  location?.pathname === item?.href ? "bg-white" : ""
+                }`}></span>
             </li>
           ))}
           {user ? (
@@ -92,16 +90,14 @@ const Header = () => {
             <li
               onMouseEnter={() => setHovered("/login")}
               onMouseLeave={() => setHovered(null)}
-              className="relative"
-            >
+              className="relative">
               <Link to={"/login"} className="text-lg text-white capitalize">
                 Login
               </Link>
               <span
                 className={`absolute left-0 bottom-[-8px] h-[5px] rounded-full bg-purple-500 transition-all duration-300 ${
                   hovered === "/login" ? "w-full" : "w-0"
-                }`}
-              ></span>
+                }`}></span>
             </li>
           )}
         </ul>
@@ -109,8 +105,7 @@ const Header = () => {
         <div className="hidden max-lg:block">
           <button
             className="text-white text-lg"
-            onClick={() => setMenuOpen(!menuOpen)}
-          >
+            onClick={() => setMenuOpen(!menuOpen)}>
             ☰
           </button>
         </div>
@@ -119,12 +114,10 @@ const Header = () => {
       <div
         className={`fixed top-0 left-0 z-50 h-full w-full bg-[#1f1f1f] text-white p-5 transform transition-transform duration-300 ${
           menuOpen ? "translate-x-0" : "-translate-x-full"
-        }`}
-      >
+        }`}>
         <button
           className="text-lg font-bold absolute top-4 right-4"
-          onClick={() => setMenuOpen(false)}
-        >
+          onClick={() => setMenuOpen(false)}>
           ✕
         </button>
         <ul className="flex flex-col items-center justify-evenly h-full gap-6">
@@ -147,8 +140,7 @@ const Header = () => {
             <li className="w-full">
               <button
                 className="text-red-50 bg-red-950 p-2 w-full text-lg"
-                onClick={handleLogout}
-              >
+                onClick={handleLogout}>
                 sign out
               </button>
             </li>
@@ -156,8 +148,7 @@ const Header = () => {
             <li
               onMouseEnter={() => setHovered("/login")}
               onMouseLeave={() => setHovered(null)}
-              className="relative"
-            >
+              className="relative">
               <Link to={"/login"} className="text-lg text-white capitalize">
                 Login
               </Link>

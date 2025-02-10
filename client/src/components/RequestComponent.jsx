@@ -18,7 +18,6 @@ const RequestComponent = () => {
     socket?.emit("register_admin", user._id);
 
     socket?.on("new_request", (newRequest) => {
-      console.log("New request received:", newRequest);
       refetch();
     });
 

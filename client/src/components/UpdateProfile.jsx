@@ -26,14 +26,15 @@ const UpdateProfile = ({ user, close }) => {
 				toast.success(data?.message);
 				close();
 			},
-			onError: (error) => console.error("Update failed:", error),
+			
 		});
 	};
 	const handleChange = (e) => {
 		const { name, value } = e.target;
 		setProfile((prev) => ({ ...prev, [name]: value }));
 	};
-	console.log(Profile);
+
+	
 	return (
 		<div
 			id="profileBox"

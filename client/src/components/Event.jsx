@@ -34,9 +34,7 @@ const Event = ({ event, toDisplay }) => {
 			await queryClient.cancelQueries(["event", event?._id]);
 		},
 		onError: (error) => {
-			console.error("Like toggle failed:", error);
-
-			// Rollback on failure
+						// Rollback on failure
 			setIsLiked((prev) => !prev);
 			setLikeCount((prev) => (isLiked ? prev + 1 : prev - 1));
 		},
