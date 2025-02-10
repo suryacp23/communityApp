@@ -11,24 +11,24 @@ import Spinner from "../components/Spinner";
 import { FaBars } from "react-icons/fa";
 
 const GroupChatSection = ({ selectedGroup, toggleSidebar }) => {
-  
   const [conversation, setConversation] = useState([]);
   const [input, setInput] = useState("");
   const { socket } = useSocketContext();
   const groupid = selectedGroup;
   const { user } = useAuth();
+  const [pending, setPending] = useState(false);
 
   const scrollRef = useRef(null);
 
   // Fetch Group Info
-  const { data: groupInfo, } = useQuery({
+  const { data: groupInfo } = useQuery({
     queryKey: ["getgroups", groupid],
     queryFn: () => getgroupInfo(groupid),
     enabled: !!groupid, // Only fetch if groupid exists
   });
- 
+
   // Fetch Chat Messages
-  const { data: conversationData,isPending } = useQuery({
+  const { data: conversationData, isPending } = useQuery({
     queryKey: ["fetchChat", groupid],
     queryFn: () => fetchChat(groupid),
     enabled: !!groupid, // Only fetch if groupid exists
@@ -61,7 +61,7 @@ const GroupChatSection = ({ selectedGroup, toggleSidebar }) => {
   const handleSend = async (e) => {
     e.preventDefault();
     if (!input.trim()) return;
-
+    setPending(true);
     const res = await fetch("/api/message/send", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -72,6 +72,7 @@ const GroupChatSection = ({ selectedGroup, toggleSidebar }) => {
     const data = await res.json();
     socket.emit("newMessage", data);
     setInput("");
+    setPending(false);
   };
 
   return (
@@ -179,8 +180,7 @@ const GroupChatSection = ({ selectedGroup, toggleSidebar }) => {
         <button
           type="submit"
           className="bg-purple-600 rounded-full flex items-center justify-center hover:bg-purple-800 text-white p-2  shadow-md transition-transform transform hover:scale-110">
-
-          <VscSend size={20} />
+          {pending ? <Spinner size="sm" /> : <VscSend size={20} />}
         </button>
       </form>
     </div>

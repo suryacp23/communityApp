@@ -21,7 +21,7 @@ const EventList = () => {
 
 	if (isLoading || isError) {
 		return (
-			<div className="h-screen flex justify-center items-center backdrop-blur-3xl">
+			<div className="h-[90vh] flex justify-center items-center backdrop-blur-3xl">
 				<Spinner />
 			</div>
 		);

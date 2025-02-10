@@ -48,7 +48,7 @@ const CommentForm = ({ eventId }) => {
         onChange={(e) => setCommentText(e.target.value)}
         placeholder="Write your comment here..."
         rows="3"
-        className="w-full p-2 border border-zinc-500 text-zinc-100 bg-zinc-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4"
+        className="w-full p-2 border border-zinc-500 text-zinc-100 bg-zinc-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4 max-h-[90px] min-h-[90px] "
       />
       <button
         type="submit"

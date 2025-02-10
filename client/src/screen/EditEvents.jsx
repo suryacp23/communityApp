@@ -42,12 +42,15 @@ const EditEvents = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+    
   };
 
   // Handle checkbox changes
-  const handleCheckboxChange = (e) => {
-    const { name, checked } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: checked }));
+  const handleCheckboxChange = (name, value) => {
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value === "on" ? !prev[name] : value,
+    }));
   };
 
   // Handle file change
@@ -65,11 +68,11 @@ const EditEvents = () => {
       updatedFormData.file = file;
     }
     const data = new FormData();
-    data.append("title", formData.title);
-    data.append("description", formData.description);
+    data.append("title", formData?.title);
+    data.append("description", formData?.description);
     data.append("file", file);
-    data.append("swags", formData.swags);
-    data.append("refreshments", formData.refreshments);
+    data.append("swags", formData?.swags);
+    data.append("refreshments", formData?.refreshments);
     mutate(data);
     navigate("/events");
   };
@@ -117,39 +120,46 @@ const EditEvents = () => {
 
             <div className="flex flex-col gap-4 text-sm text-[#e0e0e0]">
               <h2 className="text-lg font-semibold">Refreshments And Swags</h2>
-              <div className="p-3 border bg-[#222222]">
-                <div className="h-1/5 w-4/5 md:w-1/3 justify-between flex items-center p-1">
-                  <label htmlFor="refreshments" className="flex text-right">
-                    Refreshments
-                  </label>
+              <div className="p-3 border bg-[#222222] h-full w-full flex flex-col gap-2">
+                {/* Refreshments Toggle Switch */}
+                <label className="relative inline-flex items-center cursor-pointer">
                   <input
                     type="checkbox"
+                    className="sr-only peer"
                     id="refreshments"
-                    name="refreshments"
                     checked={formData?.refreshments}
-                    onChange={handleCheckboxChange}
+                    onChange={(e) =>
+                      handleCheckboxChange("refreshments", e.target.checked)
+                    }
                   />
-                </div>
-                <div className="h-1/5 w-2/5 md:w-1/3 flex justify-between items-center p-1">
-                  <label htmlFor="Swags" className="flex">
-                    Swags
-                  </label>
+                  <div className="w-11 h-6 bg-gray-300 rounded-full peer peer-checked:bg-blue-600 after:absolute after:top-1 after:left-1 after:bg-white after:border after:border-gray-300 after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:after:translate-x-5"></div>
+                  <span className="ml-3 text-sm font-medium text-white">
+                    Refreshments
+                  </span>
+                </label>
+
+                {/* Swags Toggle Switch */}
+                <label className="relative inline-flex items-center cursor-pointer">
                   <input
                     type="checkbox"
-                    id="Swags"
-                    name="swags"
-                    className="border rounded-md"
+                    className="sr-only peer"
+                    id="swags"
                     checked={formData?.swags}
-                    onChange={handleCheckboxChange}
+                    onChange={(e) =>
+                      handleCheckboxChange("swags", e.target.checked)
+                    }
                   />
-                </div>
+                  <div className="w-11 h-6 bg-gray-300 rounded-full peer peer-checked:bg-blue-600 after:absolute after:top-1 after:left-1 after:bg-white after:border after:border-gray-300 after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:after:translate-x-5"></div>
+                  <span className="ml-3 text-sm font-medium text-white">
+                    Swags
+                  </span>
+                </label>
               </div>
 
               <div className="flex flex-col gap-4">
                 <button
                   className="w-full bg-blue-500 text-white p-2 rounded-md"
-                  disabled={isLoading}
-                >
+                  disabled={isLoading}>
                   Submit ✅
                 </button>
               </div>
