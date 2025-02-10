@@ -13,7 +13,7 @@ const tabs = [
 ];
 
 export default function Dashboard() {
-	const [activeTab, setActiveTab] = useState(tabs[1].path);
+	const [activeTab, setActiveTab] = useState(tabs[0].path);
 	const navigate = useNavigate();
 	return (
 		<div className="w-full mx-auto">

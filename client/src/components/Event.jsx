@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { updateLike } from "../services/api";
 import { useAuth } from "../hooks/useAuth";
+
 import Avatar from "./Avatar";
 import { FaHeart } from "react-icons/fa";
 

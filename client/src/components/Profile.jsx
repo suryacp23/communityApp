@@ -7,62 +7,67 @@ import { TiCameraOutline } from "react-icons/ti";
 import { IoIosRocket } from "react-icons/io";
 import { useAuth } from "../hooks/useAuth";
 import UpdateProfile from "./UpdateProfile.jsx";
+import { FcLike } from "react-icons/fc";
 import { fetchUserEvents, getPanelData, uploadImage } from "../services/api.js";
 import { getRandomColor } from "../utils/color.js";
 import Avatar from "./Avatar.jsx";
 import Event from "./Event.jsx";
+import { formatTimestamp } from "../utils/time.js";
 const Profile = () => {
-	const [isOpen, setIsOpen] = useState(false);
-	const { user, setUser } = useAuth();
-	const fileRef = useRef(null);
-	const { data, isLoading, isError, error } = useQuery({
-		queryKey: ["profile-data"],
-		queryFn: () => getPanelData(),
-	});
-	const { data: eventData } = useQuery({
-		queryKey: ["getEvents"],
-		queryFn: () => fetchUserEvents(user._id),
-	});
-	const { mutate, isPending: isUploadRunning } = useMutation({
-		mutationFn: uploadImage,
-		onSuccess: (data) => {
-			setUser(data?.user);
-			toast.success(data?.message);
-		},
-		onError: (error) => {
-			toast.error(error);
-		},
-	});
-	const navigate = useNavigate();
+  const [isOpen, setIsOpen] = useState(false);
+  const { user, setUser } = useAuth();
+  const fileRef = useRef(null);
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: ["profile-data"],
+    queryFn: () => getPanelData(),
+  });
+  const { data: eventData } = useQuery({
+    queryKey: ["getEvents"],
+    queryFn: () => fetchUserEvents(user._id),
+  });
+  const { mutate, isPending: isUploadRunning } = useMutation({
+    mutationFn: uploadImage,
+    onSuccess: (data) => {
+      setUser(data?.user);
+      toast.success(data?.message);
+    },
+    onError: (error) => {
+      toast.error(error);
+    },
+  });
+  const navigate = useNavigate();
 
-	const handleProfileImageUpload = (e) => {
-		e.preventDefault();
-		const file = e.target.files[0];
-		setUser((user) => ({ ...user, profile_image_url: file }));
-		if (!file) return;
-		const formData = new FormData();
-		formData.append("image", file);
-		mutate(formData);
-	};
-	const handleClick = () => {
-		fileRef.current.click();
-	};
+  const handleProfileImageUpload = (e) => {
+    e.preventDefault();
+    const file = e.target.files[0];
+    setUser((user) => ({ ...user, profile_image_url: file }));
+    if (!file) return;
+    const formData = new FormData();
+    formData.append("image", file);
+    mutate(formData);
+  };
+  const handleClick = () => {
+    fileRef.current.click();
+  };
 
-	// if (isLoading || isUploadRunning) return <Spinner />;
-	if (isError) toast.error("Error fetching data");
+  // if (isLoading || isUploadRunning) return <Spinner />;
+  if (isError) toast.error("Error fetching data");
 
-	const color = getRandomColor(user.userName);
+  const color = getRandomColor(user.userName);
 
-	return (
-		<div className="p-2  font-roboto  mx-auto select-none">
-			<section className="  flex flex-col sm:flex-row gap-2 ">
-				<div className=" sm:w-[300px] h-[250px] rounded-md flex flex-col justify-around text-center relative p-4 bg-slate-800">
-					<div
-						title="upload"
-						onClick={handleClick}
-						className={`flex relative cursor-pointer transition-opacity duration-300 group justify-center uppercase  items-center rounded-full  border-2 mx-auto`}
-					>
-						<Avatar size={"xl"} imageUrl={user?.profile_image_url} name={user?.userName} />
+  return (
+    <div className="p-2  font-roboto  mx-auto select-none">
+      <section className="  flex flex-col sm:flex-row gap-2 ">
+        <div className=" sm:w-[300px] h-[250px] rounded-md flex flex-col justify-around text-center relative p-4 bg-slate-800">
+          <div
+            title="upload"
+            onClick={handleClick}
+            className={`flex relative cursor-pointer transition-opacity duration-300 group justify-center uppercase  items-center rounded-full  border-2 mx-auto`}>
+            <Avatar
+              size={"xl"}
+              imageUrl={user?.profile_image_url}
+              name={user?.userName}
+            />
 
             <div className="absolute inset-0 cursor-pointer bg-black bg-opacity-50 flex items-center justify-center rounded-full opacity-0 group-hover:opacity-100 ">
               <TiCameraOutline className="text-white w-8 h-8" />
@@ -114,7 +119,7 @@ const Profile = () => {
               </p>
               <div className="flex justify-between items-center">
                 <div>
-                  <AiFillLike className="inline mx-1 text-red-600" />
+                  <FcLike size={20} className="inline mx-1 text-red-600" />
                   {event?.likes?.length}
                 </div>
                 <p className=" text-sm text-black">

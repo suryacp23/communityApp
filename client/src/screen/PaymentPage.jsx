@@ -17,6 +17,9 @@ const PaymentPage = () => {
   const [pending, setPending] = useState("idle");
   const [loading, setLoading] = useState(false);
   const [dropDown, setDropDown] = useState([]);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [mobile, setMobile] = useState("");
 
   const navigate = useNavigate();
 
@@ -56,8 +59,11 @@ const PaymentPage = () => {
     setSelectedEvent(subEventId);
     setSelectedEventName(event?.name || "");
   };
-
   const handlePayment = async () => {
+    if (!name || !email || !mobile.match(/^\d{10}$/)) {
+      alert("Please enter valid Name, Email & 10-digit Mobile Number.");
+      return;
+    }
     setPending("processing");
     setLoading(true);
     const isScriptLoaded = await loadRazorpayScript();
@@ -98,6 +104,11 @@ const PaymentPage = () => {
       name: "SyncEventUp",
       description: "Test Transaction",
       order_id: order.id,
+      prefill: {
+        name: name,
+        email: email,
+        contact: mobile,
+      },
       handler: async function (response) {
         const verifyResponse = await fetch("/api/payment/verify-payment", {
           method: "POST",
@@ -147,27 +158,52 @@ const PaymentPage = () => {
         className="cursor-pointer transition-all text-gray-400 ease-in-out hover:scale-150  rounded-full absolute left-4 top-4"
       />
 
-      <div className=" first-line:w-5/6 md:w-1/2 flex flex-col justify-around items-center bg-zinc-900 p-4 rounded-lg">
-        {dropDown?.length === 0 ? (
-          <h1 className="text-white">
-            You have applied for all sub-events in this event
-          </h1>
-        ) : (
-          <select
-            onChange={handleChange}
-            className="w-full p-2 rounded-md bg-white text-black"
-            value={selectedEvent}
-          >
-            <option value="" disabled>
-              Select an Event
-            </option>
-            {dropDown?.map((event, index) => (
-              <option key={index} value={event?._id}>
-                {event?.name}
+      <div className=" first-line:w-5/6 md:w-1/2 flex flex-col justify-around items-center bg-zinc-900 p-4 gap-2  rounded-lg">
+        <div className="w-full flex flex-col gap-2">
+          <input
+            type="text"
+            placeholder="Enter Your Name"
+            value={name}
+            className="p-2 w-full text-gray-700 rounded-lg bg-white "
+            onChange={(e) => setName(e.target.value)}
+          />
+          <input
+            type="email"
+            placeholder="Enter Your Email"
+            value={email}
+            className="p-2 w-full text-gray-700 rounded-lg bg-white "
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <input
+            type="tel"
+            placeholder="Enter Your Mobile Number"
+            value={mobile}
+            required
+            className="p-2 w-full text-gray-700 rounded-lg bg-white "
+            onChange={(e) => setMobile(e.target.value)}
+          />
+        </div>
+        <div className="h-full w-full flex ">
+          {dropDown?.length === 0 ? (
+            <h1 className="text-white h-4/5 w-full flex gap-2 ">
+              You have applied for all sub-events in this event
+            </h1>
+          ) : (
+            <select
+              onChange={handleChange}
+              className="w-full flex gap-2 p-2 rounded-md bg-white text-black"
+              value={selectedEvent}>
+              <option value="" className="p-2" disabled>
+                Select an Event
               </option>
-            ))}
-          </select>
-        )}
+              {dropDown?.map((event, index) => (
+                <option className="p-2" key={index} value={event?._id}>
+                  {event?.name}
+                </option>
+              ))}
+            </select>
+          )}
+        </div>
 
         <div className="mt-4 w-full flex flex-col gap-2">
           <h1 className="text-white text-lg">
@@ -185,8 +221,7 @@ const PaymentPage = () => {
                 loading ? "bg-gray-400 cursor-not-allowed" : "bg-blue-700"
               } text-white`}
               onClick={handlePayment}
-              disabled={loading}
-            >
+              disabled={loading}>
               {loading
                 ? "Processing..."
                 : `Pay ₹${eventDetails?.event?.amount}`}
@@ -201,8 +236,7 @@ const PaymentPage = () => {
               return (
                 <li
                   className="flex gap-2 justify-between bg-zinc-700 p-2 rounded-lg"
-                  key={event?._id}
-                >
+                  key={event?._id}>
                   <h1>{event?.name}</h1>
                   <TiTick color="green" size={20} />
                 </li>
