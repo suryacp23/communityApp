@@ -8,7 +8,8 @@ const { combine, timestamp, printf } = format;
 const logDir =
   process.env.NODE_ENV === "production"
     ? "/tmp/logs"
-    : path.join(process.cwd(), "logs");
+    : path.join(process.cwd(), "/tmp/logs");
+console.log(logDir);
 
 // Ensure the logs directory exists
 // const logDir = path.join(process.cwd(), "logs");
@@ -72,6 +73,7 @@ const logger = createLogger({
     new transports.File({
       filename: path.join(logDir, "app.log"),
       format: fileFormat,
+      options: { flags: "a" }, // 'a' stands for append mode
     }),
   ],
 });
