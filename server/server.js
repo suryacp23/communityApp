@@ -4,6 +4,11 @@ import dotenv from "dotenv";
 import morgan from "morgan";
 import cookieParser from "cookie-parser";
 import swaggerUi from "swagger-ui-express";
+import { fileURLToPath } from "url";
+import path from "path";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 import authRoutes from "./routes/authRoutes.js";
 import eventRoutes from "./routes/eventRoutes.js";
@@ -15,6 +20,7 @@ import applicationRoutes from "./routes/applicationRoutes.js";
 import paymentRoutes from "./routes/paymentRoutes.js";
 import likeRoutes from "./routes/likeRoutes.js";
 import profileRoutes from "./routes/profileRoutes.js";
+import adminRoutes from "./routes/adminRoutes.js";
 
 import connectDB from "./utils/connectDB.js";
 import { connectRedis } from "./redis/redis.js";
@@ -35,15 +41,18 @@ connectRedis();
 
 // 🌈 Morgan - Custom Console Logger
 app.use(
-  morgan((tokens, req, res) => {
-    return [
-      `URL: ${tokens.url(req, res)}`,
-      `METHOD: ${tokens.method(req, res)}`,
-      `STATUS: ${tokens.status(req, res)}`,
-      `RESPONSE TIME: ${tokens["response-time"](req, res)} ms`,
-      `MESSAGE: Request handled successfully!`,
-    ].join(" | ");
-  }, { stream: { write: (message) => logger.info(message.trim()) } })
+  morgan(
+    (tokens, req, res) => {
+      return [
+        `URL: ${tokens.url(req, res)}`,
+        `METHOD: ${tokens.method(req, res)}`,
+        `STATUS: ${tokens.status(req, res)}`,
+        `RESPONSE TIME: ${tokens["response-time"](req, res)} ms`,
+        `MESSAGE: Request handled successfully!`,
+      ].join(" | ");
+    },
+    { stream: { write: (message) => logger.info(message.trim()) } }
+  )
 );
 
 // Routes
@@ -62,6 +71,8 @@ app.use("/payment", paymentRoutes);
 app.use("/profile", profileRoutes);
 app.use("/like", likeRoutes);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use("/admin", express.static(path.join(__dirname, "admin")));
+app.use("/api/admin", adminRoutes);
 
 // Error Handling
 app.use((err, req, res, next) => {
@@ -71,5 +82,7 @@ app.use((err, req, res, next) => {
 
 // Start Server
 server.listen(process.env.PORT || 5000, () => {
-  logger.info(`🚀 Server running on http://localhost:${process.env.PORT || 5000}`);
+  logger.info(
+    `🚀 Server running on http://localhost:${process.env.PORT || 5000}`
+  );
 });
