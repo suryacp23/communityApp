@@ -59,7 +59,7 @@ const RequestButton = () => {
           <button
             type="submit"
             className="p-2 bg-blue-500 text-white rounded-lg">
-            join request
+            join 
           </button>
         )}
       </form>

@@ -9,10 +9,7 @@ export default defineConfig(({ mode }) => {
       proxy: {
         // Proxy requests starting with '/api' to your backend server
         "/api": {
-          target:
-            env.NODE_ENV === "production"
-              ? "https://community-app-git-backend-sri-haripriyans-projects.vercel.app/"
-              : "http://localhost:5000/", // Your backend server URL
+          target: "http://ec2-13-61-32-219.eu-north-1.compute.amazonaws.com/",
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/api/, ""), // Remove `/api` prefix when forwarding to the backend
         },
